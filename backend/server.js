@@ -1,5 +1,6 @@
-const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+const express = require('express');
 const mongoose = require('mongoose');
 
 const PORT = 5000;
@@ -8,11 +9,12 @@ const Company = require('./companies/companiesSchema.js');
 const Customer = require('./customers/customerSchema.js');
 
 const server = express();
+server.use(cors());
 server.use(bodyParser.json());
 
 // API Endpoints here
 // COMPANY ENDPOINTS
-server.get('/companies', (req, res) => {
+server.get('/companies', (req, res, next) => {
     Company.find({})
         .then(companies => {
             res.status(200).json(companies);
@@ -22,7 +24,7 @@ server.get('/companies', (req, res) => {
         });
 });
 
-server.post('/companies', (req, res) => {
+server.post('/companies', (req, res, next) => {
     let newCompany = new Company();
     newCompany.name             = req.body.name;
     newCompany.address          = req.body.address;
@@ -41,7 +43,7 @@ server.post('/companies', (req, res) => {
 });
 
 // CUSTOMERS ENDPOINTS
-server.get('/customers', (req, res) => {
+server.get('/customers', (req, res, next) => {
     Customer.find({})
         .then(customers => {
             res.status(200).json(customers);
@@ -51,7 +53,7 @@ server.get('/customers', (req, res) => {
         });
 });
 
-server.post('/customers', (req, res) => {
+server.post('/customers', (req, res, next) => {
     let newCustomer = new Customer();
     newCustomer.firstName   = req.body.firstName;
     newCustomer.lastName    = req.body.lastName;
