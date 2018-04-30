@@ -1,9 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Home from './Home';
-import Invitations from './Invitations';
-import Stats from './Stats';
-import Settings from './Settings';
 import './navigation.css';
 
 
