@@ -35,9 +35,15 @@ class Invitations extends Component {
     return (
     <div>
       <h1>Send a New Invitation</h1>
-      <input type='text' value={this.state.firstName} onChange={this.handleFirstNameChange} placeholder="Customer First Name"/>
-      <input type='text' value={this.state.lastName} onChange={this.handleLastNameChange} placeholder="Customer Last Name"/>
-      <input type='text' value={this.state.phoneNumber} onChange={this.handlePhoneNumberChange} placeholder="Phone Number"/>
+      <div>
+        <input type='text' value={this.state.firstName} onChange={this.handleFirstNameChange} placeholder="Customer First Name"/>
+      </div>
+      <div>
+        <input type='text' value={this.state.lastName} onChange={this.handleLastNameChange} placeholder="Customer Last Name"/>
+      </div>
+      <div>
+        <input type='text' value={this.state.phoneNumber} onChange={this.handlePhoneNumberChange} placeholder="Phone Number"/>
+      </div> 
       <button>SEND</button>
     </div> 
     );
