@@ -20,11 +20,9 @@ const customerSchema = new Schema({
         {
             affiliatedCompanyId: {
                 type: String,
-                required: true
             },
             reviewPlatformSent: {
                 type: String, 
-                required: true
             },
             clicked: {
                 type: Boolean,
@@ -33,8 +31,8 @@ const customerSchema = new Schema({
             reviewScore: {
                 type: String
             },
-        }
-    ],
+        },
+    ]
 });
 
 const CustomerModel = mongoose.model('Customer', customerSchema);
