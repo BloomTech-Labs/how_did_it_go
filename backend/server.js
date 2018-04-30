@@ -11,6 +11,28 @@ const server = express();
 server.use(bodyParser.json());
 
 // API Endpoints here
+// COMPANY ENDPOINTS
+server.get('/companies', (req, res) => {
+    Company.find({})
+        .then(companies => {
+            res.status(200).json(companies);
+        })
+        .catch(error => {
+            res.status(400).json('Error: ', error);
+        });
+});
+
+// CUSTOMERS ENDPOINTS
+server.get('/customers', (req, res) => {
+    Customer.find({})
+        .then(customers => {
+            res.status(200).json(customers);
+        })
+        .catch(error => {
+            res.status(400).json('Error: ', error);
+        });
+});
+
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017')
