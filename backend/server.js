@@ -22,6 +22,24 @@ server.get('/companies', (req, res) => {
         });
 });
 
+server.post('/companies', (req, res) => {
+    let newCompany = new Company();
+    newCompany.name             = req.body.name;
+    newCompany.address          = req.body.address;
+    newCompany.contactFirstName = req.body.contactFirstName;
+    newCompany.contactLastName  = req.body.contactLastName;
+    newCompany.contactEmail     = req.body.contactEmail;
+    newCompany.paymentIsCurrent = req.body.paymentIsCurrent;
+
+    newCompany.save()
+        .then(savedCompany => {
+            res.status(200).json("Successfully Added");
+        })
+        .catch(error => {
+            res.json(error.message);
+        });
+});
+
 // CUSTOMERS ENDPOINTS
 server.get('/customers', (req, res) => {
     Customer.find({})
@@ -30,6 +48,22 @@ server.get('/customers', (req, res) => {
         })
         .catch(error => {
             res.status(400).json('Error: ', error);
+        });
+});
+
+server.post('/customers', (req, res) => {
+    let newCustomer = new Customer();
+    newCustomer.firstName   = req.body.firstName;
+    newCustomer.lastName    = req.body.lastName;
+    newCustomer.phoneNumber = req.body.phoneNumber;
+    newCustomer.requestSent = req.body.requestSent;
+
+    newCustomer.save()
+        .then(savedCustomer => {
+            res.status(200).json("Customer added!");
+        })
+        .catch(error => {
+            res.json(error.message);
         });
 });
 
