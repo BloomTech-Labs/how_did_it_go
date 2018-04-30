@@ -12,6 +12,12 @@ server.use(bodyParser.json());
 
 // API Endpoints here
 
+server.get('/', (req, res) => {
+    res.statusCode = 200;
+    res.setHeader('Content-type', 'text/plain');
+    res.end('Hello World');
+});
+
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017')
     .then(connection => {
