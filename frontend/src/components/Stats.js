@@ -1,11 +1,23 @@
-import React from 'react';
+import React, {Component} from 'react';
 
-const Stats = () => {
-  return (
+class Stats extends Component {
+  constructor() {
+    super();
+  }
+
+  componentDidMount() {
+
+  }
+
+  render() {
+    return (
     <div>
-      <h1>Welcome to Stats page</h1>
+      <h1>Stats</h1>
+      <h2>Inviations Sent</h2>
+      <ol></ol>
     </div> 
-  );
+    );
+  }
 }
 
 export default Stats;

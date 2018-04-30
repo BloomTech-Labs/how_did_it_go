@@ -64,7 +64,7 @@ class Settings extends Component {
       </div>
       <button>Save</button>
     </div> 
-  );
+    );
   }
   
 }
