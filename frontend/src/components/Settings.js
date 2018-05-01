@@ -38,31 +38,25 @@ class Settings extends Component {
 
   render() {
     return (
-    <div>
-      <div>
-        Manager Name:
-        <input type='text' value={this.state.managerName} onChange={this.handleManagerNameChange} />
-      </div>
-      <div>
-        Business Name:
-        <input type='text' value={this.state.businessName} onChange={this.handleBusinessNameChange} />
-      </div>
+    <div className='component'>
+      <div className='title'>Create Your Personalized Message</div>
+      <div>Here is Our Basic Greeting. Feel Free To Change It However You'd Like!</div>
       <div>
         Message Content:
-        <p>Hey, this is {this.state.managerName} from {this.state.businessName}. Thank you for comming
-        in today! I hope you enjoyed your visit and will come see us again soon. In the meantime,
-        could you do me a personal favor and leave us a review? Here is a link that will make it easy:
-        </p>
+        <p>Hey, this is {this.state.managerName ? this.state.managerName : 'Your Name Here'} from {this.state.businessName ? this.state.businessName : 'Your Business\' Name Here'}. 
+        Thank you for coming in today! I hope you enjoyed your visit and will come see us again soon. 
+        In the meantime, could you do me a personal favor and leave us a review? Here is a link that will make it easy: {'Your Link Here'}</p>
       </div>
-      <div>
-        Old Password:
-        <input type='text' value={this.state.oldPW} onChange={this.handleOldPWChange} />
-      </div>
-      <div>
-        New Password:
-        <input type='text' value={this.state.newPW} onChange={this.handleNewPWChange} />
-      </div>
-      <button>Save</button>
+      <form className='form' id='settingsForm'>
+        <input className='form--item' type='text' placeholder='Manager Name' value={this.state.managerName} onChange={this.handleManagerNameChange} />
+        <input className='form--item' type='text' placeholder ='Business Name' value={this.state.businessName} onChange={this.handleBusinessNameChange} />
+        <textarea className='form--item messageField' name ='message' form ='settingsForm' defaultValue=' I hope you enjoyed your visit and will come see us again soon. 
+        In the meantime, could you do me a personal favor and leave us a review? 
+        Here is a link that will make it easy:' />
+        <input className='form--item' type='text' placeholder='Old Password' value={this.state.oldPW} onChange={this.handleOldPWChange} />
+        <input className='form--item' type='text' placeholder='New Password' value={this.state.newPW} onChange={this.handleNewPWChange} />
+        <button className='button'>Save</button>
+      </form>
     </div> 
     );
   }

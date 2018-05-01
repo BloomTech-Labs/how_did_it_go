@@ -38,8 +38,8 @@ class Stats extends Component {
 
   render() {
     return (
-    <div>
-      <h1>Stats</h1>
+    <div className='component'>
+      <div className='title'>Stats</div>
       <div>Invitations Sent: {this.state.invitationsSent}</div>
       <div>Total Clicks: {this.state.totalClicks}</div>
       <div>

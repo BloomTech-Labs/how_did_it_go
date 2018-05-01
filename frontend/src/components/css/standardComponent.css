@@ -1,0 +1,10 @@
+.component {
+    padding: 1.5em;
+}
+.title {
+    font-size: 1.25em;
+    text-align: center;
+    border-block-end: .1em dotted #757575;
+    margin-bottom: .5em;
+    color: #212121;
+}
