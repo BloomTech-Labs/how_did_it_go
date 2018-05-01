@@ -40,9 +40,9 @@ class Stats extends Component {
     return (
     <div className='component'>
       <div className='title'>Stats</div>
-      <div>Invitations Sent: {this.state.invitationsSent}</div>
-      <div>Total Clicks: {this.state.totalClicks}</div>
-      <div>
+      <div className='content'>Invitations Sent: {this.state.invitationsSent}</div>
+      <div className='content'>Total Clicks: {this.state.totalClicks}</div>
+      <div className='content'>
         { this.state.data.map((item, index) => 
           <div key = {index}>{ item.firstName  + ' ' + item.lastName } Clicked? : { item.requestSent.clicked ? 'TRUE' : 'FALSE' }</div>
           ) 
