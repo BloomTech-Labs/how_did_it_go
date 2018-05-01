@@ -10,6 +10,7 @@ import Home from './components/Home';
 import Invitations from './components/Invitations';
 import Stats from './components/Stats';
 import Settings from './components/Settings';
+import Team from './components/Team';
 
 
 
@@ -18,9 +19,10 @@ const App = () => {
     <div>
       <Navigation />
       <Route path='/' exact     component={Home}  />
-      <Route path='/Invitations'component={Invitations} />
-      <Route path='/Stats'      component={Stats} />
-      <Route path='/Settings'   component={Settings} />
+      <Route path='/invitations'component={Invitations} />
+      <Route path='/stats'      component={Stats} />
+      <Route path='/settings'   component={Settings} />
+      <Route path='/team'       component={Team} />
     </div>
   ); 
 }
