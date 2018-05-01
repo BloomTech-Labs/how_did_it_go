@@ -69,12 +69,22 @@ server.post('/customers', (req, res, next) => {
         });
 });
 
+server.delete('/customers', (req, res) => {
+    Customer.findByIdAndRemove(req.params.id, (err, post) => {
+        if(err) {res.send(500, err);}
+        res.json(200, {'deleted': true});
+    });
+});
 
+
+/*
 server.get('/', (req, res) => {
     res.statusCode = 200;
     res.setHeader('Content-type', 'text/plain');
     res.end('Hello World');
-});
+});*/
+
+
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017')
