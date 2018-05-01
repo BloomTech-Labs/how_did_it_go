@@ -19,3 +19,15 @@
     color: #212121;
     background-color: #9E9E9E;
 }
+.sampleMessage {
+    font-size: .5em;
+    color: #212121;
+    width: 35em;
+    margin: auto;
+}
+.filler {
+    text-decoration: underline;
+}
+.dropdownList {
+    font-size: .75em;
+}
