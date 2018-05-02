@@ -4,7 +4,10 @@ import {Route} from 'react-router-dom';
 import './App.css';
 import './components/css/standardComponent.css';
 import './components/css/form.css';
+<<<<<<< HEAD
 import './components/css/customerStats.css';
+=======
+>>>>>>> 20e3e105ed90f3c82b7aff9955ac7ae27e273f49
 
 import Navigation from './components/Navigation';
 import Home from './components/Home';
