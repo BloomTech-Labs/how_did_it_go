@@ -7,6 +7,7 @@ const PORT = 5000;
 
 const Company = require('./companies/companiesSchema.js');
 const Customer = require('./customers/customerSchema.js');
+const User = require('./users/userSchema.js');
 
 const server = express();
 server.use(cors());
@@ -88,6 +89,13 @@ server.put('/customers', (req, res) => {
     Customer.findByIdAndUpdate(req.params.id, (err, post) => {
         if(err) {res.send(500, err);}
         res.json(200, {'updated': true}); 
+    });
+});
+
+server.delete('/customers', (req, res) => {
+    Customer.findByIdAndRemove(req.params.id, (err, post) => {
+        if(err) {res.send(500, err);}
+        res.json(200, {'deleted': true});
     });
 });
 

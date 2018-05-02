@@ -47,12 +47,12 @@ class Settings extends Component {
       </div>
       
       <form className='form' id='settingsForm'>
-        <div>
-          <input className='form--item' type='text' placeholder='Manager First Name' name='managerFirstName' value={this.state.managerFirstName} onChange={this.handleInputChange} />
-          <input className='form--item' type='text' placeholder='Manager Last Name' name='managerLastName' value={this.state.managerLastName} onChange={this.handleInputChange} />
-        </div>
+        {/* TODO: once we have sign-in and auth these lines should be eliminated and be brought up from db */}
+        <div><input className='form--item' type='text' placeholder='Manager First Name' name='managerFirstName' value={this.state.managerFirstName} onChange={this.handleInputChange} /></div>
+        <div><input className='form--item' type='text' placeholder='Manager Last Name' name='managerLastName' value={this.state.managerLastName} onChange={this.handleInputChange} /></div>
         <div><input className='form--item' type='text' placeholder ='Business Name' name='businessName' value={this.state.businessName} onChange={this.handleInputChange} /></div>
 
+        {/* creates a dropdown menu of possible review sites to choose from */}
         <select className='dropdownList' id ='selectReviewSite' name='reviewSite' onChange={this.handleInputChange}>
           <option value ='null' selected disabled>Select A Review Site</option>
           <option value='https://www.yelp.com/'>Yelp</option>
@@ -60,10 +60,12 @@ class Settings extends Component {
           <option value='https://www.tripadvisor.com/'>TripAdvisor</option>
         </select>
 
+        {/* allows user to edit or completely re-write the pre-programmed message text */}
         <div><textarea className='form--item messageField' name ='message' form ='settingsForm' onChange={this.handleInputChange}
         value={this.state.message} /></div>
         <button className="button" type="button" onClick={this.resetMessage}>Reset Message to Default</button>
 
+        {/* TODO: once we have sign-in and auth these lines should be eliminated, or moved elsewhere */}
         <div><input className='form--item' type='password' placeholder='Old Password' name='oldPW' value={this.state.oldPW} onChange={this.handleInputChange} /></div>
         <div><input className='form--item' type='password' placeholder='New Password' name='newPW' value={this.state.newPW} onChange={this.handleInputChange} /></div>
         <button className='button'>Save Your Template</button>
