@@ -7,10 +7,12 @@ const UserSchema = new Schema ({
      unique: true,
      required: true,
    },
-   passwordHash: {
+   password: {
      type: String,
      required: true,
    },
 });
 
-module.exports = mongoose.models('User', UserSchema);
+const UserModel = mongoose.model('User', UserSchema);
+
+module.exports = UserModel;
