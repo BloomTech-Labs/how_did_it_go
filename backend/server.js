@@ -52,6 +52,20 @@ server.post('/companies', (req, res, next) => {
         });
 });
 
+server.delete('/companies', (req, res) => {
+    Company.findByIdAndRemove(req.params.id, (err, post) => {
+        if(err) {res.send(500, err);}
+        res.json(200, {'deleted': true});
+    });
+});
+
+server.put('/companies', (req, res) => {
+    Company.findByIdAndUpdate(req.params.id, (err, post) => {
+        if(err) {res.send(500, err);}
+        res.json(200, {'updated': true}); 
+    });
+});
+
 // CUSTOMERS ENDPOINTS
 server.get('/customers', (req, res, next) => {
     Customer.find({})
@@ -62,6 +76,21 @@ server.get('/customers', (req, res, next) => {
             res.status(400).json('Error: ', error);
         });
 });
+
+server.delete('/customers', (req, res) => {
+    Customer.findByIdAndRemove(req.params.id, (err, post) => {
+        if(err) {res.send(500, err);}
+        res.json(200, {'deleted': true});
+    });
+});
+
+server.put('/customers', (req, res) => {
+    Customer.findByIdAndUpdate(req.params.id, (err, post) => {
+        if(err) {res.send(500, err);}
+        res.json(200, {'updated': true}); 
+    });
+});
+
 // Get Customers by Company Id
 server.get('/customers/:id', (req, res, next) => {
     const { id } = req.params;
@@ -110,30 +139,6 @@ server.post('/customers', (req, res, next) => {
             res.json(error.message);
         });
 });
-
-server.delete('/customers', (req, res) => {
-    Customer.findByIdAndRemove(req.params.id, (err, post) => {
-        if(err) {res.send(500, err);}
-        res.json(200, {'deleted': true});
-    });
-});
-
-server.put('/customers', (req, res) => {
-    Customer.findByIdAndUpdate(req.params.id, (err, post) => {
-        if(err) {res.send(500, err);}
-        res.json(200, {'updated': true}); 
-    });
-});
-
-
-/*
-server.get('/', (req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-type', 'text/plain');
-    res.end('Testing');
-});*/
-
-
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017')
