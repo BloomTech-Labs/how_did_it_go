@@ -7,6 +7,7 @@ const PORT = 5000;
 
 const Company = require('./companies/companiesSchema.js');
 const Customer = require('./customers/customerSchema.js');
+const User = require('./users/userSchema.js');
 
 const server = express();
 server.use(cors());
@@ -125,6 +126,30 @@ server.get('/', (req, res) => {
     res.setHeader('Content-type', 'text/plain');
     res.end('Hello World');
 });*/
+
+// **************Users EndPoints****************************
+server.post('/users', (req, res) => {
+    const user = new User(req.body);
+
+    user.save()
+        .then(user => {
+            res.status(200).json(user);
+        })
+        .catch(err => {
+            res.status(500).json({ message: 'Server Error!'}, err);
+        });
+});
+
+server.get('/users', (req, res) => {
+    User.find({})
+        .then(users => {
+            res.status(200).json(users);
+        })
+        .catch(err => {
+            res.status(400).json({ message: err });
+        })
+});
+
 
 
 
