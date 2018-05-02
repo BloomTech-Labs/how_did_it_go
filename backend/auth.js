@@ -15,7 +15,7 @@ const validateToken = (req, res, next) => {
     return;
   }
 
-  jwt.verity(token, secret, (authErr, decoded) => {
+  jwt.verify(token, secret, (authErr, decoded) => {
     if (authErr) {
       res.status(403).json({message: authErr, error: 'Token invalid, please login'});
       return;

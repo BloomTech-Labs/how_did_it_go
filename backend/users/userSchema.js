@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 
 const UserSchema = new Schema ({
-   userName: {
+   username: {
      type: String,
      unique: true,
      required: true,
@@ -17,9 +17,9 @@ const UserSchema = new Schema ({
 // Add on "pre save"
 // use bcrypt to encrypt plain password, and pass hashed PW to next middleware
 UserSchema.pre('save', function(next) {
-  bcrypt.hash(this.password, 11, (err, hashedPW) => {
+  bcrypt.hash(this.password, 11, (err, hash) => {
     if (err) return next(err);
-    this.password = hashedPW;
+    this.password = hash;
     next();
   });
 });
