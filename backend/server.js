@@ -23,6 +23,16 @@ server.get('/companies', (req, res, next) => {
             res.status(400).json('Error: ', error);
         });
 });
+server.get('/companies/:name', (req, res, next) => {
+    const { name } = req.params;
+    Company.find({ name: name })
+        .then(companies => {
+            res.status(200).json(companies);
+        })
+        .catch(error => {
+            res.status(400).json('Error: ', error);
+        });
+});
 
 server.post('/companies', (req, res, next) => {
     let newCompany = new Company();
@@ -52,6 +62,38 @@ server.get('/customers', (req, res, next) => {
             res.status(400).json('Error: ', error);
         });
 });
+// Get Customers by Company Id
+server.get('/customers/:id', (req, res, next) => {
+    const { id } = req.params;
+    Customer.find({ "requestSent.affiliatedCompanyId": id })
+        .then(customers => {
+            res.status(200).json(customers);
+        })
+        .catch(error => {
+            res.status(400).json('Error: ', error);
+        });
+});
+
+// Get Customers by Company Name
+server.get('/customers/company/:name', (req, res, next) => {
+    const { name } = req.params;
+    Company.findOne({ name: name })
+        .then(company => {
+            const id = company._id;
+            Customer.find({ "requestSent.affiliatedCompanyId": id })
+            .then(customers => {
+                res.status(200).json(customers);
+            })
+            .catch(error => {
+                res.status(400).json('Error: ', error);
+            });
+
+        })
+        .catch(error => {
+            res.status(400).json('Error: ', error);
+        });
+});
+
 
 server.post('/customers', (req, res, next) => {
     let newCustomer = new Customer();
