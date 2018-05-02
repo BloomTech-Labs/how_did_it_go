@@ -121,7 +121,7 @@ server.delete('/customers', (req, res) => {
 server.put('/customers', (req, res) => {
     Customer.findByIdAndUpdate(req.params.id, (err, post) => {
         if(err) {res.send(500, err);}
-        res.json(200, {'updated': true});
+        res.json(200, {'updated': true}); 
     });
 });
 
