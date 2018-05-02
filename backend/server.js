@@ -13,7 +13,7 @@ const User = require('./users/userSchema.js');
 
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/test');
+mongoose.connect('mongodb://localhost:27017');
     
 const corsOptions = {
     credentials: true
@@ -131,19 +131,13 @@ server.delete('/customers', (req, res) => {
 });
 
 
-/*
-server.get('/', (req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-type', 'text/plain');
-    res.end('Hello World');
-});*/
+// **************Users EndPoints***********************************************
+// ****************************************************************************
 
-// **************Users EndPoints****************************
-// *********************************************************
-
-//************Helper functions */
+//************Helper functions*************************************************
 const getTokenForUser = userObject => {
-    return jwt.sign(userObj, secret, { algorithm: 'RS256'}, { expiresIn: 10 * 60 * 60 });
+    // create 10h token
+    return jwt.sign(userObject, secret, { expiresIn: 10 * 60 * 60 });
   };
   
 const validateToken = (req, res, next) => {
@@ -168,42 +162,40 @@ const validateToken = (req, res, next) => {
     });
 };
 
-  // *******************Route controllers*****************************************
-  const getUsers = (req, res) => {
+// *******************Route controllers********************************************
+const getUsers = (req, res) => {
     // This handler will not work until a user has sent up a valid JWT
-    // check out what's going on in the `validate` token function
     User.find({}, (err, users) => {
-      if (err) return res.send(err);
-      res.send(users);
+        if (err) return res.send(err);
+        res.send(users);
     });
-  };
-  
+};
+
+
 const login = (req, res) => {
     const { username, password } = req.body;
     User.findOne({ username }, (err, user) => {
-        if (err) {
-            console.log('number1');
-            res.status(500).json({ error: 'Invalid Username/Password' });
-            return;
-        }
-        if (user === null) {
-            console.log('number2');
-            res.status(422).json({ error: 'No user with that username in our DB' });
-            return;
-        }
-        user.checkPassword(password, (nonMatch, hashMatch) => {
-        // This is an example of using our User.method from our model.
+      if (err) {
+        res.status(500).json({ error: 'Invalid Username/Password' });
+        return;
+      }
+      if (user === null) {
+        res.status(422).json({ error: 'No user with that username in our DB' });
+        return;
+      }
+      user.checkPassword(password, (nonMatch, hashMatch) => {
         if (nonMatch !== null) {
-            res.status(422).json({ error: 'passwords dont match' });
-            return;
+          res.status(422).json({ error: 'passwords dont match' });
+          return;
         }
         if (hashMatch) {
-            const token = getTokenForUser({ username: user.username });
-            res.json({ token });
+          const token = getTokenForUser({ username: user.username });
+          res.json({ token });
         }
-        });
+      });
     });
-};
+  };
+
 
 // ******************Routes*********************************************************
 
