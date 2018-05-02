@@ -7,10 +7,7 @@ class Stats extends Component {
   constructor() {
     super();
     this.state = {
-<<<<<<< HEAD
       companyName: 'TestCo1',
-=======
->>>>>>> 20e3e105ed90f3c82b7aff9955ac7ae27e273f49
       data: [],
       invitationsSent: '',
       totalClicks: 0,
@@ -19,11 +16,7 @@ class Stats extends Component {
   }
 
   componentDidMount() {
-<<<<<<< HEAD
     axios.get(URL + 'customers/company/' + this.state.companyName)
-=======
-    axios.get(URL + 'customers/')
->>>>>>> 20e3e105ed90f3c82b7aff9955ac7ae27e273f49
       .then(response => {
         this.setState({ data: response.data});
         this.setState({ invitationsSent: response.data.length });
@@ -44,21 +37,17 @@ class Stats extends Component {
     this.setState({ totalClicks: count });
   }
 
-<<<<<<< HEAD
   toggle = (e) => {
     const details = !this.state.details;
     this.setState({ details });
   }
 
-=======
->>>>>>> 20e3e105ed90f3c82b7aff9955ac7ae27e273f49
   render() {
     return (
     <div className='component'>
       <div className='title'>Stats</div>
       <div className='content'>Invitations Sent: {this.state.invitationsSent}</div>
       <div className='content'>Total Clicks: {this.state.totalClicks}</div>
-<<<<<<< HEAD
       <div className='content customerStats' onClick={this.toggle}>{ this.state.details ? 
         <div>
           { this.state.data.map((item, index) => 
@@ -67,14 +56,6 @@ class Stats extends Component {
           }
         </div>
         : 'Click Here for More Details' } </div>
-=======
-      <div className='content'>
-        { this.state.data.map((item, index) => 
-          <div key = {index}>{ item.firstName  + ' ' + item.lastName } Clicked? : { item.requestSent.clicked ? 'TRUE' : 'FALSE' }</div>
-          ) 
-        }
-      </div>
->>>>>>> 20e3e105ed90f3c82b7aff9955ac7ae27e273f49
     </div> 
     );
   }
