@@ -1,3 +1,4 @@
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const express = require('express');
@@ -9,6 +10,9 @@ const port = process.env.PORT || 5000;
 
 const Company = require('./companies/companiesSchema.js');
 const Customer = require('./customers/customerSchema.js');
+const accountSid = process.env.ACCOUNTSID; // Your Account SID from www.twilio.com/console
+const authToken = process.env.AUTHTOKEN;   // Your Auth Token from www.twilio.com/console
+const twilioNumber = process.env.TWILIOPHONENUMBER;
 const User = require('./users/userSchema.js');
 
 
@@ -202,9 +206,63 @@ server.delete('/customers', (req, res) => {
     });
 });
 
+// SMS endpoint
+server.post('/sms/:mobile', (req, res) => {
+    const { mobile } = req.params;
+    const twilio = require('twilio');
+    const client = new twilio(accountSid, authToken);
+
 
 // ***********************************Users EndPoints***********************************************
 // ***********************************Route controllers********************************************
+
+
+    client.messages.create({
+        body: 'Test text message text (to be replaced by db data',
+        to: mobile ,  // Text this number
+        from: twilioNumber //ENV VARIABLE
+    })
+    .then(message => {
+        console.log(message.sid);
+        res.status(200).json(message.sid);
+    })
+    .catch(error => {
+        res.status(400).json(error);
+    });
+});
+// **************Users EndPoints***********************************************
+// ****************************************************************************
+
+//************Helper functions*************************************************
+const getTokenForUser = userObject => {
+    // create 10h token
+    return jwt.sign(userObject, secret, { expiresIn: 10 * 60 * 60 });
+  };
+  
+const validateToken = (req, res, next) => {
+    // take the token up to the server and verify it
+    // if no token found in the header, get 422
+    // if token not valid, user will be asked to login
+    const token = req.headers.authorization;
+    if (!token) {
+        res.status(422)
+            .json({ error: 'No authorization token found on Authorization header' });
+            return;
+    }
+    jwt.verify(token, secret, (authError, decoded) => {
+        if (authError) {
+            res.status(403)
+                .json({ error: 'Token invalid, please login', message: authError });
+                return;
+        }
+        // decode jwt and set on the req.decoded, pass to next middleware
+        req.decoded = decoded;
+        next();
+    });
+};
+
+// *******************Route controllers********************************************
+
 const getUsers = (req, res) => {
     // This handler will not work until a user has sent up a valid JWT
     User.find({}, (err, users) => {
@@ -259,7 +317,6 @@ server.get('/users', getUsers);
 server.listen(port, (req, res) => {
     console.log(`server listening on port ${port}`);
 });
-
 
 
 
