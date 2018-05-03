@@ -4,6 +4,7 @@ import {Route} from 'react-router-dom';
 import './App.css';
 import './components/css/standardComponent.css';
 import './components/css/form.css';
+import './components/css/customerStats.css';
 
 import Navigation from './components/Navigation';
 import Home from './components/Home';
