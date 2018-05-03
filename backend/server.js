@@ -27,9 +27,44 @@ const server = express();
 server.use(bodyParser.json());
 server.use(cors(corsOptions));
 
+// validateToken middleware will work on all routes, but exempt '/signin' and 'signup'
+server.use((req, res, next) => {
+    if (req.originalUrl === '/signin' || req.originalUrl === '/signup') return next();
+    return validateToken(req, res, next);
+});
 
-// API Endpoints here
-// COMPANY ENDPOINTS
+
+//***************************Helper functions*************************************************
+const getTokenForUser = userObject => {
+    // create 10h token
+    return jwt.sign(userObject, secret, { expiresIn: 10 * 60 * 60 });
+  };
+  
+const validateToken = (req, res, next) => {
+    // take the token up to the server and verify it
+    // if no token found in the header, get 422
+    // if token not valid, user will be asked to login
+    const token = req.headers.authorization;
+    if (!token) {
+        res.status(422)
+            .json({ error: 'No authorization token found on Authorization header' });
+            return;
+    }
+    jwt.verify(token, secret, (authError, decoded) => {
+        if (authError) {
+            res.status(403)
+                .json({ error: 'Token invalid, please login', message: authError });
+                return;
+        }
+        // decode jwt and set on the req.decoded, pass to next middleware
+        req.decoded = decoded;
+        next();
+    });
+};
+
+
+// ****************************************API Endpoints here***********************************
+// *****************************************COMPANY ENDPOINTS***********************************
 server.get('/companies', (req, res, next) => {
     Company.find({})
         .then(companies => {
@@ -178,6 +213,10 @@ server.post('/sms/:mobile', (req, res) => {
     const client = new twilio(accountSid, authToken);
 
 
+// ***********************************Users EndPoints***********************************************
+// ***********************************Route controllers********************************************
+
+
     client.messages.create({
         body: 'Test text message text (to be replaced by db data',
         to: mobile ,  // Text this number
@@ -223,6 +262,7 @@ const validateToken = (req, res, next) => {
 };
 
 // *******************Route controllers********************************************
+
 const getUsers = (req, res) => {
     // This handler will not work until a user has sent up a valid JWT
     User.find({}, (err, users) => {
@@ -230,7 +270,6 @@ const getUsers = (req, res) => {
         res.send(users);
     });
 };
-
 
 const login = (req, res) => {
     const { username, password } = req.body;
@@ -254,12 +293,11 @@ const login = (req, res) => {
         }
       });
     });
-  };
+};
 
+// ****************************************Users Routes*********************************************************
 
-// ******************Routes*********************************************************
-
-server.post('/users', (req, res) => {
+server.post('/signup', (req, res) => {
     const user = new User(req.body);
 
     user.save()
@@ -273,7 +311,7 @@ server.post('/users', (req, res) => {
 
 server.post('/signin', login);
 
-server.get('/users', validateToken, getUsers);
+server.get('/users', getUsers);
 
 
 server.listen(port, (req, res) => {
