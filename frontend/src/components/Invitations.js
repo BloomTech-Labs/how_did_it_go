@@ -11,21 +11,9 @@ class Invitations extends Component {
     };
   }
 
-  handleFirstNameChange = (e) => {
+  handleInputChange = (e) => {
     this.setState({
-      firstName: e.target.value
-    });
-  }
-
-  handleLastNameChange = (e) => {
-    this.setState({
-      lastName: e.target.value
-    });
-  }
-
-  handlePhoneNumberChange = (e) => {
-    this.setState({
-      phoneNumber: e.target.value
+      [e.target.name]: e.target.value
     });
   }
 
@@ -36,9 +24,9 @@ class Invitations extends Component {
     <div className='component'>
       <div className='title'>Send a New Invitation</div>
       <form className='form'>
-        <input className='form--item' type='text' value={this.state.firstName} onChange={this.handleFirstNameChange} placeholder="Customer First Name"/>
-        <input className='form--item' type='text' value={this.state.lastName} onChange={this.handleLastNameChange} placeholder="Customer Last Name"/>
-        <input className='form--item' type='text' value={this.state.phoneNumber} onChange={this.handlePhoneNumberChange} placeholder="Phone Number"/>
+        <div><input className='form--item' type='text' name='firstName' value={this.state.firstName} onChange={this.handleInputChange} placeholder="Customer First Name"/></div>
+        <div><input className='form--item' type='text' name='lastName' value={this.state.lastName} onChange={this.handleInputChange} placeholder="Customer Last Name"/></div>
+        <div><input className='form--item' type='text' name='phoneNumber' value={this.state.phoneNumber} onChange={this.handleInputChange} placeholder="Phone Number"/></div>
         <button className='button'>Invite</button>
       </form>
     </div> 
