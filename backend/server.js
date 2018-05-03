@@ -1,3 +1,4 @@
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const express = require('express');
@@ -7,6 +8,9 @@ const PORT = 5000;
 
 const Company = require('./companies/companiesSchema.js');
 const Customer = require('./customers/customerSchema.js');
+const accountSid = process.env.ACCOUNTSID; // Your Account SID from www.twilio.com/console
+const authToken = process.env.AUTHTOKEN;   // Your Auth Token from www.twilio.com/console
+const twilioNumber = process.env.TWILIOPHONENUMBER;
 
 const server = express();
 server.use(cors());
@@ -118,14 +122,25 @@ server.delete('/customers', (req, res) => {
     });
 });
 
+// SMS endpoint
+server.post('/sms/:mobile', (req, res) => {
+    const { mobile } = req.params;
+    const twilio = require('twilio');
+    const client = new twilio(accountSid, authToken);
 
-/*
-server.get('/', (req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-type', 'text/plain');
-    res.end('Hello World');
-});*/
-
+    client.messages.create({
+        body: 'Test text message text (to be replaced by db data',
+        to: mobile ,  // Text this number
+        from: twilioNumber //ENV VARIABLE
+    })
+    .then(message => {
+        console.log(message.sid);
+        res.status(200).json(message.sid);
+    })
+    .catch(error => {
+        res.status(400).json(error);
+    });
+});
 
 
 mongoose.Promise = global.Promise;
