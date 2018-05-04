@@ -18,7 +18,7 @@ class Team extends Component {
                     name: 'Alif',
                     github: 'https://github.com/sendsent',
                     linkedin: '',
-                    personalSite: '',
+                    personalSite: 'http://www.3os.me, http://www.imtryingnow.com, eehttp://www.kickmeapp.com',
                     responsibilities: 'Full Stack Developer',
                 },
                 {
