@@ -16,21 +16,23 @@ const customerSchema = new Schema({
         required: true,
         unique: true
     },
-    requestSent: {
-        affiliatedCompanyId: {
-            type: String,
+    requestSent: [
+        {
+            affiliatedCompanyId: {
+                type: String,
+            },
+            reviewPlatformSent: {
+                type: String, 
+            },
+            clicked: {
+                type: Boolean,
+                default: false
+            },
+            reviewScore: {
+                type: String
+            },
         },
-        reviewPlatformSent: {
-            type: String, 
-        },
-        clicked: {
-            type: Boolean,
-            default: false
-        },
-        reviewScore: {
-            type: String
-        },
-    },
+    ],
 });
 
 const CustomerModel = mongoose.model('Customer', customerSchema);

@@ -45,25 +45,38 @@ class Invitations extends Component {
       }
     };
     //TODO: add new data to existing customer if she already exists in DB
+    // details...
+    // get customer data from input
+    // get request for customer by phone number
+    // if != exist, POST to db
+    // if exists, append new company data to customer object and PUT to db
+    // axios.get(URL + 'customers/')
+    //   .then(response => {
+    //     console.log(response.data);
+    //   })
+    //   .catch(error => {
+    //     console.log({ error });
+    //   });
+
 
     // save customer data to the DB
-    axios.post(URL + 'customers/', customer)
-      .then(response => {
-        console.log("successfully added");
+    // axios.post(URL + 'customers/', customer)
+    //   .then(response => {
+    //     console.log("successfully added");
         
-        // activate the text to go to the customer
-        axios.post(URL + 'sms/' + tel)
-        .then(response => {
-          console.log("Sent!");
-        })
-        .catch(error => {
-          console.log("error:", error);
-        });
+    //     // activate the text to go to the customer
+    //     axios.post(URL + 'sms/' + tel)
+    //     .then(response => {
+    //       console.log("Sent!");
+    //     })
+    //     .catch(error => {
+    //       console.log("error:", error);
+    //     });
 
-      })
-      .catch(error => {
-        console.log("error:", error);
-      });
+    //   })
+    //   .catch(error => {
+    //     console.log("error:", error);
+    //   });
 
 
     

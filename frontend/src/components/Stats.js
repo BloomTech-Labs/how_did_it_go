@@ -19,25 +19,18 @@ class Stats extends Component {
   componentDidMount() {
     // find the company's name -- needs to be linked with sign up/sign in data
     // use company name to get list of customers
-    axios.get(URL + 'companies/' + companyId)
-      .then(response => {
-        this.setState({ companyName: response.data.name });
-        axios.get(URL + 'customers/company/' + this.state.companyName)
-          .then(response => {
-            this.setState({ data: response.data});
-            this.setState({ invitationsSent: response.data.length });
-            this.updateClicks();
-          })
-          .catch(error => {
-            console.log(error.message);
-          })
-      .catch(error => {
-        console.log("error: ", error);
-      });
-
-      })
-
-      
+        // axios request to get list of affiliated customers
+    //axios.get(URL + 'customers/company/' + this.state.companyName)
+    // axios.get(URL + 'customers/company/' + '5ae786b9740f794d9c2e8488')
+    //   .then(response => {
+    //     this.setState({ data: response.data});
+    //     this.setState({ invitationsSent: response.data.length });
+    //     this.updateClicks();
+    //   })
+    //   .catch(error => {
+    //     console.log(error.message);
+    //   });  
+  
   }
   
   updateClicks() {
