@@ -18,9 +18,6 @@ class Stats extends Component {
 
   componentDidMount() {
     // find the company's name -- needs to be linked with sign up/sign in data
-    // use company name to get list of customers
-        // axios request to get list of affiliated customers
-    //axios.get(URL + 'customers/companyname/' + this.state.companyName)
     axios.get(URL + 'companies/name/' + companyName)
       .then(response => {
         const companyId = response.data[0]._id;

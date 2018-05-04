@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
-const DEFAULT_MESSAGE = 'Thank you for coming in today! I hope you enjoyed your visit and will come see us again soon. In the meantime, could you do me a favor and leave us a review? Here is a link that will make it easy: ';
+const URL = 'http://localhost:5000/';
+let companyId;
+let defaultMessage;
+
 class Settings extends Component {
   constructor () {
     super();
@@ -10,10 +14,25 @@ class Settings extends Component {
       managerLastName: '',
       businessName: '',
       reviewSite: '',
-      message: DEFAULT_MESSAGE,
+      message: '',
       oldPW: '',
       newPW: '',
     };
+  }
+
+  componentWillMount() {
+    companyId = '5aec8c2e3ff7d51c1039b0bb'; // testing purposes
+    axios.get(URL + 'companies/id/' + companyId)
+      .then(response => {
+        console.log(response.data[0].defaultMessage);
+        defaultMessage = response.data[0].defaultMessage;
+        this.setState({
+          message: defaultMessage
+        });
+      })
+      .catch(error => {
+        console.log('error here');
+      });
   }
 
   handleInputChange = (e) => {
@@ -24,7 +43,7 @@ class Settings extends Component {
 
   resetMessage = (e) => {
     this.setState({
-      message: DEFAULT_MESSAGE 
+      message: defaultMessage 
     });
   }
 
