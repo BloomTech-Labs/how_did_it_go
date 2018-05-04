@@ -3,11 +3,15 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
+const { secret } = require('./config');
 const PORT = process.env.PORT || 5000;
 
 const Company = require('./companies/companiesSchema.js');
 const Customer = require('./customers/customerSchema.js');
+// const User = require('./users/userSchema.js');
+
 
 
 const accountSid = process.env.ACCOUNTSID; // Your Account SID from www.twilio.com/console
@@ -21,6 +25,41 @@ const corsOptions = {
 const server = express();
 server.use(bodyParser.json());
 server.use(cors());
+
+
+// validateToken middleware will work on all routes, but exempt '/signin' and 'signup'
+server.use((req, res, next) => {
+    if (req.originalUrl === '/signin' || req.originalUrl === '/signup') return next();
+    return validateToken(req, res, next);
+});
+
+//***************************Helper functions*************************************************
+const getTokenForUser = userObject => {
+    // create 10h token
+    return jwt.sign(userObject, secret, { expiresIn: 10 * 60 * 60 });
+  };
+  
+const validateToken = (req, res, next) => {
+    // take the token up to the server and verify it
+    // if no token found in the header, get 422
+    // if token not valid, user will be asked to login
+    const token = req.headers.authorization;
+    if (!token) {
+        res.status(422)
+            .json({ error: 'No authorization token found on Authorization header' });
+            return;
+    }
+    jwt.verify(token, secret, (authError, decoded) => {
+        if (authError) {
+            res.status(403)
+                .json({ error: 'Token invalid, please login', message: authError });
+                return;
+        }
+        // decode jwt and set on the req.decoded, pass to next middleware
+        req.decoded = decoded;
+        next();
+    });
+};
 
 
 
@@ -185,6 +224,88 @@ server.post('/sms/:mobile', (req, res) => {
         res.status(400).json({ error });
     });
 });
+
+//************Helper functions*************************************************
+// const getTokenForUser = userObject => {
+//     // create 10h token
+//     return jwt.sign(userObject, secret, { expiresIn: 10 * 60 * 60 });
+//   };
+  
+// const validateToken = (req, res, next) => {
+//     // take the token up to the server and verify it
+//     // if no token found in the header, get 422
+//     // if token not valid, user will be asked to login
+//     const token = req.headers.authorization;
+//     if (!token) {
+//         res.status(422)
+//             .json({ error: 'No authorization token found on Authorization header' });
+//             return;
+//     }
+//     jwt.verify(token, secret, (authError, decoded) => {
+//         if (authError) {
+//             res.status(403)
+//                 .json({ error: 'Token invalid, please login', message: authError });
+//                 return;
+//         }
+//         // decode jwt and set on the req.decoded, pass to next middleware
+//         req.decoded = decoded;
+//         next();
+//     });
+// };
+
+// *******************Route controllers********************************************
+
+const getUsers = (req, res) => {
+    // This handler will not work until a user has sent up a valid JWT
+    User.find({}, (err, users) => {
+        if (err) return res.send(err);
+        res.send(users);
+    });
+};
+
+const login = (req, res) => {
+    const { username, password } = req.body;
+    User.findOne({ username }, (err, user) => {
+      if (err) {
+        res.status(500).json({ error: 'Invalid Username/Password' });
+        return;
+      }
+      if (user === null) {
+        res.status(422).json({ error: 'No user with that username in our DB' });
+        return;
+      }
+      user.checkPassword(password, (nonMatch, hashMatch) => {
+        if (nonMatch !== null) {
+          res.status(422).json({ error: 'passwords dont match' });
+          return;
+        }
+        if (hashMatch) {
+          const token = getTokenForUser({ username: user.username });
+          res.json({ token });
+        }
+      });
+    });
+};
+
+// ****************************************Users Routes*********************************************************
+
+server.post('/signup', (req, res) => {
+    const user = new User(req.body);
+
+    user.save()
+        .then(user => {
+            res.status(200).json(user);
+        })
+        .catch(err => {
+            res.status(500).json({ message: 'Server Error!'});
+        });
+});
+
+server.post('/signin', login);
+
+server.get('/users', getUsers);
+
+// ******************* MONGOOSE CONNECTION********************************
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017')
