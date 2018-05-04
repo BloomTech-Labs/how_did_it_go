@@ -4,6 +4,7 @@ import axios from 'axios';
 const URL = 'http://localhost:5000/';
 let companyId;
 let defaultMessage;
+let company;
 
 class Settings extends Component {
   constructor () {
@@ -24,8 +25,9 @@ class Settings extends Component {
     companyId = '5aec8c2e3ff7d51c1039b0bb'; // testing purposes
     axios.get(URL + 'companies/id/' + companyId)
       .then(response => {
-        console.log(response.data[0].defaultMessage);
-        defaultMessage = response.data[0].defaultMessage;
+        console.log(response.data.defaultMessage);
+        company = response.data;
+        defaultMessage = company.defaultMessage;
         this.setState({
           message: defaultMessage
         });
@@ -47,6 +49,19 @@ class Settings extends Component {
     });
   }
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const newMessage = 'Hello, this is ' + this.state.managerFirstName + ' ' + this.state.managerLastName + ' from ' + this.state.businessName + '. ' + this.state.message + ' ' + this.state.reviewSite + ' Thank You!';
+    company.defaultMessage = newMessage;
+    axios.put(URL + 'companies/id/' + companyId, company)
+      .then(response => {
+        console.log("updated the company");
+      })
+      .catch(error => {
+        console.log("error while updating company");
+      });
+  }
+
 
   render() {
     return (
@@ -54,7 +69,7 @@ class Settings extends Component {
       <div className='title'>Create Your Personalized Message</div>
 
       <div className='header'>Here is Our Basic Greeting. Feel Free To Change It However You'd Like!</div>
-      <div className='sampleMessage'>
+      <div className='sampleMessage' id='sampleMessage'>
         Hello, this is  
         <span>{this.state.managerFirstName || this.state.managerLastName ? ' ' + this.state.managerFirstName + ' ' + this.state.managerLastName + ' ' :<span className='filler'> Your Name Here </span>}</span>
         from  
@@ -87,7 +102,7 @@ class Settings extends Component {
         {/* TODO: once we have sign-in and auth these lines should be eliminated, or moved elsewhere */}
         <div><input className='form--item' type='password' placeholder='Old Password' name='oldPW' value={this.state.oldPW} onChange={this.handleInputChange} /></div>
         <div><input className='form--item' type='password' placeholder='New Password' name='newPW' value={this.state.newPW} onChange={this.handleInputChange} /></div>
-        <button className='button'>Save Your Template</button>
+        <button className='button' type="button" onClick={this.handleSubmit}>Save Your Template</button>
       </form>
 
     </div> 

@@ -87,7 +87,7 @@ server.get('/companies/name/:name', (req, res, next) => {
 
 server.get('/companies/id/:id', (req, res, next) => {
     const { id } = req.params;
-    Company.find({ _id: id })
+    Company.findOne({ _id: id })
         .then(companies => {
             res.status(200).json(companies);
         })
@@ -115,8 +115,10 @@ server.post('/companies', (req, res, next) => {
         });
 });
 
-server.put('/companies', (req, res) => {
-    Company.findByIdAndUpdate(req.params.id, (err, post) => {
+server.put('/companies/id/:id', (req, res) => {
+    const { id } = req.params;
+    updatedCompany = req.body;
+    Company.findByIdAndUpdate(id, updatedCompany,  (err, post) => {
         if(err) {res.send(500, err);}
         res.json(200, {'updated': true}); 
     });
