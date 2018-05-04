@@ -24,7 +24,7 @@ server.get('/companies', (req, res, next) => {
             res.status(200).json(companies);
         })
         .catch(error => {
-            res.status(400).json('Error: ', error);
+            res.status(400).json({ error });
         });
 });
 server.get('/companies/:name', (req, res, next) => {
@@ -34,9 +34,21 @@ server.get('/companies/:name', (req, res, next) => {
             res.status(200).json(companies);
         })
         .catch(error => {
-            res.status(400).json('Error: ', error);
+            res.status(400).json({ error });
         });
 });
+
+server.get('/companies/:id', (req, res, next) => {
+    const { id } = req.params;
+    Company.find({ _id: id })
+        .then(companies => {
+            res.status(200).json(companies);
+        })
+        .catch(error => {
+            res.status(400).json({ error });
+        });
+});
+
 
 server.post('/companies', (req, res, next) => {
     let newCompany = new Company();
@@ -52,7 +64,7 @@ server.post('/companies', (req, res, next) => {
             res.status(200).json("Successfully Added");
         })
         .catch(error => {
-            res.json(error.message);
+            res.status(400).json({ error });
         });
 });
 
@@ -63,7 +75,7 @@ server.get('/customers', (req, res, next) => {
             res.status(200).json(customers);
         })
         .catch(error => {
-            res.status(400).json('Error: ', error);
+            res.status(400).json({ error });
         });
 });
 // Get Customers by Company Id
@@ -74,7 +86,7 @@ server.get('/customers/:id', (req, res, next) => {
             res.status(200).json(customers);
         })
         .catch(error => {
-            res.status(400).json('Error: ', error);
+            res.status(400).json({ error });
         });
 });
 
@@ -89,12 +101,12 @@ server.get('/customers/company/:name', (req, res, next) => {
                 res.status(200).json(customers);
             })
             .catch(error => {
-                res.status(400).json('Error: ', error);
+                res.status(400).json({ error });
             });
 
         })
         .catch(error => {
-            res.status(400).json('Error: ', error);
+            res.status(400).json({ error });
         });
 });
 
@@ -111,7 +123,7 @@ server.post('/customers', (req, res, next) => {
             res.status(200).json("Customer added!");
         })
         .catch(error => {
-            res.json(error.message);
+            res.status(400).json({ error });
         });
 });
 
@@ -138,7 +150,7 @@ server.post('/sms/:mobile', (req, res) => {
         res.status(200).json(message.sid);
     })
     .catch(error => {
-        res.status(400).json(error);
+        res.status(400).json({ error });
     });
 });
 
@@ -151,5 +163,5 @@ mongoose.connect('mongodb://localhost:27017')
         });
     })
     .catch(error => {
-        console.log('Error thrown: ', error);
+        res.status(400).json({ error });
     });
