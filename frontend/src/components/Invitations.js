@@ -18,14 +18,24 @@ class Invitations extends Component {
   }
 
   componentDidMount() {
-    companyId = '5ae786b9740f794d9c2e8488'; // testing purposes
+    companyId = '5aec8c2e3ff7d51c1039b0bb'; // testing purposes
     reviewOption = 'test'; // testing purposes
-    tel = '7032001338'; //testing purposes 
+    tel = '7032001337'; //testing purposes 
   }
 
   handleInputChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value
+    });
+  }
+
+  sendText = () => {
+    axios.post(URL + 'sms/' + tel)
+    .then(response => {
+      console.log("Sent!");
+    })
+    .catch(error => {
+      console.log("error:", error);
     });
   }
 
@@ -80,6 +90,7 @@ class Invitations extends Component {
               axios.put(URL + 'customers/id/' + response.data._id, updatedCustomer)
                 .then(response => {
                   console.log("Updated the customer");
+                  this.sendText();
                 })
                 .catch(error => {
                   console.log("Error:", error.message);
@@ -92,13 +103,7 @@ class Invitations extends Component {
           .then(response => {
             console.log("successfully added");
             // activate the text to go to the customer
-            axios.post(URL + 'sms/' + tel)
-            .then(response => {
-              console.log("Sent!");
-            })
-            .catch(error => {
-              console.log("error:", error);
-            });
+            this.sendText();
           })
           .catch(error => {
             console.log("error:", error);

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 
 const URL = "http://localhost:5000/";
-let companyName = "Bubba's Road House"; // testing purposes
+let companyName = "Second Company"; // testing purposes
 class Stats extends Component {
   constructor() {
     super();
