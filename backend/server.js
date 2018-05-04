@@ -28,10 +28,10 @@ server.use(cors());
 
 
 // validateToken middleware will work on all routes, but exempt '/signin' and 'signup'
-server.use((req, res, next) => {
-    if (req.originalUrl === '/signin' || req.originalUrl === '/signup') return next();
-    return validateToken(req, res, next);
-});
+// server.use((req, res, next) => {
+//     if (req.originalUrl === '/signin' || req.originalUrl === '/signup') return next();
+//     return validateToken(req, res, next);
+// });
 
 //***************************Helper functions*************************************************
 const getTokenForUser = userObject => {
@@ -74,7 +74,7 @@ server.get('/companies', (req, res, next) => {
             res.status(400).json({ error });
         });
 });
-server.get('/companies/:name', (req, res, next) => {
+server.get('/companies/name/:name', (req, res, next) => {
     const { name } = req.params;
     Company.find({ name: name })
         .then(companies => {
@@ -141,8 +141,20 @@ server.get('/customers', (req, res, next) => {
         });
 });
 
+// Get Customers by Phone Number
+server.get('/customers/phone/:number', (req, res, next) => {
+    const { number } = req.params;
+    Customer.findOne({ "phoneNumber": number })
+    .then(customers => {
+        res.status(200).json(customers);
+    })
+    .catch(error => {
+        res.status(400).json({ error });
+    });
+});
+
 // Get Customers by Company Id
-server.get('/customers/:id', (req, res, next) => {
+server.get('/customers/companyid/:id', (req, res, next) => {
     const { id } = req.params;
     Customer.find({ "requestSent.affiliatedCompanyId": id })
     .then(customers => {
@@ -154,7 +166,7 @@ server.get('/customers/:id', (req, res, next) => {
 });
 
 // Get Customers by Company Name
-server.get('/customers/company/:name', (req, res, next) => {
+server.get('/customers/companyname/:name', (req, res, next) => {
     const { name } = req.params;
     Company.findOne({ name: name })
     .then(company => {
@@ -189,8 +201,10 @@ server.post('/customers', (req, res, next) => {
         });
 });
 
-server.put('/customers', (req, res) => {
-    Customer.findByIdAndUpdate(req.params.id, (err, post) => {
+server.put('/customers/id/:id', (req, res) => {
+    const { id } = req.params;
+    let updatedCustomer = req.body;
+    Customer.findByIdAndUpdate(id, updatedCustomer, (err, post) => {
         if(err) {res.send(500, err);}
         res.json(200, {'updated': true}); 
     });

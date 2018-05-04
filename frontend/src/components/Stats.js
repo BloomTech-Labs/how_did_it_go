@@ -2,12 +2,12 @@ import React, {Component} from 'react';
 import axios from 'axios';
 
 const URL = "http://localhost:5000/";
-let companyId = '5ae786b9740f794d9c2e8488'; // testing purposes
+let companyName = "Bubba's Road House"; // testing purposes
 class Stats extends Component {
   constructor() {
     super();
     this.state = {
-      companyId: companyId,
+      companyId: '',
       companyName: '',
       data: [],
       invitationsSent: 0,
@@ -20,16 +20,24 @@ class Stats extends Component {
     // find the company's name -- needs to be linked with sign up/sign in data
     // use company name to get list of customers
         // axios request to get list of affiliated customers
-    //axios.get(URL + 'customers/company/' + this.state.companyName)
-    // axios.get(URL + 'customers/company/' + '5ae786b9740f794d9c2e8488')
-    //   .then(response => {
-    //     this.setState({ data: response.data});
-    //     this.setState({ invitationsSent: response.data.length });
-    //     this.updateClicks();
-    //   })
-    //   .catch(error => {
-    //     console.log(error.message);
-    //   });  
+    //axios.get(URL + 'customers/companyname/' + this.state.companyName)
+    axios.get(URL + 'companies/name/' + companyName)
+      .then(response => {
+        const companyId = response.data[0]._id;
+        axios.get(URL + 'customers/companyid/' + companyId)
+        .then(response => {
+          this.setState({ data: response.data});
+          this.setState({ invitationsSent: response.data.length });
+          this.updateClicks();
+        })
+        .catch(error => {
+          console.log(error.message);
+        })
+      })
+      .catch(error => {
+        console.log(error);
+      });
+ 
   
   }
   

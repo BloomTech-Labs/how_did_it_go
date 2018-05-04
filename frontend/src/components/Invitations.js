@@ -4,6 +4,7 @@ const URL = 'http://localhost:5000/';
 
 let companyId;
 let reviewOption;
+let tel;
 
 class Invitations extends Component {
   constructor() {
@@ -19,7 +20,7 @@ class Invitations extends Component {
   componentDidMount() {
     companyId = '5ae786b9740f794d9c2e8488'; // testing purposes
     reviewOption = 'test'; // testing purposes
-    
+    tel = '7032001338'; //testing purposes 
   }
 
   handleInputChange = (e) => {
@@ -30,53 +31,87 @@ class Invitations extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const tel = e.target.phoneNumber.value;
+    tel = e.target.phoneNumber.value;
     
     // create a customer object with inputted data to send to customer API endpoint
     const customer = {
       firstName : e.target.firstName.value,
       lastName: e.target.lastName.value,
       phoneNumber: e.target.phoneNumber.value,
-      requestSent : {
+      requestSent : [{
         affiliatedCompanyId: companyId,
         reviewPlatformSent: reviewOption,
         clicked: false,
         reviewScore: '0',
-      }
+      },]
     };
-    //TODO: add new data to existing customer if she already exists in DB
-    // details...
-    // get customer data from input
-    // get request for customer by phone number
-    // if != exist, POST to db
-    // if exists, append new company data to customer object and PUT to db
-    // axios.get(URL + 'customers/')
-    //   .then(response => {
-    //     console.log(response.data);
-    //   })
-    //   .catch(error => {
-    //     console.log({ error });
-    //   });
+
+    // check DB to see if user already exists
+    axios.get(URL + 'customers/phone/' + tel)
+      .then(response => {
+        // check if user exists
+        if (response.data) { 
+          if (customer.firstName !== response.data.firstName || customer.lastName !== response.data.lastName) { // someone else is using this phone number already
+            alert("Sorry, that phone number is already in use!");
+            //this user exists in the db already, can be added to
+          } else {
+            console.log(response.data.requestSent[0].affiliatedCompanyId);
+            //this user exists in the db for this company
+            if (response.data.requestSent[0].affiliatedCompanyId === companyId) {
+              alert('this is a repeat customer, just send them a text again');
+            // this user exists in the db but not for this company, PUT request with updated requestSend data
+            } else { 
+              alert('this is a new customer, save new company data to end of requestSent and PUT to DB');
+              const updatedCustomer = {
+                firstName : customer.firstName,
+                lastName: customer.lastName,
+                phoneNumber: customer.phoneNumber,
+                requestSent : [ ...response.data.requestSent,
+                  {
+                    affiliatedCompanyId: customer.requestSent[0].affiliatedCompanyId,
+                    reviewPlatformSent: customer.requestSent[0].reviewPlatformSent,
+                    clicked: false,
+                    reviewScore: '0',
+                  },
+                ]
+              };
+              console.log(updatedCustomer);
+              // PUT request with updated customer data
+              axios.put(URL + 'customers/id/' + response.data._id, updatedCustomer)
+                .then(response => {
+                  console.log("Updated the customer");
+                })
+                .catch(error => {
+                  console.log("Error:", error.message);
+                })
+            }
+          }
+        } else { // brand new customer, not in DB
+          // save customer data to the db
+          axios.post(URL + 'customers/', customer)
+          .then(response => {
+            console.log("successfully added");
+            // activate the text to go to the customer
+            axios.post(URL + 'sms/' + tel)
+            .then(response => {
+              console.log("Sent!");
+            })
+            .catch(error => {
+              console.log("error:", error);
+            });
+          })
+          .catch(error => {
+            console.log("error:", error);
+          });
+        }
+
+      })
+      .catch(error => {
+        console.log({ error });
+      });
 
 
     // save customer data to the DB
-    // axios.post(URL + 'customers/', customer)
-    //   .then(response => {
-    //     console.log("successfully added");
-        
-    //     // activate the text to go to the customer
-    //     axios.post(URL + 'sms/' + tel)
-    //     .then(response => {
-    //       console.log("Sent!");
-    //     })
-    //     .catch(error => {
-    //       console.log("error:", error);
-    //     });
-
-    //   })
-    //   .catch(error => {
-    //     console.log("error:", error);
-    //   });
 
 
     
