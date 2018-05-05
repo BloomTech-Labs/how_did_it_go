@@ -20,7 +20,6 @@ const customerSchema = new Schema({
         {
             affiliatedCompanyId: {
                 type: String,
-                unique: true,
             },
             reviewPlatformSent: {
                 type: String, 

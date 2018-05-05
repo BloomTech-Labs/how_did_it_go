@@ -98,14 +98,7 @@ server.get('/companies/id/:id', (req, res, next) => {
 
 
 server.post('/companies', (req, res, next) => {
-    let newCompany = new Company();
-    newCompany.name             = req.body.name;
-    newCompany.address          = req.body.address;
-    newCompany.contactFirstName = req.body.contactFirstName;
-    newCompany.contactLastName  = req.body.contactLastName;
-    newCompany.contactEmail     = req.body.contactEmail;
-    newCompany.paymentIsCurrent = req.body.paymentIsCurrent;
-
+    let newCompany = new Company(req.body);
     newCompany.save()
         .then(savedCompany => {
             res.status(200).json("Successfully Added");
@@ -188,12 +181,7 @@ server.get('/customers/companyname/:name', (req, res, next) => {
 });
 
 server.post('/customers', (req, res, next) => {
-    let newCustomer = new Customer();
-    newCustomer.firstName   = req.body.firstName;
-    newCustomer.lastName    = req.body.lastName;
-    newCustomer.phoneNumber = req.body.phoneNumber;
-    newCustomer.requestSent = req.body.requestSent;
-
+    let newCustomer = new Customer(req.body);
     newCustomer.save()
         .then(savedCustomer => {
             res.status(200).json("Customer added!");
@@ -224,11 +212,12 @@ server.delete('/customers', (req, res) => {
 // SMS endpoint
 server.post('/sms/:mobile', (req, res) => {
     const { mobile } = req.params;
+    const { messageContent } = req.body;
     const twilio = require('twilio');
     const client = new twilio(accountSid, authToken);
 
     client.messages.create({
-        body: 'Test text message text (to be replaced by db data',
+        body: messageContent,
         to: mobile ,  // Text this number
         from: twilioNumber //ENV VARIABLE
     })
@@ -237,7 +226,7 @@ server.post('/sms/:mobile', (req, res) => {
         res.status(200).json(message.sid);
     })
     .catch(error => {
-        res.status(400).json({ error });
+        res.status(400).json({ error, messageContent });
     });
 });
 
