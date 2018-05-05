@@ -6,18 +6,17 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
 const { secret } = require('./config');
-const port = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 
 const Company = require('./companies/companiesSchema.js');
 const Customer = require('./customers/customerSchema.js');
+// const User = require('./users/userSchema.js');
+
+
+
 const accountSid = process.env.ACCOUNTSID; // Your Account SID from www.twilio.com/console
 const authToken = process.env.AUTHTOKEN;   // Your Auth Token from www.twilio.com/console
 const twilioNumber = process.env.TWILIOPHONENUMBER;
-const User = require('./users/userSchema.js');
-
-
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017');
     
 const corsOptions = {
     credentials: true
@@ -25,14 +24,14 @@ const corsOptions = {
 
 const server = express();
 server.use(bodyParser.json());
-server.use(cors(corsOptions));
+server.use(cors());
+
 
 // validateToken middleware will work on all routes, but exempt '/signin' and 'signup'
-server.use((req, res, next) => {
-    if (req.originalUrl === '/signin' || req.originalUrl === '/signup') return next();
-    return validateToken(req, res, next);
-});
-
+// server.use((req, res, next) => {
+//     if (req.originalUrl === '/signin' || req.originalUrl === '/signup') return next();
+//     return validateToken(req, res, next);
+// });
 
 //***************************Helper functions*************************************************
 const getTokenForUser = userObject => {
@@ -63,6 +62,7 @@ const validateToken = (req, res, next) => {
 };
 
 
+
 // ****************************************API Endpoints here***********************************
 // *****************************************COMPANY ENDPOINTS***********************************
 server.get('/companies', (req, res, next) => {
@@ -71,36 +71,50 @@ server.get('/companies', (req, res, next) => {
             res.status(200).json(companies);
         })
         .catch(error => {
-            res.status(400).json('Error: ', error);
+            res.status(400).json({ error });
         });
 });
-server.get('/companies/:name', (req, res, next) => {
+server.get('/companies/name/:name', (req, res, next) => {
     const { name } = req.params;
     Company.find({ name: name })
         .then(companies => {
             res.status(200).json(companies);
         })
         .catch(error => {
-            res.status(400).json('Error: ', error);
+            res.status(400).json({ error });
         });
 });
 
-server.post('/companies', (req, res, next) => {
-    let newCompany = new Company();
-    newCompany.name             = req.body.name;
-    newCompany.address          = req.body.address;
-    newCompany.contactFirstName = req.body.contactFirstName;
-    newCompany.contactLastName  = req.body.contactLastName;
-    newCompany.contactEmail     = req.body.contactEmail;
-    newCompany.paymentIsCurrent = req.body.paymentIsCurrent;
+server.get('/companies/id/:id', (req, res, next) => {
+    const { id } = req.params;
+    Company.findOne({ _id: id })
+        .then(companies => {
+            res.status(200).json(companies);
+        })
+        .catch(error => {
+            res.status(400).json({ error });
+        });
+});
 
+
+server.post('/companies', (req, res, next) => {
+    let newCompany = new Company(req.body);
     newCompany.save()
         .then(savedCompany => {
             res.status(200).json("Successfully Added");
         })
         .catch(error => {
-            res.json(error.message);
+            res.status(400).json({ error });
         });
+});
+
+server.put('/companies/id/:id', (req, res) => {
+    const { id } = req.params;
+    updatedCompany = req.body;
+    Company.findByIdAndUpdate(id, updatedCompany,  (err, post) => {
+        if(err) {res.send(500, err);}
+        res.json(200, {'updated': true}); 
+    });
 });
 
 server.delete('/companies', (req, res) => {
@@ -110,33 +124,77 @@ server.delete('/companies', (req, res) => {
     });
 });
 
-server.put('/companies', (req, res) => {
-    Company.findByIdAndUpdate(req.params.id, (err, post) => {
-        if(err) {res.send(500, err);}
-        res.json(200, {'updated': true}); 
-    });
-});
 
-// CUSTOMERS ENDPOINTS
+// ********************************CUSTOMERS ENDPOINTS******************************************************
 server.get('/customers', (req, res, next) => {
     Customer.find({})
         .then(customers => {
             res.status(200).json(customers);
         })
         .catch(error => {
-            res.status(400).json('Error: ', error);
+            res.status(400).json({ error });
         });
 });
 
-server.delete('/customers', (req, res) => {
-    Customer.findByIdAndRemove(req.params.id, (err, post) => {
-        if(err) {res.send(500, err);}
-        res.json(200, {'deleted': true});
+// Get Customers by Phone Number
+server.get('/customers/phone/:number', (req, res, next) => {
+    const { number } = req.params;
+    Customer.findOne({ "phoneNumber": number })
+    .then(customers => {
+        res.status(200).json(customers);
+    })
+    .catch(error => {
+        res.status(400).json({ error });
     });
 });
 
-server.put('/customers', (req, res) => {
-    Customer.findByIdAndUpdate(req.params.id, (err, post) => {
+// Get Customers by Company Id
+server.get('/customers/companyid/:id', (req, res, next) => {
+    const { id } = req.params;
+    Customer.find({ "requestSent.affiliatedCompanyId": id })
+    .then(customers => {
+        res.status(200).json(customers);
+    })
+    .catch(error => {
+        res.status(400).json({ error });
+    });
+});
+
+// Get Customers by Company Name
+server.get('/customers/companyname/:name', (req, res, next) => {
+    const { name } = req.params;
+    Company.findOne({ name: name })
+    .then(company => {
+        const id = company._id;
+        Customer.find({ "requestSent.affiliatedCompanyId": id })
+        .then(customers => {
+            res.status(200).json(customers);
+        })
+        .catch(error => {
+            res.status(400).json({ error });
+        });
+        
+    })
+    .catch(error => {
+        res.status(400).json({ error });
+    });
+});
+
+server.post('/customers', (req, res, next) => {
+    let newCustomer = new Customer(req.body);
+    newCustomer.save()
+        .then(savedCustomer => {
+            res.status(200).json("Customer added!");
+        })
+        .catch(error => {
+            res.status(400).json({ error });
+        });
+});
+
+server.put('/customers/id/:id', (req, res) => {
+    const { id } = req.params;
+    let updatedCustomer = req.body;
+    Customer.findByIdAndUpdate(id, updatedCustomer, (err, post) => {
         if(err) {res.send(500, err);}
         res.json(200, {'updated': true}); 
     });
@@ -149,76 +207,17 @@ server.delete('/customers', (req, res) => {
     });
 });
 
-// Get Customers by Company Id
-server.get('/customers/:id', (req, res, next) => {
-    const { id } = req.params;
-    Customer.find({ "requestSent.affiliatedCompanyId": id })
-        .then(customers => {
-            res.status(200).json(customers);
-        })
-        .catch(error => {
-            res.status(400).json('Error: ', error);
-        });
-});
 
-// Get Customers by Company Name
-server.get('/customers/company/:name', (req, res, next) => {
-    const { name } = req.params;
-    Company.findOne({ name: name })
-        .then(company => {
-            const id = company._id;
-            Customer.find({ "requestSent.affiliatedCompanyId": id })
-            .then(customers => {
-                res.status(200).json(customers);
-            })
-            .catch(error => {
-                res.status(400).json('Error: ', error);
-            });
-
-        })
-        .catch(error => {
-            res.status(400).json('Error: ', error);
-        });
-});
-
-
-server.post('/customers', (req, res, next) => {
-    let newCustomer = new Customer();
-    newCustomer.firstName   = req.body.firstName;
-    newCustomer.lastName    = req.body.lastName;
-    newCustomer.phoneNumber = req.body.phoneNumber;
-    newCustomer.requestSent = req.body.requestSent;
-
-    newCustomer.save()
-        .then(savedCustomer => {
-            res.status(200).json("Customer added!");
-        })
-        .catch(error => {
-            res.json(error.message);
-        });
-});
-
-
-server.delete('/customers', (req, res) => {
-    Customer.findByIdAndRemove(req.params.id, (err, post) => {
-        if(err) {res.send(500, err);}
-        res.json(200, {'deleted': true});
-    });
-});
-
+// ***********************************SMS EndPoints***********************************************
 // SMS endpoint
 server.post('/sms/:mobile', (req, res) => {
     const { mobile } = req.params;
+    const { messageContent } = req.body;
     const twilio = require('twilio');
     const client = new twilio(accountSid, authToken);
 
-
-// ***********************************Users EndPoints***********************************************
-// ***********************************Route controllers********************************************
-
-
     client.messages.create({
-        body: 'Test text message text (to be replaced by db data',
+        body: messageContent,
         to: mobile ,  // Text this number
         from: twilioNumber //ENV VARIABLE
     })
@@ -227,39 +226,37 @@ server.post('/sms/:mobile', (req, res) => {
         res.status(200).json(message.sid);
     })
     .catch(error => {
-        res.status(400).json(error);
+        res.status(400).json({ error, messageContent });
     });
 });
-// **************Users EndPoints***********************************************
-// ****************************************************************************
 
 //************Helper functions*************************************************
-const getTokenForUser = userObject => {
-    // create 10h token
-    return jwt.sign(userObject, secret, { expiresIn: 10 * 60 * 60 });
-  };
+// const getTokenForUser = userObject => {
+//     // create 10h token
+//     return jwt.sign(userObject, secret, { expiresIn: 10 * 60 * 60 });
+//   };
   
-const validateToken = (req, res, next) => {
-    // take the token up to the server and verify it
-    // if no token found in the header, get 422
-    // if token not valid, user will be asked to login
-    const token = req.headers.authorization;
-    if (!token) {
-        res.status(422)
-            .json({ error: 'No authorization token found on Authorization header' });
-            return;
-    }
-    jwt.verify(token, secret, (authError, decoded) => {
-        if (authError) {
-            res.status(403)
-                .json({ error: 'Token invalid, please login', message: authError });
-                return;
-        }
-        // decode jwt and set on the req.decoded, pass to next middleware
-        req.decoded = decoded;
-        next();
-    });
-};
+// const validateToken = (req, res, next) => {
+//     // take the token up to the server and verify it
+//     // if no token found in the header, get 422
+//     // if token not valid, user will be asked to login
+//     const token = req.headers.authorization;
+//     if (!token) {
+//         res.status(422)
+//             .json({ error: 'No authorization token found on Authorization header' });
+//             return;
+//     }
+//     jwt.verify(token, secret, (authError, decoded) => {
+//         if (authError) {
+//             res.status(403)
+//                 .json({ error: 'Token invalid, please login', message: authError });
+//                 return;
+//         }
+//         // decode jwt and set on the req.decoded, pass to next middleware
+//         req.decoded = decoded;
+//         next();
+//     });
+// };
 
 // *******************Route controllers********************************************
 
@@ -313,12 +310,7 @@ server.post('/signin', login);
 
 server.get('/users', getUsers);
 
-
-server.listen(port, (req, res) => {
-    console.log(`server listening on port ${port}`);
-});
-
-
+// ******************* MONGOOSE CONNECTION********************************
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017')
@@ -328,5 +320,5 @@ mongoose.connect('mongodb://localhost:27017')
         });
     })
     .catch(error => {
-        console.log('Error thrown: ', error);
+        console.log({ error });
     });

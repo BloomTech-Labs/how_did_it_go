@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +17,7 @@
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
-    "twilio": "^3.16.0"
+    "twilio": "^3.16.0",
     "jsonwebtoken": "^8.2.1",
     "mongoose": "^5.0.16"
   }

@@ -2,30 +2,40 @@ import React, {Component} from 'react';
 import axios from 'axios';
 
 const URL = "http://localhost:5000/";
-
+let companyName = "Second Company"; // testing purposes
 class Stats extends Component {
   constructor() {
     super();
     this.state = {
-      companyName: 'TestCo1',
+      companyId: '',
+      companyName: '',
       data: [],
-      invitationsSent: '',
+      invitationsSent: 0,
       totalClicks: 0,
       details: false
     };
   }
 
   componentDidMount() {
-    axios.get(URL + 'customers/company/' + this.state.companyName)
+    // find the company's name -- needs to be linked with sign up/sign in data
+    axios.get(URL + 'companies/name/' + companyName)
       .then(response => {
-        this.setState({ data: response.data});
-        this.setState({ invitationsSent: response.data.length });
-        this.updateClicks();
+        const companyId = response.data[0]._id;
+        axios.get(URL + 'customers/companyid/' + companyId)
+        .then(response => {
+          this.setState({ data: response.data});
+          this.setState({ invitationsSent: response.data.length });
+          this.updateClicks();
+        })
+        .catch(error => {
+          console.log(error.message);
+        })
       })
       .catch(error => {
-        console.log(error.message);
+        console.log(error);
       });
-      
+ 
+  
   }
   
   updateClicks() {
