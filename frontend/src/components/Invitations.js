@@ -14,6 +14,10 @@ class Invitations extends Component {
       firstName: '',
       lastName: '',
       phoneNumber: '',
+      managerName: '',
+      businessName: '',
+      message: '',
+      reviewSite: '',
     };
   }
 
@@ -23,7 +27,15 @@ class Invitations extends Component {
 
     axios.get(URL + 'companies/id/' + companyId)
       .then(response => {
-        messageToSend = { messageContent: response.data.defaultMessage };
+        const data = response.data;
+        this.setState({
+          managerName: data.contactFirstName + ' ' + data.contactLastName,
+          businessName: data.name,
+          message: data.defaultMessage,
+          reviewSite: data.reviewSite, 
+        })
+
+        messageToSend = { messageContent: 'Hello, this is ' + this.state.managerName + ' from ' + this.state.businessName + '. ' + this.state.message + this.state.reviewSite + '. Thank you!' };
         console.log(messageToSend);
       })
       .catch(error => {

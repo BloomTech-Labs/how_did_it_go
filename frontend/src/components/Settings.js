@@ -27,9 +27,12 @@ class Settings extends Component {
       .then(response => {
         console.log(response.data.defaultMessage);
         company = response.data;
-        defaultMessage = company.defaultMessage;
         this.setState({
-          message: defaultMessage
+          message: company.defaultMessage,
+          managerFirstName: company.contactFirstName,
+          managerLastName: company.contactLastName,
+          businessName: company.name,
+          reviewSite: company.reviewSite,
         });
       })
       .catch(error => {
@@ -51,8 +54,10 @@ class Settings extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const newMessage = 'Hello, this is ' + this.state.managerFirstName + ' ' + this.state.managerLastName + ' from ' + this.state.businessName + '. ' + this.state.message + ' ' + this.state.reviewSite + ' Thank You!';
-    company.defaultMessage = newMessage;
+    company.defaultMessage = this.state.message;
+    company.contactFirstName = this.state.managerFirstName;
+    company.contactLastName = this.state.managerLastName;
+    company.reviewSite =  this.state.reviewSite;
     axios.put(URL + 'companies/id/' + companyId, company)
       .then(response => {
         console.log("updated the company");
@@ -70,21 +75,14 @@ class Settings extends Component {
 
       <div className='header'>Here is Our Basic Greeting. Feel Free To Change It However You'd Like!</div>
       <div className='sampleMessage' id='sampleMessage'>
-        Hello, this is  
-        <span>{this.state.managerFirstName || this.state.managerLastName ? ' ' + this.state.managerFirstName + ' ' + this.state.managerLastName + ' ' :<span className='filler'> Your Name Here </span>}</span>
-        from  
-        <span>{this.state.businessName ? ' ' + this.state.businessName : <span className='filler'> Your Business' Name Here </span>}</span>
-        . 
-        <span>{' ' + this.state.message + ' '}</span>
-        <span>{this.state.reviewSite ? this.state.reviewSite + ' ' : <span className='filler'> Your Review Site Choice Here </span>}</span>
-         Thank You!
+        Hello. This is {this.state.managerFirstName} {this.state.managerLastName} from {this.state.businessName}. {this.state.message} {this.state.reviewSite}. Thank you!
       </div>
       
       <form className='form' id='settingsForm'>
         {/* TODO: once we have sign-in and auth these lines should be eliminated and be brought up from db */}
-        <div><input className='form--item' type='text' placeholder='Manager First Name' name='managerFirstName' value={this.state.managerFirstName} onChange={this.handleInputChange} /></div>
-        <div><input className='form--item' type='text' placeholder='Manager Last Name' name='managerLastName' value={this.state.managerLastName} onChange={this.handleInputChange} /></div>
-        <div><input className='form--item' type='text' placeholder ='Business Name' name='businessName' value={this.state.businessName} onChange={this.handleInputChange} /></div>
+        <div><input className='form--item' type='text' name='managerFirstName' value={this.state.managerFirstName} onChange={this.handleInputChange} /></div>
+        <div><input className='form--item' type='text' name='managerLastName' value={this.state.managerLastName} onChange={this.handleInputChange} /></div>
+        <div><input className='form--item' type='text' name='businessName' value={this.state.businessName} onChange={this.handleInputChange} /></div>
 
         {/* creates a dropdown menu of possible review sites to choose from */}
         <select className='dropdownList' id ='selectReviewSite' name='reviewSite' onChange={this.handleInputChange}>
