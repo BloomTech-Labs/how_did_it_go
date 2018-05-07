@@ -1,63 +1,61 @@
 require('dotenv').config();
+
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
+const session = require('express-session');
 
-const { secret } = require('./config');
 const PORT = process.env.PORT || 5000;
 
 const Company = require('./companies/companiesSchema.js');
 const Customer = require('./customers/customerSchema.js');
-// const User = require('./users/userSchema.js');
-
+const User = require('./users/userSchema.js');
 
 
 const accountSid = process.env.ACCOUNTSID; // Your Account SID from www.twilio.com/console
 const authToken = process.env.AUTHTOKEN;   // Your Auth Token from www.twilio.com/console
 const twilioNumber = process.env.TWILIOPHONENUMBER;
     
-const corsOptions = {
-    credentials: true
-};
 
 const server = express();
 server.use(bodyParser.json());
 server.use(cors());
+server.use(
+    session({
+    secret: process.env.SESSION_TOKEN,
+    resave: true,
+    saveUninitialized: true,
+    }),
+);
 
+/**PLEASE DON'T DELETE THE COMMAND OUT CODE BELOW, IT IS THE AUTH MIDDLEWARE, WILL USE AFTER WE TEST ALL ENDPOINTS */
+//validateUser middleware will work on all routes, but exempt '/signin' and 'signup'
 
-// validateToken middleware will work on all routes, but exempt '/signin' and 'signup'
 // server.use((req, res, next) => {
 //     if (req.originalUrl === '/signin' || req.originalUrl === '/signup') return next();
-//     return validateToken(req, res, next);
-// });
+//     return validateUser(req, res, next);
+// });  
+
 
 //***************************Helper functions*************************************************
-const getTokenForUser = userObject => {
-    // create 10h token
-    return jwt.sign(userObject, secret, { expiresIn: 10 * 60 * 60 });
-  };
-  
-const validateToken = (req, res, next) => {
-    // take the token up to the server and verify it
-    // if no token found in the header, get 422
-    // if token not valid, user will be asked to login
-    const token = req.headers.authorization;
-    if (!token) {
-        res.status(422)
-            .json({ error: 'No authorization token found on Authorization header' });
-            return;
+// Here is the middleware to validate if user logged in  
+const validateUser = (req, res, next) => {
+    const { username } = req.session;
+    if (!username) {
+        res.json({ error: "User is not logged in" });
+        return;
     }
-    jwt.verify(token, secret, (authError, decoded) => {
-        if (authError) {
-            res.status(403)
-                .json({ error: 'Token invalid, please login', message: authError });
-                return;
+
+    User.findOne({ username }, (err, user) => {
+        if (err) {
+            res.json(err);
+        } else if (!user) {
+            res.json({ error: "User does not exist!"});
+        } else {
+            req.user = user;
+            next();
         }
-        // decode jwt and set on the req.decoded, pass to next middleware
-        req.decoded = decoded;
-        next();
     });
 };
 
@@ -230,38 +228,10 @@ server.post('/sms/:mobile', (req, res) => {
     });
 });
 
-//************Helper functions*************************************************
-// const getTokenForUser = userObject => {
-//     // create 10h token
-//     return jwt.sign(userObject, secret, { expiresIn: 10 * 60 * 60 });
-//   };
-  
-// const validateToken = (req, res, next) => {
-//     // take the token up to the server and verify it
-//     // if no token found in the header, get 422
-//     // if token not valid, user will be asked to login
-//     const token = req.headers.authorization;
-//     if (!token) {
-//         res.status(422)
-//             .json({ error: 'No authorization token found on Authorization header' });
-//             return;
-//     }
-//     jwt.verify(token, secret, (authError, decoded) => {
-//         if (authError) {
-//             res.status(403)
-//                 .json({ error: 'Token invalid, please login', message: authError });
-//                 return;
-//         }
-//         // decode jwt and set on the req.decoded, pass to next middleware
-//         req.decoded = decoded;
-//         next();
-//     });
-// };
-
 // *******************Route controllers********************************************
 
 const getUsers = (req, res) => {
-    // This handler will not work until a user has sent up a valid JWT
+    
     User.find({}, (err, users) => {
         if (err) return res.send(err);
         res.send(users);
@@ -285,11 +255,46 @@ const login = (req, res) => {
           return;
         }
         if (hashMatch) {
-          const token = getTokenForUser({ username: user.username });
-          res.json({ token });
+          req.session.username = username;
+          req.user = user;
+          res.json({ success: true });
         }
       });
     });
+};
+
+const signout = (req, res) => {
+    if (!req.session.username) {
+        res.json({ error: "User is not logged in!"});
+        return;
+    }
+    req.session.username = null;
+    res.json(req.session);
+};
+
+const updateUser = (req, res) => {
+    const id = req.params.id;
+    const userInfo = req.body;
+
+    User.findByIdAndUpdate(id, userInfo)
+        .then(user => {
+            res.status(200).json({ message: "User updated successfully"});
+        })
+        .catch(err => {
+            res.status(500).json({ message: "Server Error", err});
+        });
+};
+
+const deleteUser = (req, res) => {
+    const id = req.params.id;
+
+    User.findByIdAndRemove(id)
+        .then(user => {
+            res.status(200).json({ message: "User removed successfully"});
+        })
+        .catch(err => {
+            res.status(500).json({ message: "Server Error", err});
+        });
 };
 
 // ****************************************Users Routes*********************************************************
@@ -307,8 +312,17 @@ server.post('/signup', (req, res) => {
 });
 
 server.post('/signin', login);
-
+server.post('/signout', signout);
 server.get('/users', getUsers);
+server.put('/users/:id', updateUser);
+server.delete('/users/:id', deleteUser);
+
+
+
+// server.listen(port, (req, res) => {
+//     console.log(`server listening on port ${port}`);
+// });
+
 
 // ******************* MONGOOSE CONNECTION********************************
 
@@ -322,3 +336,4 @@ mongoose.connect('mongodb://localhost:27017')
     .catch(error => {
         console.log({ error });
     });
+
