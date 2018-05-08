@@ -3,7 +3,7 @@
 	border-block-end: .1em solid #BDBDBD;
 }
 .wideLinks {
-	display: inline-block;
+	display: block;
 }
 .narrowLinks {
 	display: none;
@@ -17,23 +17,25 @@ a {
 a:hover {
 	color: #009688;
 }
+
 @media screen and (max-width: 600px) {
+	.nav {
+		border-block-end: none;
+		position: relative;
+	}
 	.wideLinks {display: none;}
+	.narrowLinks {display: inline-table;}
 	.bars {
 	  float: right;
 	  display: block;
-	  position: absolute;
 	}
-	.navNarrowScreen--links__hidden {
-		display: none;
-	}
-	.navNarrowScreen--links__visible {
-		display: block;
-		float: left;
-	}
+	.navNarrowScreen--links__hidden {display: none;}
+	.navNarrowScreen--links__visible {display: inline-table;}
 	.navNarrowScreen__item {
 		display: block;
-	}
+		float: left;
+		clear: left;
+	}	
   }
   /* @media screen and (max-width: 600px) {
 	.links.responsive {position: relative;}

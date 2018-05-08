@@ -32,7 +32,7 @@ class Navigation extends React.Component {
           <Link to='/team' className='nav--item'>Team</Link>
         </div>
 
-        <div>
+        <div className = 'narrowLinks'>
           <i className=' fa fa-bars bars' onClick = {() => this.itemsToggle()} />
           <div className = {this.state.visible ? 'navNarrowScreen--links__visible' : 'navNarrowScreen--links__hidden'}>
             <Link to='' className = 'navNarrowScreen__item'>Home</Link>
