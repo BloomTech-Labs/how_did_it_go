@@ -18,11 +18,17 @@ class Navigation extends React.Component {
     const visible = !this.state.visible;
     this.setState({ visible });
   }
+
+  hideNav = () => {
+    if (this.state.visible) {
+      this.setState({ visible: false });
+    }
+  }
   
 
   render() {
     return (
-      <div className='nav'>
+      <div className='nav' onClick={() => this.hideNav()}>
 
         <div id = 'navWideScreen' className='wideLinks'>
           <Link to=''>Home</Link>

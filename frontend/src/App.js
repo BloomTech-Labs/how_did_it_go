@@ -13,11 +13,13 @@ import Stats from './components/Stats';
 import Settings from './components/Settings';
 import Team from './components/Team';
 
+import logo from './HIGTextLogoCropped.png';
 
 
 const App = () => {
   return (
     <div>
+      <img src={logo} className='logo' />
       <Navigation />
       <Route path='/' exact     component={Home}  />
       <Route path='/invitations'component={Invitations} />

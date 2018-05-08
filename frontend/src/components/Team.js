@@ -15,20 +15,6 @@ class Team extends Component {
                     responsibilities: 'Full Stack Developer',
                 },
                 {
-                    name: 'Alif',
-                    github: 'https://github.com/sendsent',
-                    linkedin: '',
-                    personalSite: '',//'http://www.3os.me, http://www.imtryingnow.com, eehttp://www.kickmeapp.com',
-                    responsibilities: 'Full Stack Developer',
-                },
-                {
-                    name: 'Vinnie',
-                    github: 'https://github.com/VinnieScalco',
-                    linkedin: 'https://www.linkedin.com/in/vinnie-scalco/',
-                    personalSite: '',
-                    responsibilities: 'Full Stack Developer',
-                },
-                {
                     name: 'Xiaoping',
                     github: 'https://github.com/leelali',
                     linkedin: 'https://www.linkedin.com/in/xiaoping-li-21405594/',
