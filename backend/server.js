@@ -3,21 +3,15 @@ require('dotenv').config();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const express = require('express');
-const mongoose = require('mongoose');
+const db = require('/database/dbConfiguration.js');
 const session = require('express-session');
 
 const PORT = process.env.PORT || 5000;
-
-const Company = require('./companies/companiesSchema.js');
-const Customer = require('./customers/customerSchema.js');
-const User = require('./users/userSchema.js');
-
 
 const accountSid = process.env.ACCOUNTSID; // Your Account SID from www.twilio.com/console
 const authToken = process.env.AUTHTOKEN;   // Your Auth Token from www.twilio.com/console
 const twilioNumber = process.env.TWILIOPHONENUMBER;
     
-
 const server = express();
 server.use(bodyParser.json());
 server.use(cors());
@@ -35,10 +29,12 @@ server.use(
 // server.use((req, res, next) => {
 //     if (req.originalUrl === '/signin' || req.originalUrl === '/signup') return next();
 //     return validateUser(req, res, next);
-// });  
+// });
 
 
-//***************************Helper functions*************************************************
+
+
+//*************************** Middlewares *************************************************
 // Here is the middleware to validate if user logged in  
 const validateUser = (req, res, next) => {
     const { username } = req.session;
@@ -59,6 +55,23 @@ const validateUser = (req, res, next) => {
     });
 };
 
+const hashPassword = (req, res, next) => {
+    const {password } = req.body;
+    if (!password) {
+        res.json({ error: "Please provide password" });
+        return;
+    }
+
+    bcrypt
+        .hash(password, 11)
+        .then(hashedPW => {
+            req.password = hashedPW;
+            next();
+        })
+        .catch(error => {
+            res.json(error);
+        });
+};
 
 
 // ****************************************API Endpoints here***********************************
@@ -319,21 +332,10 @@ server.delete('/users/:id', deleteUser);
 
 
 
-// server.listen(port, (req, res) => {
-//     console.log(`server listening on port ${port}`);
-// });
-
-
 // ******************* MONGOOSE CONNECTION********************************
 
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017')
-    .then(connection => {
-        server.listen(`${PORT}`, () => {
-            console.log(`Listening on port ${PORT}`);
-        });
-    })
-    .catch(error => {
-        console.log({ error });
-    });
+server.listen(PORT, err => {
+    if (err) console.log(err);
+    console.log(`Server running on ${PORT}`); 
+});
 
