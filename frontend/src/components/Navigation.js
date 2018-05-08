@@ -25,21 +25,21 @@ class Navigation extends React.Component {
       <div className='nav'>
 
         <div id = 'navWideScreen' className='wideLinks'>
-          <Link to='' className='nav--item'>Home</Link>
-          <Link to='/invitations' className='nav--item'>Invitations</Link>
-          <Link to='/stats' className='nav--item'>Stats</Link>
-          <Link to='/settings' className='nav--item'>Settings</Link>
-          <Link to='/team' className='nav--item'>Team</Link>
+          <Link to=''>Home</Link>
+          <Link to='/invitations'>Invitations</Link>
+          <Link to='/stats'>Stats</Link>
+          <Link to='/settings'>Settings</Link>
+          <Link to='/team'>Team</Link>
         </div>
 
         <div className = 'narrowLinks'>
           <i className=' fa fa-bars bars' onClick = {() => this.itemsToggle()} />
-          <div className = {this.state.visible ? 'navNarrowScreen--links__visible' : 'navNarrowScreen--links__hidden'}>
-            <Link to='' className = 'navNarrowScreen__item'>Home</Link>
-            <Link to='/invitations' className = 'navNarrowScreen__item'>Invitations</Link>
-            <Link to='/stats' className = 'navNarrowScreen__item'>Stats</Link>
-            <Link to='/settings' className = 'navNarrowScreen__item'>Settings</Link>
-            <Link to='/team' className = 'navNarrowScreen__item'>Team</Link>
+          <div className = {this.state.visible ? 'narrowLinks--visible' : 'narrowLinks--hidden'}>
+            <Link to='' className = 'narrowLinks__item'>Home</Link>
+            <Link to='/invitations' className = 'narrowLinks__item'>Invitations</Link>
+            <Link to='/stats' className = 'narrowLinks__item'>Stats</Link>
+            <Link to='/settings' className = 'narrowLinks__item'>Settings</Link>
+            <Link to='/team' className = 'narrowLinks__item'>Team</Link>
           </div>
         </div>
 

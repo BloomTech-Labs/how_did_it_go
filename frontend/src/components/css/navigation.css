@@ -21,32 +21,21 @@ a:hover {
 @media screen and (max-width: 600px) {
 	.nav {
 		border-block-end: none;
-		position: relative;
+		position: absolute;
+		right: 0%;
+		background-color: white;
 	}
 	.wideLinks {display: none;}
 	.narrowLinks {display: inline-table;}
 	.bars {
-	  float: right;
-	  display: block;
+		float: right;
+		display: block;
 	}
-	.navNarrowScreen--links__hidden {display: none;}
-	.navNarrowScreen--links__visible {display: inline-table;}
-	.navNarrowScreen__item {
+	.narrowLinks--hidden {display: none;}
+	.narrowLinks--visible {display: inline-table;}
+	.narrowLinks__item {
 		display: block;
 		float: left;
-		clear: left;
+		clear: both;
 	}	
   }
-  /* @media screen and (max-width: 600px) {
-	.links.responsive {position: relative;}
-	.links.responsive a.icon {
-	  position: absolute;
-	  right: 0;
-	  top: 0;
-	}
-	.links.responsive a {
-	  float: none;
-	  display: block;
-	  text-align: left;
-	}
-  } */
