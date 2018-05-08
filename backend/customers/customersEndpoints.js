@@ -45,6 +45,17 @@ customersRouter.get('phone/:phone', (req, res) => {
         });
 });
 
+customersRouter.get('companyId/:id', (req, res) => {
+    const { companyId } = req.params;
+    customers.getCustomerByCompanyId(companyId)
+        .then(customer => {
+            res.status(200).json(customer);
+        })
+        .catch(error => {
+            res.status(200).json(error);
+        });
+});
+
 customersRouter.put('id/:id', (req, res) => {
     const { id } = req.params;
     const customer = req.body;
@@ -67,3 +78,4 @@ customersRouter.delete('id/:id', (req, res) => {
             res.status(200).json(error);
         });
 });
+module.exports = customersRouter;

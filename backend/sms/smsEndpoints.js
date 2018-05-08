@@ -20,7 +20,6 @@ smsRouter.post('/:mobile', (req, res) => {
         from: twilioNumber //ENV VARIABLE
     })
     .then(message => {
-        console.log(message.sid);
         res.status(200).json(message.sid);
     })
     .catch(error => {
@@ -28,4 +27,4 @@ smsRouter.post('/:mobile', (req, res) => {
     });
 });
 
-module.exports = smsRouter();
+module.exports = smsRouter;

@@ -1,4 +1,4 @@
-const db = require('../database/dbConfig.js');
+const db = require('../database/dbConfiguration.js');
 
 module.exports = {
     get: () => {
@@ -11,6 +11,9 @@ module.exports = {
     getCustomerByPhoneNumber: (phoneNumber) => {
         return db('customers')
             .where('phoneNumber', phoneNumber);
+    },
+    getCustomerByCompanyId: (companyId) => {
+        // need to write this code, include invitation table access
     },
     insertCustomer: (customer) => {
         return db('customers')

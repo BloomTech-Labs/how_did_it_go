@@ -19,10 +19,6 @@
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "knex": "^0.14.6",
-<<<<<<< HEAD
-    "mongoose": "^5.0.16",
-=======
->>>>>>> dfedc9d237e9c5c648c164e8030e16e8e517ab0f
     "sqlite3": "^4.0.0",
     "twilio": "^3.16.0"
   }
