@@ -13,7 +13,7 @@ import Stats from './components/Stats';
 import Settings from './components/Settings';
 import Team from './components/Team';
 
-import logo from './HIGTextLogoCropped.png';
+import logo from './HIGTextLogoQMTransparent.png';
 
 
 const App = () => {
