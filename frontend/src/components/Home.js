@@ -35,7 +35,7 @@ class Home extends Component {
           <div>We'll also give you up-to-the-minute statistics to help you stay on top of your online presence.</div>
           <div>And just like that, you've simplified your business and increased your customer engagement.</div>
         </div>
-        <div className='header'>So sign up today, and find out: How'd It Go?</div>
+        <div className='header'>Sign up today, and find out: How'd It Go?</div>
       </div> 
     );
   }

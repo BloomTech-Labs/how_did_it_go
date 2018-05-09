@@ -17,6 +17,12 @@
 .content {
     font-size: .75em;
 }
+.image--small {
+    display: block;
+    max-height: 5em;
+    margin-left: auto;
+    margin-right: auto;
+}
 .image--visible {
     display: block;
     max-height: 200px;
