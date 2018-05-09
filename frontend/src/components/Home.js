@@ -1,17 +1,9 @@
 import React from 'react';
-<<<<<<< HEAD
-import Header from './header';
-=======
 import meetingImg from '../brooke-cagle.jpg';
->>>>>>> master
 
 const Home = () => {
   return (
     <div className='component'>
-<<<<<<< HEAD
-      <Header />
-      <div className='title'>Welcome to How-Did-It-Go</div>
-=======
       <div className='title'>What We Do</div>
       <div className='header'>How'd It Go is an innovative new platform, designed to help you boost your online social media presence.</div>
       <img className= 'image' src={meetingImg} alt='by Brooke Cagle'/>
@@ -22,7 +14,6 @@ const Home = () => {
         <div>And just like that, you've simplified your business and increased your customer engagement.</div>
       </div>
       <div className='header'>So sign up today, and find out: How'd It Go?</div>
->>>>>>> master
     </div> 
   );
 }
