@@ -16,11 +16,13 @@ import SignUp from './components/signup';
 import SignIn from './components/signin';
 import SignOut from './components/signout';
 
+import logo from './HIGTextLogoQMTransparent.png';
 
 
 const App = () => {
   return (
     <div>
+      <img src={logo} className='logo' />
       <Navigation />
       <Route path='/' exact     component={Home}  />
       <Route path='/signup'     component={SignUp} />

@@ -21,6 +21,7 @@ class Stats extends Component {
     axios.get(URL + 'companies/name/' + companyName)
       .then(response => {
         const companyId = response.data[0]._id;
+        // this needs to be rewritten 
         axios.get(URL + 'customers/companyid/' + companyId)
         .then(response => {
           this.setState({ data: response.data});

@@ -13,16 +13,17 @@ class TeamDetails extends Component {
             toggled
         });
     }
+
     render() {
         return(
-            <div className='header' key={this.props.name} onClick={this.toggle}>
+            <div className='header' key={this.props.name}>
                 <div onClick={this.toggle}>{ this.props.name }</div>
-                <div>{ this.props.responsibilities }</div> 
+                <div onClick={this.toggle}>{ this.props.responsibilities }</div> 
                 { this.state.toggled ? 
                     <div>
-                        <div> { this.props.github }</div>
-                        <div> { this.props.linkedin }</div>
-                        <div> { this.props.personalSite }</div>
+                        <div><a href={ this.props.github }> { this.props.github }</a></div>
+                        <div><a href={ this.props.linkedin }> { this.props.linkedin }</a></div>
+                        <div><a href={ this.props.personalSite }> { this.props.personalSite }</a></div>
                     </div>
                     : ''
                 }

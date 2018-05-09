@@ -2,6 +2,7 @@
     padding: 1.5em;
 }
 .title {
+    margin-block-start: 1em;
     font-size: 1.25em;
     text-align: center;
     border-block-end: .1em dotted #757575;
@@ -15,6 +16,13 @@
 }
 .content {
     font-size: .75em;
+}
+.image {
+    display: block;
+    max-height: 200px;
+    opacity: 0.5;
+    margin-left: auto;
+    margin-right: auto;
 }
 .hint {
     text-align: center;
