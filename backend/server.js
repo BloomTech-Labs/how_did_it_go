@@ -47,6 +47,7 @@ server.get('/companies', (req, res, next) => {
             res.status(400).json({ error });
         });
 });
+
 server.get('/companies/name/:name', (req, res, next) => {
     const { name } = req.params;
     Company.find({ name: name })

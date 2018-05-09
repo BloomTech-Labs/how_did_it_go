@@ -12,6 +12,9 @@ import Invitations from './components/Invitations';
 import Stats from './components/Stats';
 import Settings from './components/Settings';
 import Team from './components/Team';
+import SignUp from './components/signup';
+import SignIn from './components/signin';
+import SignOut from './components/signout';
 
 
 
@@ -20,6 +23,9 @@ const App = () => {
     <div>
       <Navigation />
       <Route path='/' exact     component={Home}  />
+      <Route path='/signup'     component={SignUp} />
+      <Route path='/signin'     component={SignIn} />
+      <Route path='/signout'     component={SignOut} />
       <Route path='/invitations'component={Invitations} />
       <Route path='/stats'      component={Stats} />
       <Route path='/settings'   component={Settings} />

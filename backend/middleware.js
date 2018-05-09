@@ -38,17 +38,6 @@ const validateUser = (req, res, next) => {
         next();
       }
     });
-  
-  // .findOne({ username }, (err, user) => {
-  //     if (err) {
-  //         res.json(err);
-  //     } else if (!user) {
-  //         res.json({ error: "User does not exist!"});
-  //     } else {
-  //         req.user = user;
-  //         next();
-  //     }
-  // });
 };
 
 module.exports = {
