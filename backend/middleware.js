@@ -3,7 +3,7 @@ const users = require('./users/usersControllers');
 
 // Middleware to hash user's password
 const hashPassword = (req, res, next) => {
-  const {password } = req.body;
+  const { password } = req.body;
   if (!password) {
       res.json({ error: "Please provide password" });
       return;
@@ -22,20 +22,36 @@ const hashPassword = (req, res, next) => {
 
 // Here is the middleware to validate if user logged in  
 const validateUser = (req, res, next) => {
-  const { username } = req.session;
+  const username = req.session.username;
   if (!username) {
       res.json({ error: "User is not logged in" });
       return;
   }
 
-  User.findOne({ username }, (err, user) => {
-      if (err) {
-          res.json(err);
-      } else if (!user) {
-          res.json({ error: "User does not exist!"});
+  users
+    .getByUsername(username)
+    .then(user => {
+      if (!user) {
+        res.json({ error: "User does not exist!"});
       } else {
-          req.user = user;
-          next();
+        req.user = user;
+        next();
       }
-  });
+    });
+  
+  // .findOne({ username }, (err, user) => {
+  //     if (err) {
+  //         res.json(err);
+  //     } else if (!user) {
+  //         res.json({ error: "User does not exist!"});
+  //     } else {
+  //         req.user = user;
+  //         next();
+  //     }
+  // });
+};
+
+module.exports = {
+  hashPassword,
+  validateUser,
 };

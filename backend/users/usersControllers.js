@@ -9,6 +9,11 @@ module.exports = {
     return query;
   },
 
+  getByUsername: function(username) {
+    return db('users')
+      .where('username', username).first();
+  },
+
   insert: function(user) {
     return db('users')
       .insert(user)
