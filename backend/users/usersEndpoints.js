@@ -30,53 +30,6 @@ usersRouter.get('/users', (req, res) => {
       });
 });
 
-// usersRouter.post('/signin', (req, res) => {
-//     const username = req.body.username;
-//     const password = req.body.password;
-
-//     if (!username) {
-//         res.json({ error: "Username undefined" });
-//     }
-
-//     users
-//         .getByUsername(username)
-//         .then((err, user) => {
-//             if (err) {
-//                 res.json(err);
-//                 return;
-//             } else if (!user) {
-//                 res.json({ error: "User does not exist!"});
-//                 return;
-//             }
-            
-//             const hashedPW = user.password;
-//             console.log(hashedPW);
-//             bcrypt
-//                 .compare(password, hashedPW)
-//                 .then(res => {
-//                     if (!res) throw new Error();
-//                     req.session.username = username;
-//                     req.user = user;
-//                 })
-//                 .then(() => {
-//                     res.json({ success: true });
-//                 })
-//                 .catch(err => {
-//                     res.json(err);
-//                 });
-//         });
-// });
-
-
-// usersRouter.post('/signout', (req, res) => {
-//   if (!req.session.username) {
-//       res.json({ error: "User is not logged in!"});
-//       return;
-//   }
-//   req.session.username = null;
-//   res.json(req.session);
-// });
-
 
 usersRouter.put('/users/:id', (req, res) => {
   const id = req.params.id;
