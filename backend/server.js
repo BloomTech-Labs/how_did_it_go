@@ -5,14 +5,13 @@ const cors = require('cors');
 const express = require('express');
 const session = require('express-session');
 
-const usersEndpoints = require('./users/usersEndpoints.js');
-
 const PORT = process.env.PORT || 5000;
 
 // Imported API Endpoints
 const companiesEndpoints = require('./companies/companiesEndpoints.js');
 const customersEndpoints = require('./customers/customersEndpoints.js');
 const smsEndpoints = require('./sms/smsEndpoints.js');   
+const usersEndpoints = require('./users/usersEndpoints.js');
 
 
 const server = express();
@@ -69,6 +68,9 @@ const validateUser = (req, res, next) => {
 server.use('/companies', companiesEndpoints);
 server.use('/customers', customersEndpoints);
 server.use('/sms', smsEndpoints);
+// imported Endpoints for Users
+server.use('', usersEndpoints);
+
 
 // *******************Route controllers********************************************
 // const login = (req, res) => {
@@ -106,7 +108,7 @@ server.use('/sms', smsEndpoints);
 // };
 
 
-server.use('', usersEndpoints);
+
 // ******************* MONGOOSE CONNECTION********************************
 
 server.listen(PORT, err => {
