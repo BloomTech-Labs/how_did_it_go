@@ -33,8 +33,8 @@ class Team extends Component {
     render() {
         return(
             <div className='component' onClick={this.hideHint}>
-                <div className='title'>Meet The Team </div>
-                <div className={this.state.hint}>click a name for contact details</div>
+                <div className='title'>Who We Are</div>
+                <div className={this.state.hint}>click a team member's name for contact details</div>
                 {this.state.staff.map((person, index) => {
                     return <TeamDetails name={person.name} github={person.github} linkedin={person.linkedin} personalSite={person.personalSite} responsibilities={person.responsibilities} />
                 })}
