@@ -1,14 +1,41 @@
-.links {
-	display: flex;
-	justify-content: flex-end;
+.nav {
+	float: right;
 	border-block-end: .1em solid #BDBDBD;
+}
+.wideLinks {
+	display: block;
+}
+.narrowLinks {
+	display: none;
 }
 a {
 	text-decoration: none;
 	color: #757575;
 	font-size: .75em;
-	margin: 0 2em .5em 0;
+	margin: 0 2em;
 }
 a:hover {
 	color: #009688;
 }
+
+@media screen and (max-width: 600px) {
+	.nav {
+		border-block-end: none;
+		position: absolute;
+		right: 0%;
+		background-color: white;
+	}
+	.wideLinks {display: none;}
+	.narrowLinks {display: inline-table;}
+	.bars {
+		float: right;
+		display: block;
+	}
+	.narrowLinks--hidden {display: none;}
+	.narrowLinks--visible {display: inline-table;}
+	.narrowLinks__item {
+		display: block;
+		float: left;
+		clear: both;
+	}	
+  }
