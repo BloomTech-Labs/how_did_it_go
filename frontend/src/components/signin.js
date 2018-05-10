@@ -50,7 +50,7 @@ class SignIn extends Component {
         </div>
         <div>
           Password:
-          <input type="text" value={this.state.password} onChange={this.handlePasswordChange} pleaceholder="Please provide Password" />
+          <input type="password" value={this.state.password} onChange={this.handlePasswordChange} pleaceholder="Please provide Password" />
         </div> 
         <button onClick={this.handleSignIn}>Sign In</button> 
       </div>

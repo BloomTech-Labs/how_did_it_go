@@ -63,11 +63,11 @@ class SignUp extends Component {
         </div>
         <div>
           Password:
-          <input type="text" value={this.state.password} onChange={this.handlePasswordChange} pleaceholder="Please provide Password" />
+          <input type="password" value={this.state.password} onChange={this.handlePasswordChange} pleaceholder="Please provide Password" />
         </div> 
         <div>
           Confirm Password:
-          <input type="text" value={this.state.confirmPW} onChange={this.handleConfirmPWChange} pleaceholder="Please provide Password" />
+          <input type="password" value={this.state.confirmPW} onChange={this.handleConfirmPWChange} pleaceholder="Please provide Password" />
         </div>
         <button onClick={this.handleSubmit}>Submit</button> 
       </div>
