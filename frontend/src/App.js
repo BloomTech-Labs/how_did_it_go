@@ -24,7 +24,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <img src={logo} className='logo' />
+        <img src={logo} className='logo' alt="How'd It Go" />
         <Navigation />
         <Route path='/' exact     component={Home}  />
         <Route path='/signup'     component={SignUp} />

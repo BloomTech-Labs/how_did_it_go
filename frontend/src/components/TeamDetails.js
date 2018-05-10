@@ -18,7 +18,7 @@ class TeamDetails extends Component {
         return(
             <div className='header' key={this.props.name}>
                 <div onClick={this.toggle}>{ this.props.name }</div>
-                <img onClick={this.toggle} className='image--smallCircle' src={ this.props.image } alt='developer image'/>
+                <img onClick={this.toggle} className='image--smallCircle' src={ this.props.image } alt='developer'/>
                 <div onClick={this.toggle}>{ this.props.responsibilities }</div> 
                 { this.state.toggled ? 
                     <div>

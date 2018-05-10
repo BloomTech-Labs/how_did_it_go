@@ -1,6 +1,6 @@
 import React, { Component } from 'react';import axios from 'axios';
 
-import ROOT_URL from '../utils.config.js';
+import ROOT_URL from '../utils/config.js';
 
 class SignIn extends Component {
   constructor() {

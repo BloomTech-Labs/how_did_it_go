@@ -3,6 +3,8 @@ import meetingImg from '../images/brooke-cagleText.jpg';
 import surveyImg from '../images/azat-satlykovText.jpg';
 import signupWmImg from '../images/thought-catalogText.jpg';
 
+let interval;
+let intervalTime = 3000;
 class Home extends Component {
   constructor() {
     super();
@@ -11,8 +13,15 @@ class Home extends Component {
     };
   }
 
-  componentDidUpdate() {
-    setTimeout(this.changeImage(), 2000);
+  componentDidMount() {
+    interval = setInterval(this.changeImage, intervalTime);
+  }
+
+
+  resetInterval = () => {
+    clearInterval(interval);
+    interval = setInterval(this.changeImage, intervalTime);
+
   }
 
   changeImage = () => {
@@ -22,6 +31,7 @@ class Home extends Component {
     } else {
       this.setState({ display: 1 });
     }
+    this.resetInterval();
 
   }
 
