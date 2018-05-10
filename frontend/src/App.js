@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {Route} from 'react-router-dom';
 
+import {StripeProvider} from 'react-stripe-elements';
+
 import './App.css';
 import './components/css/standardComponent.css';
 import './components/css/form.css';
@@ -32,7 +34,9 @@ class App extends Component {
         <Route path='/signout'     component={SignOut} />
         <Route path='/invitations'component={Invitations} />
         <Route path='/stats'      component={Stats} />
+      <StripeProvider apiKey="pk_test_lYWOs3y88CPr5JkrwkMt7Cvr">
         <Route path='/settings'   component={Settings} />
+      </StripeProvider>
         <Route path='/team'       component={Team} />
       </div>
     );
