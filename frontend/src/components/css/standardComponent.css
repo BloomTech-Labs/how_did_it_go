@@ -17,8 +17,10 @@
 .content {
     font-size: .75em;
 }
-.image--small {
+.image--smallCircle {
     display: block;
+    border-radius: 50%;
+    border: .075em solid #757575;
     max-height: 5em;
     margin-left: auto;
     margin-right: auto;

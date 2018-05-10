@@ -3,12 +3,25 @@ import meetingImg from '../images/brooke-cagleText.jpg';
 import surveyImg from '../images/azat-satlykovText.jpg';
 import signupWmImg from '../images/thought-catalogText.jpg';
 
+let interval;
+let intervalTime = 3000;
 class Home extends Component {
   constructor() {
     super();
     this.state = {
       display: 1,
     };
+  }
+
+  componentDidMount() {
+    interval = setInterval(this.changeImage, intervalTime);
+  }
+
+
+  resetInterval = () => {
+    clearInterval(interval);
+    interval = setInterval(this.changeImage, intervalTime);
+
   }
 
   changeImage = () => {
@@ -18,6 +31,7 @@ class Home extends Component {
     } else {
       this.setState({ display: 1 });
     }
+    this.resetInterval();
 
   }
 
@@ -29,6 +43,8 @@ class Home extends Component {
         <img id='img1' className= {this.state.display === 1 ? 'image--visible': 'image--hidden'} src={signupWmImg} alt='by Bench Accounting' onClick={() => this.changeImage()} />
         <img id='img2' className= {this.state.display === 2 ? 'image--visible': 'image--hidden'} src={surveyImg}   alt='by Azat Satlykov'    onClick={() => this.changeImage()} />
         <img id='img3' className= {this.state.display === 3 ? 'image--visible': 'image--hidden'} src={meetingImg}  alt='by Brooke Cagle'     onClick={() => this.changeImage()}/>
+        <button>&#10094;</button>
+        <button>&#10095;</button>
         <div className='header'>Here's how it works:</div>
         <div className='content'>
           <div>Tell us which review sites you'd like more reviews on, and we'll send a personalized message to your customers asking them to leave you a review.</div>

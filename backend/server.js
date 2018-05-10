@@ -17,7 +17,6 @@ const smsEndpoints = require('./sms/smsEndpoints.js');
 const usersEndpoints = require('./users/usersEndpoints.js');
 const users = require('./users/usersControllers');
 
-
 const server = express();
 
 
@@ -44,15 +43,11 @@ server.use(
 // });
 
 
-// ****************************************API Endpoints here***********************************
 // imported Endpoints for Companies, Customers and Twilio API
 server.use('/companies', companiesEndpoints);
 server.use('/customers', customersEndpoints);
 server.use('/sms', smsEndpoints);
-// imported Endpoints for Users
 server.use('', usersEndpoints);
-
-
 
 
 // ******************* SIGN IN & SIGN OUT ********************************************
@@ -103,7 +98,7 @@ server.get('*', (req, res) => {
   
 
 
-//************MONGO CONNECTION********************************************** */
+//*******************************  SERVER CONNECTION  ********************************************** */
 
 server.listen(PORT, err => {
     if (err) console.log(err);
