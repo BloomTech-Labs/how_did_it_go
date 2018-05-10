@@ -7,6 +7,7 @@ class SignOut extends Component {
   componentWillMount() {
     axios.post(URL + 'signout')
         .then(function(response) {
+          console.log(response.data);
           console.log('Sign out successfully!');
         })
         .catch(function(error) {

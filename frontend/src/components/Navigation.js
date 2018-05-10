@@ -16,33 +16,22 @@ class Navigation extends React.Component {
     };
   }
 
-  componentDidUpdate() {
-    // axios.get(URL + 'user')
-    //     .then((response) => {
-    //       const user = response.data;
-    //       console.log(user);
-    //       console.log(this.state.username);
-    //       this.setState({ username: user.username });
-    //       console.log(this.state.username);
-    //     })
-    //     .catch(function(error) {
-    //       console.log(error);
-    //     });
+  componentDidMount() {
     this.setState({ username: localStorage.token });
     console.log(this.state.username);
   }
   
-  // itemsToggle = () => {
-  //   console.log('test');
-  //   const visible = !this.state.visible;
-  //   this.setState({ visible });
-  // }
+  itemsToggle = () => {
+    console.log('test');
+    const visible = !this.state.visible;
+    this.setState({ visible });
+  }
 
-  // hideNav = () => {
-  //   if (this.state.visible) {
-  //     this.setState({ visible: false });
-  //   }
-  // }
+  hideNav = () => {
+    if (this.state.visible) {
+      this.setState({ visible: false });
+    }
+  }
 
   dynamicLinks() {
     if (this.state.username === null || this.state.username === undefined) {
