@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
+const URL = "http://localhost:5000/";
 
 class SignUp extends Component {
   constructor() {
@@ -25,11 +28,31 @@ class SignUp extends Component {
 
   handleConfirmPWChange = e => {
     this.setState({
-      password: e.target.value
+      confirmPW: e.target.value
     });
   };
 
+  handleSubmit = e => {
+    e.preventDefault();
 
+    if (this.state.password !== this.state.confirmPW) {
+      alert('Password and confirmed Password do not match!!! Please enter one more time.');
+    } else {
+      axios.post(URL + 'signup', {username: this.state.username, password: this.state.password })
+        .then(function(response) {
+          console.log('hello world');
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
+
+    this.setState({
+      username: '',
+      password: '',
+      confirmPW: '',
+    }); 
+  }
 
   render() {
     return (
@@ -44,14 +67,12 @@ class SignUp extends Component {
         </div> 
         <div>
           Confirm Password:
-          <input type="text" value={this.state.password} onChange={this.handleConfirmPWChange} pleaceholder="Please provide Password" />
-        </div> 
+          <input type="text" value={this.state.confirmPW} onChange={this.handleConfirmPWChange} pleaceholder="Please provide Password" />
+        </div>
+        <button onClick={this.handleSubmit}>Submit</button> 
       </div>
     ) 
-  }
-  
-
-  
+  };  
 }
 
 export default SignUp;
