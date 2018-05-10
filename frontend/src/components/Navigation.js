@@ -8,6 +8,7 @@ class Navigation extends React.Component {
     super();
     this.state = {
       visible: false,
+      user: null,
     };
   }
   componentDidMount() {
@@ -24,6 +25,26 @@ class Navigation extends React.Component {
       this.setState({ visible: false });
     }
   }
+
+  filterLinks() {
+    if (false) {
+      return [
+        <Link to=''>Home</Link>,
+        <Link to="/signup">Sign Up</Link>,
+        <Link to="/signin">Sign In</Link>,
+        <Link to='/team'>Team</Link>,   
+      ];
+    } else {
+      return [
+        <Link to=''>Home</Link>,
+        <Link to='/invitations'>Invitations</Link>,
+        <Link to='/stats'>Stats</Link>,
+        <Link to='/settings'>Settings</Link>,
+        <Link to='/team'>Team</Link>,
+        <Link to="/signout">Sign Out</Link>,
+      ];
+    } 
+  }
   
 
   render() {
@@ -31,11 +52,7 @@ class Navigation extends React.Component {
       <div className='nav' onClick={() => this.hideNav()}>
 
         <div id = 'navWideScreen' className='wideLinks'>
-          <Link to=''>Home</Link>
-          <Link to='/invitations'>Invitations</Link>
-          <Link to='/stats'>Stats</Link>
-          <Link to='/settings'>Settings</Link>
-          <Link to='/team'>Team</Link>
+          {this.filterLinks()}
         </div>
 
         <div className = 'narrowLinks'>
@@ -48,7 +65,6 @@ class Navigation extends React.Component {
             <Link to='/team' className = 'narrowLinks__item'>Team</Link>
           </div>
         </div>
-
       </div>
     );
   }

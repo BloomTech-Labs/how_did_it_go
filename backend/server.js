@@ -16,7 +16,6 @@ const smsEndpoints = require('./sms/smsEndpoints.js');
 const usersEndpoints = require('./users/usersEndpoints.js');
 const users = require('./users/usersControllers');
 
-
 const server = express();
 server.use(bodyParser.json());
 server.use(cors());

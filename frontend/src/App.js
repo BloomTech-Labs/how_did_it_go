@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {Route} from 'react-router-dom';
 
 import './App.css';
@@ -19,21 +19,25 @@ import SignOut from './components/signout';
 import logo from './HIGTextLogoQMTransparent.png';
 
 
-const App = () => {
-  return (
-    <div>
-      <img src={logo} className='logo' />
-      <Navigation />
-      <Route path='/' exact     component={Home}  />
-      <Route path='/signup'     component={SignUp} />
-      <Route path='/signin'     component={SignIn} />
-      <Route path='/signout'     component={SignOut} />
-      <Route path='/invitations'component={Invitations} />
-      <Route path='/stats'      component={Stats} />
-      <Route path='/settings'   component={Settings} />
-      <Route path='/team'       component={Team} />
-    </div>
-  ); 
+class App extends Component {
+
+  render() {
+    return (
+      <div>
+        <img src={logo} className='logo' />
+        <Navigation />
+        <Route path='/' exact     component={Home}  />
+        <Route path='/signup'     component={SignUp} />
+        <Route path='/signin'     component={SignIn} />
+        <Route path='/signout'     component={SignOut} />
+        <Route path='/invitations'component={Invitations} />
+        <Route path='/stats'      component={Stats} />
+        <Route path='/settings'   component={Settings} />
+        <Route path='/team'       component={Team} />
+      </div>
+    );
+  }
+   
 }
 
 export default App;
