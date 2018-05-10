@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import {Elements} from 'react-stripe-elements';
+import InjectedCheckoutForm from './CheckoutForm';
+
+
 import ROOT_URL from '../utils/config.js';
 let companyId;
 let defaultMessage;
@@ -101,6 +105,12 @@ class Settings extends Component {
         <div><input className='form--item' type='password' placeholder='Old Password' name='oldPW' value={this.state.oldPW} onChange={this.handleInputChange} /></div>
         <div><input className='form--item' type='password' placeholder='New Password' name='newPW' value={this.state.newPW} onChange={this.handleInputChange} /></div>
         <button className='button' type="button" onClick={this.handleSubmit}>Save Your Template</button>
+
+        <div>Billing Information</div>
+        <Elements>
+          <InjectedCheckoutForm />
+        </Elements>
+        <button>Change Billing Information</button>
       </form>
 
     </div> 
