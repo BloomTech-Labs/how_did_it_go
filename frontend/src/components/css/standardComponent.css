@@ -17,12 +17,21 @@
 .content {
     font-size: .75em;
 }
-.image {
+.image--small {
+    display: block;
+    max-height: 5em;
+    margin-left: auto;
+    margin-right: auto;
+}
+.image--visible {
     display: block;
     max-height: 200px;
     opacity: 0.5;
     margin-left: auto;
     margin-right: auto;
+}
+.image--hidden {
+    display: none;
 }
 .hint {
     text-align: center;
