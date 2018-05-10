@@ -8,6 +8,7 @@ class Navigation extends React.Component {
     super();
     this.state = {
       visible: false,
+      user: null,
     };
   }
   componentDidMount() {
@@ -24,6 +25,26 @@ class Navigation extends React.Component {
       this.setState({ visible: false });
     }
   }
+
+  dynamicLinks() {
+    if (true) {
+      return [
+        <Link key={1} to=''>Home</Link>,
+        <Link key={2} to="/signup">Sign Up</Link>,
+        <Link key={3} to="/signin">Sign In</Link>,
+        <Link key={4} to='/team'>Team</Link>,   
+      ];
+    } else {
+      return [
+        <Link key={1} to=''>Home</Link>,
+        <Link key={2} to='/invitations'>Invitations</Link>,
+        <Link key={3} to='/stats'>Stats</Link>,
+        <Link key={4} to='/settings'>Settings</Link>,
+        <Link key={5} to='/team'>Team</Link>,
+        <Link key={6} to="/signout">Sign Out</Link>,
+      ];
+    } 
+  }
   
 
   render() {
@@ -31,11 +52,7 @@ class Navigation extends React.Component {
       <div className='nav' onClick={() => this.hideNav()}>
 
         <div id = 'navWideScreen' className='wideLinks'>
-          <Link to=''>Home</Link>
-          <Link to='/invitations'>Invitations</Link>
-          <Link to='/stats'>Stats</Link>
-          <Link to='/settings'>Settings</Link>
-          <Link to='/team'>Team</Link>
+          {this.dynamicLinks()}
         </div>
 
         <div className = 'narrowLinks'>
@@ -48,7 +65,6 @@ class Navigation extends React.Component {
             <Link to='/team' className = 'narrowLinks__item'>Team</Link>
           </div>
         </div>
-
       </div>
     );
   }
