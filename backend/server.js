@@ -18,6 +18,12 @@ const users = require('./users/usersControllers');
 
 
 const server = express();
+
+
+// Serve static files from the React app
+server.use(express.static(path.join(__dirname, '../frontend/build')));
+
+
 server.use(bodyParser.json());
 server.use(cors());
 server.use(
@@ -87,6 +93,13 @@ server.post('/signout', (req, res) => {
   req.session.username = null;
   res.json(req.session);
 });
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+server.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname+'../frontend/build/index.html'));
+  });
+  
 
 
 //************MONGO CONNECTION********************************************** */
