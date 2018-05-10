@@ -43,16 +43,15 @@ class SignIn extends Component {
 
   render() {
     return (
-      <div>
+      <div className='component'>
+        <div className='title'>Sign In</div>
         <div>
-          Email:
-          <input type="text" value={this.state.username} onChange={this.handleUsernameChange} pleaceholder="Please provide Email" />
+          <input type="text" className='form--item' value={this.state.username} onChange={this.handleUsernameChange} placeholder="Email Address" />
         </div>
         <div>
-          Password:
-          <input type="password" value={this.state.password} onChange={this.handlePasswordChange} pleaceholder="Please provide Password" />
+          <input type="password" className='form--item' value={this.state.password} onChange={this.handlePasswordChange} placeholder="Password" />
         </div> 
-        <button onClick={this.handleSignIn}>Sign In</button> 
+        <button className='button' onClick={this.handleSignIn}>Sign In</button> 
       </div>
     ) 
   }

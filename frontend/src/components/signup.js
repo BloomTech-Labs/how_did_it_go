@@ -14,22 +14,11 @@ class SignUp extends Component {
     };
   }
   
-  handleUsernameChange = e => {
-    this.setState({
-      username: e.target.value
-    });
-  };
 
-  handlePasswordChange = e => {
+  handleInputChange = (e)=> {
     this.setState({
-      password: e.target.value
-    });
-  };
-
-  handleConfirmPWChange = e => {
-    this.setState({
-      confirmPW: e.target.value
-    });
+      [e.target.name]: e.target.value
+    })
   };
 
   handleSubmit = e => {
@@ -56,19 +45,11 @@ class SignUp extends Component {
 
   render() {
     return (
-      <div>
-        <div>
-          Email:
-          <input type="text" value={this.state.username} onChange={this.handleUsernameChange} pleaceholder="Please provide Email" />
-        </div>
-        <div>
-          Password:
-          <input type="password" value={this.state.password} onChange={this.handlePasswordChange} pleaceholder="Please provide Password" />
-        </div> 
-        <div>
-          Confirm Password:
-          <input type="password" value={this.state.confirmPW} onChange={this.handleConfirmPWChange} pleaceholder="Please provide Password" />
-        </div>
+      <div className='component'>
+        <div className='title'>Sign Up</div>
+        <div><input type="text" name='username' value={this.state.username} onChange={this.handleInputChange} placeholder="Email Address" /></div>
+        <div><input type="password" name='password' value={this.state.password} onChange={this.handleInputChange} placeholder="Password" /></div> 
+        <div><input type="password" name='confirmPW' value={this.state.confirmPW} onChange={this.handleInputChange} placeholder="Re-enter Password" /></div>
         <button onClick={this.handleSubmit}>Submit</button> 
       </div>
     ) 
