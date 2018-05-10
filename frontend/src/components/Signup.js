@@ -23,6 +23,11 @@ class SignUp extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    
+    if (this.state.username===''||this.state.password===''||this.state.confirmPW==='') {
+      alert('Please enter all required fields');
+      return;
+    }
 
     if (this.state.password !== this.state.confirmPW) {
       alert('Password and confirmed Password do not match!!! Please enter one more time.');
@@ -47,10 +52,12 @@ class SignUp extends Component {
     return (
       <div className='component'>
         <div className='title'>Sign Up</div>
-        <div><input type="text" name='username' value={this.state.username} onChange={this.handleInputChange} placeholder="Email Address" /></div>
-        <div><input type="password" name='password' value={this.state.password} onChange={this.handleInputChange} placeholder="Password" /></div> 
-        <div><input type="password" name='confirmPW' value={this.state.confirmPW} onChange={this.handleInputChange} placeholder="Re-enter Password" /></div>
-        <button onClick={this.handleSubmit}>Submit</button> 
+        <form onSubmit={this.handleSubmit}>
+          <div><input type="text" name='username' value={this.state.username} onChange={this.handleInputChange} placeholder="Email Address" required/></div>
+          <div><input type="password" name='password' value={this.state.password} onChange={this.handleInputChange} placeholder="Password" required/></div> 
+          <div><input type="password" name='confirmPW' value={this.state.confirmPW} onChange={this.handleInputChange} placeholder="Re-enter Password" required/></div>
+          <button onClick={this.handleSubmit}>Submit</button> 
+        </form>
       </div>
     ) 
   };  
