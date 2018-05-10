@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 
-const URL = "http://localhost:5000/";
+import ROOT_URL from '../utils/config.js';
 let companyName = "Second Company"; // testing purposes
 class Stats extends Component {
   constructor() {
@@ -18,11 +18,11 @@ class Stats extends Component {
 
   componentDidMount() {
     // find the company's name -- needs to be linked with sign up/sign in data
-    axios.get(URL + 'companies/name/' + companyName)
+    axios.get(ROOT_URL + 'companies/name/' + companyName)
       .then(response => {
         const companyId = response.data[0]._id;
         // this needs to be rewritten 
-        axios.get(URL + 'customers/companyid/' + companyId)
+        axios.get(ROOT_URL + 'customers/companyid/' + companyId)
         .then(response => {
           this.setState({ data: response.data});
           this.setState({ invitationsSent: response.data.length });

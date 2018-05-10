@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-const URL = 'http://localhost:5000/';
+import ROOT_URL from '../utils/config.js';
 let companyId;
 let defaultMessage;
 let company;
@@ -23,7 +23,7 @@ class Settings extends Component {
 
   componentWillMount() {
     companyId = '5aec8c2e3ff7d51c1039b0bb'; // testing purposes
-    axios.get(URL + 'companies/id/' + companyId)
+    axios.get(ROOT_URL + 'companies/id/' + companyId)
       .then(response => {
         console.log(response.data.defaultMessage);
         company = response.data;
@@ -58,7 +58,7 @@ class Settings extends Component {
     company.contactFirstName = this.state.managerFirstName;
     company.contactLastName = this.state.managerLastName;
     company.reviewSite =  this.state.reviewSite;
-    axios.put(URL + 'companies/id/' + companyId, company)
+    axios.put(ROOT_URL + 'companies/id/' + companyId, company)
       .then(response => {
         console.log("updated the company");
       })
