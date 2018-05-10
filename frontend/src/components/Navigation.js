@@ -69,14 +69,4 @@ class Navigation extends React.Component {
   }
 }
 
-/* Links for the narrow option
-            <Link to='' className = 'narrowLinks__item'>Home</Link>
-            <Link to='/invitations' className = 'narrowLinks__item'>Invitations</Link>
-            <Link to='/stats' className = 'narrowLinks__item'>Stats</Link>
-            <Link to='/settings' className = 'narrowLinks__item'>Settings</Link>
-            <Link to='/team' className = 'narrowLinks__item'>Team</Link>
-            */
-
-
-
 export default Navigation;
