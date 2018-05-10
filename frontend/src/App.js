@@ -20,6 +20,11 @@ import logo from './HIGTextLogoQMTransparent.png';
 
 
 class App extends Component {
+  // constructor() {
+  //   this.state = {
+  //     authenticated: false,
+  //   };
+  // }
 
   render() {
     return (

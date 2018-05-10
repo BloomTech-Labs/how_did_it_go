@@ -1,37 +1,55 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import 'font-awesome/css/font-awesome.min.css';
 import './css/navigation.css';
+
+
+const URL = "http://localhost:5000/";
 
 class Navigation extends React.Component {
   constructor() {
     super();
     this.state = {
       visible: false,
-      user: null,
+      username: null,
     };
   }
-  componentDidMount() {
+
+  componentDidUpdate() {
+    // axios.get(URL + 'user')
+    //     .then((response) => {
+    //       const user = response.data;
+    //       console.log(user);
+    //       console.log(this.state.username);
+    //       this.setState({ username: user.username });
+    //       console.log(this.state.username);
+    //     })
+    //     .catch(function(error) {
+    //       console.log(error);
+    //     });
+    this.setState({ username: localStorage.token });
+    console.log(this.state.username);
   }
   
-  itemsToggle = () => {
-    console.log('test');
-    const visible = !this.state.visible;
-    this.setState({ visible });
-  }
+  // itemsToggle = () => {
+  //   console.log('test');
+  //   const visible = !this.state.visible;
+  //   this.setState({ visible });
+  // }
 
-  hideNav = () => {
-    if (this.state.visible) {
-      this.setState({ visible: false });
-    }
-  }
+  // hideNav = () => {
+  //   if (this.state.visible) {
+  //     this.setState({ visible: false });
+  //   }
+  // }
 
   dynamicLinks() {
-    if (true) {
+    if (this.state.username === null || this.state.username === undefined) {
       return [
         <Link key={1} to=''>Home</Link>,
-        <Link key={2} to="/signup">Sign Up</Link>,
         <Link key={3} to="/signin">Sign In</Link>,
+        <Link key={2} to="/signup">Sign Up</Link>,
         <Link key={4} to='/team'>Team</Link>,   
       ];
     } else {

@@ -30,6 +30,26 @@ usersRouter.get('/users', (req, res) => {
       });
 });
 
+usersRouter.get('/user', (req, res) => {
+    const username = req.session.username;
+    
+    if (username === undefined || null) {
+        const user = {};
+        res.json(user);
+        return;
+    }
+
+    users
+        .getByUsername(username)
+        .then(user => {
+            console.log(user);
+            res.status(200).json(user);
+        })
+        .catch(function(error) {
+            res.status(500).json({ message: "server error", error });
+        });
+  });
+
 
 usersRouter.put('/users/:id', (req, res) => {
   const id = req.params.id;

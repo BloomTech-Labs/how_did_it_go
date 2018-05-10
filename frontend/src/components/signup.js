@@ -40,9 +40,10 @@ class SignUp extends Component {
     } else {
       axios.post(URL + 'signup', {username: this.state.username, password: this.state.password })
         .then(function(response) {
-          console.log('hello world');
+          console.log('Sign up successfully!');
         })
         .catch(function(error) {
+          alert('Failed to sign you up!');
           console.log(error);
         });
     }

@@ -1,4 +1,5 @@
-import React, { Component } from 'react';import axios from 'axios';
+import React, { Component } from 'react';
+import axios from 'axios';
 
 const URL = "http://localhost:5000/";
 
@@ -29,16 +30,20 @@ class SignIn extends Component {
 
     axios.post(URL + 'signin', {username: this.state.username, password: this.state.password })
         .then(function(response) {
-          console.log('hello world');
+          const username = response.data.username;
+          localStorage.token = username;
+          console.log(localStorage.token);
+          console.log('Sign In successfully!');
         })
         .catch(function(error) {
+          alert('Failed to sign you in!');
           console.log(error);
         });
 
-    this.setState({
-      username: '',
-      password: '',
-    });
+    // this.setState({
+    //   username: '',
+    //   password: '',
+    // });
   }
 
   render() {
