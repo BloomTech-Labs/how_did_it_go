@@ -6,6 +6,7 @@ const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const middleware = require('./middleware');
+const path = require('path');
 
 const PORT = process.env.PORT || 5000;
 
