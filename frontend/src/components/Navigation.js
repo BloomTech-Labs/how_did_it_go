@@ -58,17 +58,24 @@ class Navigation extends React.Component {
         <div className = 'narrowLinks'>
           <i className=' fa fa-bars bars' onClick = {() => this.itemsToggle()} />
           <div className = {this.state.visible ? 'narrowLinks--visible' : 'narrowLinks--hidden'}>
-            <Link to='' className = 'narrowLinks__item'>Home</Link>
-            <Link to='/invitations' className = 'narrowLinks__item'>Invitations</Link>
-            <Link to='/stats' className = 'narrowLinks__item'>Stats</Link>
-            <Link to='/settings' className = 'narrowLinks__item'>Settings</Link>
-            <Link to='/team' className = 'narrowLinks__item'>Team</Link>
+          {this.dynamicLinks().map((item, key) => {
+            return <div key={key} className='narrowLinks__item'>{item}</div>
+            })
+          }
           </div>
         </div>
       </div>
     );
   }
 }
+
+/* Links for the narrow option
+            <Link to='' className = 'narrowLinks__item'>Home</Link>
+            <Link to='/invitations' className = 'narrowLinks__item'>Invitations</Link>
+            <Link to='/stats' className = 'narrowLinks__item'>Stats</Link>
+            <Link to='/settings' className = 'narrowLinks__item'>Settings</Link>
+            <Link to='/team' className = 'narrowLinks__item'>Team</Link>
+            */
 
 
 
