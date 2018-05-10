@@ -11,6 +11,10 @@ class Home extends Component {
     };
   }
 
+  componentDidUpdate() {
+    setTimeout(this.changeImage(), 2000);
+  }
+
   changeImage = () => {
     if (this.state.display < 3) {
       const display = this.state.display + 1;
@@ -29,6 +33,8 @@ class Home extends Component {
         <img id='img1' className= {this.state.display === 1 ? 'image--visible': 'image--hidden'} src={signupWmImg} alt='by Bench Accounting' onClick={() => this.changeImage()} />
         <img id='img2' className= {this.state.display === 2 ? 'image--visible': 'image--hidden'} src={surveyImg}   alt='by Azat Satlykov'    onClick={() => this.changeImage()} />
         <img id='img3' className= {this.state.display === 3 ? 'image--visible': 'image--hidden'} src={meetingImg}  alt='by Brooke Cagle'     onClick={() => this.changeImage()}/>
+        <button>&#10094;</button>
+        <button>&#10095;</button>
         <div className='header'>Here's how it works:</div>
         <div className='content'>
           <div>Tell us which review sites you'd like more reviews on, and we'll send a personalized message to your customers asking them to leave you a review.</div>

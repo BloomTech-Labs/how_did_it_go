@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-const URL = "http://localhost:5000/";
+import ROOT_URL from '../utils.config.js';
 
 class SignUp extends Component {
   constructor() {
@@ -38,7 +38,7 @@ class SignUp extends Component {
     if (this.state.password !== this.state.confirmPW) {
       alert('Password and confirmed Password do not match!!! Please enter one more time.');
     } else {
-      axios.post(URL + 'signup', {username: this.state.username, password: this.state.password })
+      axios.post(ROOT_URL + 'signup', {username: this.state.username, password: this.state.password })
         .then(function(response) {
           console.log('hello world');
         })

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-const URL = 'http://localhost:5000/';
+import ROOT_URL from '../utils.config.js';
 
 let companyId;
 let reviewOption;
@@ -25,7 +25,7 @@ class Invitations extends Component {
     companyId = '5aec8c2e3ff7d51c1039b0bb'; // testing purposes
     reviewOption = 'test'; // testing purposes
 
-    axios.get(URL + 'companies/id/' + companyId)
+    axios.get(ROOT_URL + 'companies/id/' + companyId)
       .then(response => {
         const data = response.data;
         this.setState({
@@ -84,7 +84,7 @@ class Invitations extends Component {
   
   saveNewCustomer = (cust) => {
     console.log(cust);
-    axios.post(URL + 'customers', cust)
+    axios.post(ROOT_URL + 'customers', cust)
     .then(response => {
       this.sendText(cust);
       this.resetState();
@@ -95,7 +95,7 @@ class Invitations extends Component {
   }
 
   saveUpdatedCustomer = (cust, id) => {
-    axios.put(URL + 'customers/id/' + id, cust)
+    axios.put(ROOT_URL + 'customers/id/' + id, cust)
     .then(response => {
       console.log("Updated the customer");
       this.sendText(cust);
@@ -118,7 +118,7 @@ class Invitations extends Component {
   }
 
   checkIfCustomerExists = (e, customer) => {
-    axios.get(URL + 'customers/phone/' + customer.phoneNumber)
+    axios.get(ROOT_URL + 'customers/phone/' + customer.phoneNumber)
       .then(response => {
         if (response.data) { // existing customer
           if (customer.firstName !== response.data.firstName || customer.lastName !== response.data.lastName) { // someone else is using this phone number already
@@ -144,7 +144,7 @@ class Invitations extends Component {
   }
 
   sendText = (cust) => {
-    axios.post(URL + 'sms/' + cust.phoneNumber, messageToSend)
+    axios.post(ROOT_URL + 'sms/' + cust.phoneNumber, messageToSend)
     .then(response => {
       console.log("Sent!");
     })

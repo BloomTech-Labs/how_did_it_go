@@ -1,6 +1,6 @@
 import React, { Component } from 'react';import axios from 'axios';
 
-const URL = "http://localhost:5000/";
+import ROOT_URL from '../utils.config.js';
 
 class SignIn extends Component {
   constructor() {
@@ -27,7 +27,7 @@ class SignIn extends Component {
   handleSignIn = e => {
     e.preventDefault();
 
-    axios.post(URL + 'signin', {username: this.state.username, password: this.state.password })
+    axios.post(ROOT_URL + 'signin', {username: this.state.username, password: this.state.password })
         .then(function(response) {
           console.log('hello world');
         })
