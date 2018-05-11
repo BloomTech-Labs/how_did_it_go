@@ -26,7 +26,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      authenticated: localStorage.token,
+      authenticated: false,
       currentUser: null,
     };
   }
