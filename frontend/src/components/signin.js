@@ -12,18 +12,6 @@ class SignIn extends Component {
       password: '',
     };
   }
-  
-  // handleUsernameChange = e => {
-  //   this.setState({
-  //     username: e.target.value
-  //   });
-  // };
-
-  // handlePasswordChange = e => {
-  //   this.setState({
-  //     password: e.target.value
-  //   });
-  // };
 
   handleInputChange = (e) => {
     this.setState({
@@ -46,7 +34,7 @@ class SignIn extends Component {
         localStorage.token = username;
         console.log('Sign In successfully!');
       })
-      .catch(function(error) {
+      .catch((error) => {
         alert('Failed to sign you in!');
         console.log(error);
       });
