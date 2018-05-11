@@ -1,4 +1,5 @@
-import React, { Component } from 'react';import axios from 'axios';
+import React, { Component } from 'react';
+import axios from 'axios';
 
 import ROOT_URL from '../utils/config.js';
 
@@ -12,17 +13,17 @@ class SignIn extends Component {
     };
   }
   
-  handleUsernameChange = e => {
-    this.setState({
-      username: e.target.value
-    });
-  };
+  // handleUsernameChange = e => {
+  //   this.setState({
+  //     username: e.target.value
+  //   });
+  // };
 
-  handlePasswordChange = e => {
-    this.setState({
-      password: e.target.value
-    });
-  };
+  // handlePasswordChange = e => {
+  //   this.setState({
+  //     password: e.target.value
+  //   });
+  // };
 
   handleInputChange = (e) => {
     this.setState({
@@ -39,12 +40,16 @@ class SignIn extends Component {
     }
 
     axios.post(ROOT_URL + 'signin', {username: this.state.username, password: this.state.password })
-        .then(function(response) {
-          console.log('hello world');
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      .then((response) => {
+        this.props.onChange();
+        const username = response.data.username;
+        localStorage.token = username;
+        console.log('Sign In successfully!');
+      })
+      .catch(function(error) {
+        alert('Failed to sign you in!');
+        console.log(error);
+      });
 
     this.setState({
       username: '',
