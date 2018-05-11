@@ -27,7 +27,7 @@ class App extends Component {
 
     this.state = {
       authenticated: localStorage.token,
-      currentUser: localStorage.token,
+      currentUser: null,
     };
   }
 
