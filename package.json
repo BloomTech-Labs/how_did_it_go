@@ -1,0 +1,39 @@
+{
+  "name": "how_did_it_go",
+  "version": "1.0.0",
+  "description": "Join How'd It Go to find that increasing your positive presence on Social Media Marketing is easier than ever.\r With the click of a few buttons, see your reviews and ratings skyrocket!",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "heroku-postbuild": "cd frontend && yarn --production=false && yarn run build"
+  },
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "json5": "^1.0.1",
+    "jsonwebtoken": "^8.2.0",
+    "knex": "^0.14.6",
+    "mongoose": "^5.0.11",
+    "pdfkit": "^0.8.3",
+    "pdfmake": "^0.1.36",
+    "react-stripe-elements": "^1.6.0",
+    "sqlite3": "^4.0.0",
+    "stripe": "^5.8.0",
+    "supertest": "^3.0.0",
+    "svg-to-pdfkit": "^0.1.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lambda-School-Labs/how_did_it_go.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lambda-School-Labs/how_did_it_go/issues"
+  },
+  "homepage": "https://github.com/Lambda-School-Labs/how_did_it_go#readme"
+}

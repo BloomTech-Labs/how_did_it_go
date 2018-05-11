@@ -1,6 +1,9 @@
 .component {
     padding: 1.5em;
 }
+.component--hidden {
+    display: none;
+}
 .title {
     margin-block-start: 1em;
     font-size: 1.25em;
@@ -17,12 +20,23 @@
 .content {
     font-size: .75em;
 }
-.image {
+.image--smallCircle {
+    display: block;
+    border-radius: 50%;
+    border: .075em solid #757575;
+    max-height: 5em;
+    margin-left: auto;
+    margin-right: auto;
+}
+.image--visible {
     display: block;
     max-height: 200px;
     opacity: 0.5;
     margin-left: auto;
     margin-right: auto;
+}
+.image--hidden {
+    display: none;
 }
 .hint {
     text-align: center;

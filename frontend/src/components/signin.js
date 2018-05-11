@@ -1,11 +1,10 @@
-import React, { Component } from 'react';   
-import axios from 'axios';
+import React, { Component } from 'react';import axios from 'axios';
 
-const URL = "http://localhost:5000/";
+import ROOT_URL from '../utils/config.js';
 
 class SignIn extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
 
     this.state = {
       username: '',
@@ -25,18 +24,25 @@ class SignIn extends Component {
     });
   };
 
+  handleInputChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
   handleSignIn = e => {
     e.preventDefault();
 
-    axios.post(URL + 'signin', {username: this.state.username, password: this.state.password })
-        .then((response) => {
-          this.props.onChange();
-          const username = response.data.username;
-          localStorage.token = username;
-          console.log('Sign In successfully!');
+    if (this.state.username==='' || this.state.password==='') {
+      alert('Please enter username and password');
+      return;
+    }
+
+    axios.post(ROOT_URL + 'signin', {username: this.state.username, password: this.state.password })
+        .then(function(response) {
+          console.log('hello world');
         })
         .catch(function(error) {
-          alert('Failed to sign you in!');
           console.log(error);
         });
 
@@ -48,16 +54,13 @@ class SignIn extends Component {
 
   render() {
     return (
-      <div>
-        <div>
-          Email:
-          <input type="text" value={this.state.username} onChange={this.handleUsernameChange} pleaceholder="Please provide Email" />
-        </div>
-        <div>
-          Password:
-          <input type="text" value={this.state.password} onChange={this.handlePasswordChange} pleaceholder="Please provide Password" />
-        </div> 
-        <button onClick={this.handleSignIn}>Sign In</button> 
+      <div className='component'>
+        <div className='title'>Sign In</div>
+        <form onSubmit={this.handleSignIn}>
+          <div><input type="text" className='form--item' name='username' value={this.state.username} onChange={this.handleInputChange} placeholder="Email Address" required/></div>
+          <div><input type="password" className='form--item' name='password' value={this.state.password} onChange={this.handleInputChange} placeholder="Password" required/></div> 
+          <button className='button' onClick={this.handleSignIn}>Sign In</button> 
+        </form>
       </div>
     ) 
   }

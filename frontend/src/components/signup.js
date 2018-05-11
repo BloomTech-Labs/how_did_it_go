@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-const URL = "http://localhost:5000/";
+import ROOT_URL from '../utils/config.js';
 
 class SignUp extends Component {
   constructor() {
@@ -14,36 +14,29 @@ class SignUp extends Component {
     };
   }
   
-  handleUsernameChange = e => {
-    this.setState({
-      username: e.target.value
-    });
-  };
 
-  handlePasswordChange = e => {
+  handleInputChange = (e)=> {
     this.setState({
-      password: e.target.value
-    });
-  };
-
-  handleConfirmPWChange = e => {
-    this.setState({
-      confirmPW: e.target.value
-    });
+      [e.target.name]: e.target.value
+    })
   };
 
   handleSubmit = e => {
     e.preventDefault();
+    
+    if (this.state.username===''||this.state.password===''||this.state.confirmPW==='') {
+      alert('Please enter all required fields');
+      return;
+    }
 
     if (this.state.password !== this.state.confirmPW) {
       alert('Password and confirmed Password do not match!!! Please enter one more time.');
     } else {
-      axios.post(URL + 'signup', {username: this.state.username, password: this.state.password })
+      axios.post(ROOT_URL + 'signup', {username: this.state.username, password: this.state.password })
         .then(function(response) {
-          console.log('Sign up successfully!');
+          console.log('hello world');
         })
         .catch(function(error) {
-          alert('Failed to sign you up!');
           console.log(error);
         });
     }
@@ -57,20 +50,14 @@ class SignUp extends Component {
 
   render() {
     return (
-      <div>
-        <div>
-          Email:
-          <input type="text" value={this.state.username} onChange={this.handleUsernameChange} pleaceholder="Please provide Email" />
-        </div>
-        <div>
-          Password:
-          <input type="text" value={this.state.password} onChange={this.handlePasswordChange} pleaceholder="Please provide Password" />
-        </div> 
-        <div>
-          Confirm Password:
-          <input type="text" value={this.state.confirmPW} onChange={this.handleConfirmPWChange} pleaceholder="Please provide Password" />
-        </div>
-        <button onClick={this.handleSubmit}>Submit</button> 
+      <div className='component'>
+        <div className='title'>Sign Up</div>
+        <form onSubmit={this.handleSubmit}>
+          <div><input type="text" name='username' value={this.state.username} onChange={this.handleInputChange} placeholder="Email Address" required/></div>
+          <div><input type="password" name='password' value={this.state.password} onChange={this.handleInputChange} placeholder="Password" required/></div> 
+          <div><input type="password" name='confirmPW' value={this.state.confirmPW} onChange={this.handleInputChange} placeholder="Re-enter Password" required/></div>
+          <button onClick={this.handleSubmit}>Submit</button> 
+        </form>
       </div>
     ) 
   };  
