@@ -50,6 +50,7 @@ class Billing extends Component {
 
     render() {
         return(
+<<<<<<< HEAD
             <div>
                 <div className='title'>Change Your Billing Information</div>
                 <form>
@@ -57,6 +58,10 @@ class Billing extends Component {
                   <input type='text' className='form--item' name='address' placeholder='Address' />
                   <button type='button' className='button'>Update</button>
                 </form>
+=======
+            <div className='component'>
+                <div className='title'>Change Your Billing Information</div>
+>>>>>>> 052da98df943f4ad45ec6829ea7f47001129744e
             </div>
         );
     }

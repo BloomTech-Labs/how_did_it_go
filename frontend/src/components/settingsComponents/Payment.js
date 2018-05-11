@@ -7,7 +7,11 @@ class Payment extends Component{
         return (
             <div>
                 {/*STRIPE API MAKE A PAYMENT*/}
+<<<<<<< HEAD
                 <div className='title'>Make a Payment</div>
+=======
+                <div className='header'>Make a Payment</div>
+>>>>>>> 052da98df943f4ad45ec6829ea7f47001129744e
                     <Elements>
                         <InjectedCheckoutForm />
                     </Elements>
