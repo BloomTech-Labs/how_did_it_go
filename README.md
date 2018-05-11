@@ -19,12 +19,19 @@ With the click of a few buttons, see your reviews and ratings skyrocket!!
 
 #### Built With
 Node JS - Development platform
+
 React - JavaScript UI library
+
 SQLite - Persistent Storage
-#### Authors
+#### Authors (alphabetical by last name)
 Xiaoping Li
+
+Vinnie Scalco
+
+
 Abby Tiffany
 
 #### Acknowledgements
 Boomer - our wonderful PM
+
 Ryan Holdaway - the man with the big ideas

@@ -50,8 +50,13 @@ class Billing extends Component {
 
     render() {
         return(
-            <div className='component'>
+            <div>
                 <div className='title'>Change Your Billing Information</div>
+                <form>
+                  <input type='text' className='form--item' name='businessName' placeholder='Business Name' />
+                  <input type='text' className='form--item' name='address' placeholder='Address' />
+                  <button type='button' className='button'>Update</button>
+                </form>
             </div>
         );
     }
