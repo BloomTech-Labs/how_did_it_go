@@ -3,19 +3,17 @@ import { Link } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.min.css';
 import './css/navigation.css';
 
+
 class Navigation extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    
     this.state = {
       visible: false,
-      user: null,
     };
-  }
-  componentDidMount() {
   }
   
   itemsToggle = () => {
-    console.log('test');
     const visible = !this.state.visible;
     this.setState({ visible });
   }
@@ -27,11 +25,11 @@ class Navigation extends React.Component {
   }
 
   dynamicLinks() {
-    if (true) {
+    if (this.props.authenticated === false) {
       return [
         <Link key={1} to=''>Home</Link>,
-        <Link key={2} to="/signup">Sign Up</Link>,
         <Link key={3} to="/signin">Sign In</Link>,
+        <Link key={2} to="/signup">Sign Up</Link>,
         <Link key={4} to='/team'>Team</Link>,   
       ];
     } else {

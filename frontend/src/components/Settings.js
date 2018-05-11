@@ -7,9 +7,10 @@ import UsernameAndPassword from './settingsComponents/UsernameAndPassword';
 
 
 class Settings extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      currentUser: this.props.user,
       currentItem: 0,
       items: [
         <Message />,
@@ -27,17 +28,15 @@ class Settings extends Component {
   }
 
   render() {
+    console.log('current user is: ', this.props.user); //just for testing, but this works!!
     return (
     <div className='component'>
-      <div className='sidebar'>
-        <div className='title header'>Settings</div>
-        <button type='button' className='button sidebar--button' name='0' onClick={this.toggleItem}>Messages</button>
-        <button type='button' className='button sidebar--button' name='1' onClick={this.toggleItem}>Update Username and Password</button>
-        <button type='button' className='button sidebar--button' name='2' onClick={this.toggleItem}>Update Billing Info</button>
-        <button type='button' className='button sidebar--button' name='3' onClick={this.toggleItem}>Make a Payment</button>
-      </div>
+      <button type='button' name='0' onClick={this.toggleItem}>Messages</button>
+      <button type='button' name='1' onClick={this.toggleItem}>Update Username and Password</button>
+      <button type='button' name='2' onClick={this.toggleItem}>Update Billing Info</button>
+      <button type='button' name='3' onClick={this.toggleItem}>Make a Payment</button>
 
-      <div className='settings--mainScreen'>
+      <div>
         {this.state.items[this.state.currentItem]}
       </div>
    

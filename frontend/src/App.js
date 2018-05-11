@@ -22,20 +22,42 @@ import logo from './images/HIGTextLogoQMTransparent.png';
 
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      authenticated: localStorage.token,
+      currentUser: null,
+    };
+  }
+
+  onSignInChange = () => {
+    this.setState({
+      authenticated: true,
+      currentUser: localStorage.token,
+    });
+  }
+
+  onSignOutChange = () => {
+    this.setState({
+      authenticated: false,
+      currentUser: null,
+    });
+  }
 
   render() {
     return (
       <div>
-        <img src={logo} className='logo' alt="How'd It Go" />
-        <Navigation />
+        <img src={logo} className='logo' alt='logo' />
+        <Navigation authenticated={this.state.authenticated} user={this.state.currentUser} />
         <Route path='/' exact     component={Home}  />
         <Route path='/signup'     component={SignUp} />
-        <Route path='/signin'     component={SignIn} />
-        <Route path='/signout'     component={SignOut} />
+        <Route path='/signin'     render={() => <SignIn onChange={this.onSignInChange} />} />
+        <Route path='/signout'    render={() => <SignOut onChange={this.onSignOutChange} />} />
         <Route path='/invitations'component={Invitations} />
         <Route path='/stats'      component={Stats} />
       <StripeProvider apiKey="pk_test_lYWOs3y88CPr5JkrwkMt7Cvr">
-        <Route path='/settings'   component={Settings} />
+        <Route path='/settings'   render={(props) => <Settings {...props} user={this.state.currentUser} />} />
       </StripeProvider>
         <Route path='/team'       component={Team} />
       </div>

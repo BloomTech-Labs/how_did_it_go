@@ -37,10 +37,10 @@ server.use(
 /**PLEASE DON'T DELETE THE COMMAND OUT CODE BELOW, IT IS THE AUTH MIDDLEWARE, WILL USE AFTER WE TEST ALL ENDPOINTS */
 //validateUser middleware will work on all routes, but exempt '/signin' and 'signup'
 
-// server.use((req, res, next) => {
-//     if (req.originalUrl === '/signin' || req.originalUrl === '/signup') return next();
-//     return middleware.validateUser(req, res, next);
-// });
+server.use((req, res, next) => {
+    if (req.originalUrl === '/signin' || req.originalUrl === '/signup' || req.originalUrl === '/user') return next();
+    return middleware.validateUser(req, res, next);
+});
 
 
 // imported Endpoints for Companies, Customers and Twilio API
@@ -75,7 +75,7 @@ server.post('/signin', (req, res) => {
                     if (!result) throw new Error();
                     req.session.username = username;
                     req.user = user;
-                    res.json({ success: true });
+                    res.json({ success: true, username });
                 })  
                 .catch(err => res.json(err));
         });
