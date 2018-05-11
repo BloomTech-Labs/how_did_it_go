@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-const URL = "http://localhost:5000/";
+import ROOT_URL from '../utils/config.js';
 
 class SignOut extends Component {
   
