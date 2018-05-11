@@ -28,10 +28,9 @@ class Settings extends Component {
   }
 
   render() {
-    console.log('current user is: ', this.props.user);
+    console.log('current user is: ', this.props.user); //just for testing, but this works!!
     return (
     <div className='component'>
-      <div>{this.state.currentUser}</div>
       <button type='button' name='0' onClick={this.toggleItem}>Messages</button>
       <button type='button' name='1' onClick={this.toggleItem}>Update Username and Password</button>
       <button type='button' name='2' onClick={this.toggleItem}>Update Billing Info</button>

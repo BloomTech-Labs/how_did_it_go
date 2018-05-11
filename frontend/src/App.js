@@ -34,12 +34,14 @@ class App extends Component {
   onSignInChange = () => {
     this.setState({
       authenticated: true,
+      currentUser: localStorage.token,
     });
   }
 
   onSignOutChange = () => {
     this.setState({
       authenticated: false,
+      currentUser: null,
     });
   }
 
@@ -47,7 +49,7 @@ class App extends Component {
     return (
       <div>
         <img src={logo} className='logo' alt='logo' />
-        <Navigation authenticated={this.state.authenticated} />
+        <Navigation authenticated={this.state.authenticated} user={this.state.currentUser} />
         <Route path='/' exact     component={Home}  />
         <Route path='/signup'     component={SignUp} />
         <Route path='/signin'     render={() => <SignIn onChange={this.onSignInChange} />} />
@@ -55,7 +57,7 @@ class App extends Component {
         <Route path='/invitations'component={Invitations} />
         <Route path='/stats'      component={Stats} />
       <StripeProvider apiKey="pk_test_lYWOs3y88CPr5JkrwkMt7Cvr">
-        <Route path='/settings'   render={(props) => <Settings {...props} user={this.state.currentUser | null} />} />
+        <Route path='/settings'   render={(props) => <Settings {...props} user={this.state.currentUser} />} />
       </StripeProvider>
         <Route path='/team'       component={Team} />
       </div>

@@ -14,7 +14,6 @@ class Navigation extends React.Component {
   }
   
   itemsToggle = () => {
-    console.log('test');
     const visible = !this.state.visible;
     this.setState({ visible });
   }
