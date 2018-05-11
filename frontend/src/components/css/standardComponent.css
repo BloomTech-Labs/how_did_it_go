@@ -1,6 +1,9 @@
 .component {
     padding: 1.5em;
 }
+.component--hidden {
+    display: none;
+}
 .title {
     margin-block-start: 1em;
     font-size: 1.25em;

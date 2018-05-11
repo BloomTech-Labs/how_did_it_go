@@ -14,9 +14,9 @@ import Invitations from './components/Invitations';
 import Stats from './components/Stats';
 import Settings from './components/Settings';
 import Team from './components/Team';
-import SignUp from './components/signup';
-import SignIn from './components/signin';
-import SignOut from './components/signout';
+import SignUp from './components/Signup';
+import SignIn from './components/Signin';
+import SignOut from './components/Signout';
 
 import logo from './images/HIGTextLogoQMTransparent.png';
 

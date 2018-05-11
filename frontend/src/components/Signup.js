@@ -14,26 +14,20 @@ class SignUp extends Component {
     };
   }
   
-  handleUsernameChange = e => {
-    this.setState({
-      username: e.target.value
-    });
-  };
 
-  handlePasswordChange = e => {
+  handleInputChange = (e)=> {
     this.setState({
-      password: e.target.value
-    });
-  };
-
-  handleConfirmPWChange = e => {
-    this.setState({
-      confirmPW: e.target.value
-    });
+      [e.target.name]: e.target.value
+    })
   };
 
   handleSubmit = e => {
     e.preventDefault();
+    
+    if (this.state.username===''||this.state.password===''||this.state.confirmPW==='') {
+      alert('Please enter all required fields');
+      return;
+    }
 
     if (this.state.password !== this.state.confirmPW) {
       alert('Password and confirmed Password do not match!!! Please enter one more time.');
@@ -56,20 +50,14 @@ class SignUp extends Component {
 
   render() {
     return (
-      <div>
-        <div>
-          Email:
-          <input type="text" value={this.state.username} onChange={this.handleUsernameChange} pleaceholder="Please provide Email" />
-        </div>
-        <div>
-          Password:
-          <input type="password" value={this.state.password} onChange={this.handlePasswordChange} pleaceholder="Please provide Password" />
-        </div> 
-        <div>
-          Confirm Password:
-          <input type="password" value={this.state.confirmPW} onChange={this.handleConfirmPWChange} pleaceholder="Please provide Password" />
-        </div>
-        <button onClick={this.handleSubmit}>Submit</button> 
+      <div className='component'>
+        <div className='title'>Sign Up</div>
+        <form onSubmit={this.handleSubmit}>
+          <div><input type="text" name='username' value={this.state.username} onChange={this.handleInputChange} placeholder="Email Address" required/></div>
+          <div><input type="password" name='password' value={this.state.password} onChange={this.handleInputChange} placeholder="Password" required/></div> 
+          <div><input type="password" name='confirmPW' value={this.state.confirmPW} onChange={this.handleInputChange} placeholder="Re-enter Password" required/></div>
+          <button onClick={this.handleSubmit}>Submit</button> 
+        </form>
       </div>
     ) 
   };  
