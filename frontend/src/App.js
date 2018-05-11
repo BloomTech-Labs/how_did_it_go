@@ -20,21 +20,35 @@ import logo from './HIGTextLogoQMTransparent.png';
 
 
 class App extends Component {
-  // constructor() {
-  //   this.state = {
-  //     authenticated: false,
-  //   };
-  // }
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      authenticated: localStorage.token,
+    };
+  }
+
+  onSignInChange = () => {
+    this.setState({
+      authenticated: true,
+    });
+  }
+
+  onSignOutChange = () => {
+    this.setState({
+      authenticated: false,
+    });
+  }
 
   render() {
     return (
       <div>
         <img src={logo} className='logo' />
-        <Navigation />
+        <Navigation authenticated={this.state.authenticated} />
         <Route path='/' exact     component={Home}  />
         <Route path='/signup'     component={SignUp} />
-        <Route path='/signin'     component={SignIn} />
-        <Route path='/signout'     component={SignOut} />
+        <Route path='/signin'     render={() => <SignIn onChange={this.onSignInChange} />} />
+        <Route path='/signout'    render={() => <SignOut onChange={this.onSignOutChange} />} />
         <Route path='/invitations'component={Invitations} />
         <Route path='/stats'      component={Stats} />
         <Route path='/settings'   component={Settings} />

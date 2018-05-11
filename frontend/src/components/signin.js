@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react';   
 import axios from 'axios';
 
 const URL = "http://localhost:5000/";
 
 class SignIn extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       username: '',
@@ -29,10 +29,10 @@ class SignIn extends Component {
     e.preventDefault();
 
     axios.post(URL + 'signin', {username: this.state.username, password: this.state.password })
-        .then(function(response) {
+        .then((response) => {
+          this.props.onChange();
           const username = response.data.username;
           localStorage.token = username;
-          console.log(localStorage.token);
           console.log('Sign In successfully!');
         })
         .catch(function(error) {
@@ -40,10 +40,10 @@ class SignIn extends Component {
           console.log(error);
         });
 
-    // this.setState({
-    //   username: '',
-    //   password: '',
-    // });
+    this.setState({
+      username: '',
+      password: '',
+    });
   }
 
   render() {

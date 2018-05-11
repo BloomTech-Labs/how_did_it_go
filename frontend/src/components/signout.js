@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 const URL = "http://localhost:5000/";
-class SignOut extends Component {
 
-  componentWillMount() {
+class SignOut extends Component {
+  
+  componentDidMount() {
     axios.post(URL + 'signout')
-        .then(function(response) {
-          console.log(response.data);
+        .then((response) => {
+          this.props.onChange();
+          delete localStorage.token;
           console.log('Sign out successfully!');
         })
-        .catch(function(error) {
+        .catch((error) => {
           alert('Failed to sign you out!');
           console.log(error);
         });

@@ -1,24 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import 'font-awesome/css/font-awesome.min.css';
 import './css/navigation.css';
 
 
-const URL = "http://localhost:5000/";
-
 class Navigation extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       visible: false,
-      username: null,
     };
-  }
-
-  componentDidMount() {
-    this.setState({ username: localStorage.token });
-    console.log(this.state.username);
   }
   
   itemsToggle = () => {
@@ -34,7 +25,7 @@ class Navigation extends React.Component {
   }
 
   dynamicLinks() {
-    if (this.state.username === null || this.state.username === undefined) {
+    if (this.props.authenticated === false) {
       return [
         <Link key={1} to=''>Home</Link>,
         <Link key={3} to="/signin">Sign In</Link>,
