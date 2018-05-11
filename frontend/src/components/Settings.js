@@ -7,9 +7,10 @@ import UsernameAndPassword from './settingsComponents/UsernameAndPassword';
 
 
 class Settings extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      currentUser: this.props.user,
       currentItem: 0,
       items: [
         <Message />,
@@ -27,8 +28,10 @@ class Settings extends Component {
   }
 
   render() {
+    console.log('current user is: ', this.props.user);
     return (
     <div className='component'>
+      <div>{this.state.currentUser}</div>
       <button type='button' name='0' onClick={this.toggleItem}>Messages</button>
       <button type='button' name='1' onClick={this.toggleItem}>Update Username and Password</button>
       <button type='button' name='2' onClick={this.toggleItem}>Update Billing Info</button>

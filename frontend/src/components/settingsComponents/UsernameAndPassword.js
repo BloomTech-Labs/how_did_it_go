@@ -26,11 +26,7 @@ class UsernameAndPassword extends Component {
         return (
             <div>
                 {/* CHANGE USERNAME AND PASSWORD */}
-<<<<<<< HEAD
                 <div className='title'>Change UserName and Password</div>
-=======
-                <div className='header'>Change UserName and Password</div>
->>>>>>> 052da98df943f4ad45ec6829ea7f47001129744e
                 <form>
                     <div><input className='form--item' type='password' placeholder='Old Password' name='oldPW' value={this.state.oldPW} onChange={this.handleInputChange} /></div>
                     <div><input className='form--item' type='password' placeholder='New Password' name='newPW' value={this.state.newPW} onChange={this.handleInputChange} /></div>

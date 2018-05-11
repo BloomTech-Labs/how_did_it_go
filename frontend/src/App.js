@@ -27,6 +27,7 @@ class App extends Component {
 
     this.state = {
       authenticated: localStorage.token,
+      currentUser: localStorage.token,
     };
   }
 
@@ -45,7 +46,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <img src={logo} className='logo' />
+        <img src={logo} className='logo' alt='logo' />
         <Navigation authenticated={this.state.authenticated} />
         <Route path='/' exact     component={Home}  />
         <Route path='/signup'     component={SignUp} />
@@ -54,7 +55,7 @@ class App extends Component {
         <Route path='/invitations'component={Invitations} />
         <Route path='/stats'      component={Stats} />
       <StripeProvider apiKey="pk_test_lYWOs3y88CPr5JkrwkMt7Cvr">
-        <Route path='/settings'   component={Settings} />
+        <Route path='/settings'   render={(props) => <Settings {...props} user={this.state.currentUser | null} />} />
       </StripeProvider>
         <Route path='/team'       component={Team} />
       </div>
