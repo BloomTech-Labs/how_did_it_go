@@ -7,6 +7,7 @@ import './css/navigation.css';
 class Navigation extends React.Component {
   constructor(props) {
     super(props);
+    
     this.state = {
       visible: false,
     };

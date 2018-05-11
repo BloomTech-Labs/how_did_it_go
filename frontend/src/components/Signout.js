@@ -6,7 +6,7 @@ import ROOT_URL from '../utils/config.js';
 class SignOut extends Component {
   
   componentDidMount() {
-    axios.post(URL + 'signout')
+    axios.post(ROOT_URL + 'signout')
         .then((response) => {
           this.props.onChange();
           delete localStorage.token;
