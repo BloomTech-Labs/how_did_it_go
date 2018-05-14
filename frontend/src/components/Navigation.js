@@ -25,7 +25,7 @@ class Navigation extends React.Component {
   }
 
   dynamicLinks() {
-    if (this.props.authenticated === false) {
+    if (this.props.authenticated === false || localStorage.token === undefined) {
       return [
         <Link key={1} to=''>Home</Link>,
         <Link key={3} to="/signin">Sign In</Link>,

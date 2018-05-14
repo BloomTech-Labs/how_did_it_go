@@ -33,7 +33,7 @@ class SignUp extends Component {
       alert('Password and confirmed Password do not match!!! Please enter one more time.');
     } else {
       axios.post(ROOT_URL + 'signup', {username: this.state.username, password: this.state.password })
-        .then((response) => {
+        .then((result) => {
           console.log('Sign Up successfully!');
         })
         .catch((error) => {
