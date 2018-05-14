@@ -52,6 +52,7 @@ class Home extends Component {
         </div>
         <div className='header'>Sign up today, and find out: How'd It Go?</div>
       </div> 
+      
     );
   }
 } 
