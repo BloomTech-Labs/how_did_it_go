@@ -1,11 +1,13 @@
 {
   "name": "how_did_it_go",
   "version": "1.0.0",
-  "description": "Join How'd It Go to find that increasing your positive presence on Social Media Marketing is easier than ever.\r With the click of a few buttons, see your reviews and ratings skyrocket!",
+  "description":
+    "Join How'd It Go to find that increasing your positive presence on Social Media Marketing is easier than ever.\r With the click of a few buttons, see your reviews and ratings skyrocket!",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "heroku-postbuild": "cd frontend && yarn --production=false && yarn run build"
+    "start": "node index.js",
+    "heroku-postbuild":
+      "cd frontend && npm install --only=dev && npm install && npm run build"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",

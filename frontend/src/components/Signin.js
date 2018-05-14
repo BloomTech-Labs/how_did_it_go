@@ -20,24 +20,24 @@ class SignIn extends Component {
 
   handleSignIn = e => {
     e.preventDefault();
-
+ 
     if (this.state.username==='' || this.state.password==='') {
       alert('Please enter username and password');
       return;
     }
-
+ 
     axios.post(ROOT_URL + 'signin', {username: this.state.username, password: this.state.password })
-        .then((response) => {
-          this.props.onChange();
-          const username = response.data.username;
-          localStorage.token = username;
-          console.log('Sign In successfully!');
-        })
-        .catch((error) => {
-          alert('Failed to sign you in!');
-          console.log(error);
-        });
-
+      .then((response) => {
+        this.props.onChange();
+        const username = response.data.username;
+        localStorage.token = username;
+        console.log('Sign In successfully!');
+      })
+      .catch((error) => {
+        alert('Failed to sign you in!');
+        console.log(error);
+      });
+ 
     this.setState({
       username: '',
       password: '',

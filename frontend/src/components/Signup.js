@@ -28,7 +28,7 @@ class SignUp extends Component {
       alert('Please enter all required fields');
       return;
     }
-
+ 
     if (this.state.password !== this.state.confirmPW) {
       alert('Password and confirmed Password do not match!!! Please enter one more time.');
     } else {
