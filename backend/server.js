@@ -13,9 +13,11 @@ const PORT = process.env.PORT || 5000;
 // Imported API Endpoints
 const companiesEndpoints = require('./companies/companiesEndpoints.js');
 const customersEndpoints = require('./customers/customersEndpoints.js');
+const platFormsEndpoints = require('./platForms/platFormsEndpoints.js');
 const smsEndpoints = require('./sms/smsEndpoints.js');   
 const usersEndpoints = require('./users/usersEndpoints.js');
 const users = require('./users/usersControllers');
+
 
 const server = express();
 
@@ -44,10 +46,12 @@ server.use((req, res, next) => {
 
 
 // imported Endpoints for Companies, Customers and Twilio API
+server.use('', usersEndpoints);
 server.use('/companies', companiesEndpoints);
 server.use('/customers', customersEndpoints);
+server.use('/platForms', platFormsEndpoints);
 server.use('/sms', smsEndpoints);
-server.use('', usersEndpoints);
+
 
 
 // ******************* SIGN IN & SIGN OUT ********************************************
