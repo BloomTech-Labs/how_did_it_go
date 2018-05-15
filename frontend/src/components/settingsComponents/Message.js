@@ -26,15 +26,15 @@ class Message extends Component{
         companyId = '5aec8c2e3ff7d51c1039b0bb'; // testing purposes
         axios.get(ROOT_URL + 'companies/id/' + companyId)
             .then(response => {
-            //console.log(response.data.defaultMessage);
-            company = response.data;
-            this.setState({
-                message: company.defaultMessage,
-                managerFirstName: company.contactFirstName,
-                managerLastName: company.contactLastName,
-                businessName: company.name,
-                reviewSite: company.reviewSite,
-            });
+                //console.log(response.data.defaultMessage);
+                company = response.data;
+                this.setState({
+                    message: company.defaultMessage,
+                    managerFirstName: company.contactFirstName,
+                    managerLastName: company.contactLastName,
+                    businessName: company.name,
+                    reviewSite: company.reviewSite,
+                });
             })
             .catch(error => {
             console.log('error here');
