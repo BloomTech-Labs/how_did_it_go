@@ -40,7 +40,7 @@ server.use(
 //validateUser middleware will work on all routes, but exempt '/signin' and 'signup'
 
 server.use((req, res, next) => {
-    if (req.originalUrl === '/signin' || req.originalUrl === '/signup' || req.originalUrl === '/user') return next();
+    if (req.originalUrl === '/signin' || req.originalUrl === '/signup') return next();
     return middleware.validateUser(req, res, next);
 });
 
@@ -67,11 +67,7 @@ server.post('/signin', (req, res) => {
     users
         .getByUsername(username)
         .then(user => {
-            if (!user) {
-                res.json({ error: "User does not exist!"});
-                return;
-            }
-            
+
             const hashedPW = user.password;
             bcrypt
                 .compare(password, hashedPW)
@@ -81,15 +77,12 @@ server.post('/signin', (req, res) => {
                     req.user = user;
                     res.json({ success: true, username });
                 })  
-                .catch(err => res.json(err));
-        });
+                .catch(err => res.json({ message: "Failed to sign you in", err}));
+        })
+        .catch(error => res.json({message: "Error happens when try to sign you in", error }));
 });
 
 server.post('/signout', (req, res) => {
-  if (!req.session.username) {
-      res.json({ error: "User is not logged in!"});
-      return;
-  }
   req.session.username = null;
   res.json(req.session);
 });
