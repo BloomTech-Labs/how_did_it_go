@@ -13,6 +13,12 @@ module.exports = {
         return db('companies')
             .where('name', name);
     },
+    getCompanyPlatforms: (id) => {
+        return db('companies as c')
+            .leftOuterJoin('platForms as p', 'c.id', 'p.companyID')
+            .select('*')
+            .where('c.id', id);
+    },
     insertCompany: (company) => {
         return db('companies')
             .insert(company)
