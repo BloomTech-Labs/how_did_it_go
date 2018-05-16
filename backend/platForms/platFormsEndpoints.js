@@ -71,7 +71,7 @@ platFormsRouter.get('/:id/shortURLs/clicks', (req, res) => {
                     return bitly.clicks(result.data.url)
                         .then(result => {
                             console.log(result);
-                            return result.data;
+                            return result.data.clicks;
                         }) 
                 })
                 .catch(error => {

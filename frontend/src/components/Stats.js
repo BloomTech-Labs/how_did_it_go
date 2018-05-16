@@ -17,6 +17,26 @@ class Stats extends Component {
   }
 
   componentDidMount() {
+    // axios get total clicks number
+    const companyID = 2;
+    axios.get(ROOT_URL + 'platForms/' + companyID + '/shortURLs/clicks')
+      .then(response => {
+        const clicksList = response.data;
+        let count = 0;
+        const updatedData = [];
+        clicksList.forEach(item => {
+          count += item[0].global_clicks;
+          updatedData.push({ url: item[0].short_url, clicks: item[0].global_clicks });
+        });
+        
+        this.setState({ totalClicks: count, data: updatedData });
+
+        console.log(this.state.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
     // find the company's name -- needs to be linked with sign up/sign in data
     axios.get(ROOT_URL + 'companies/name/' + companyName)
       .then(response => {
@@ -39,14 +59,6 @@ class Stats extends Component {
   
   }
   
-  updateClicks() {
-    let count = 0;
-    this.state.data.map(item => {
-      count = item.requestSent.clicked ? count+1 : count;
-      return null;
-    })
-    this.setState({ totalClicks: count });
-  }
 
   toggle = (e) => {
     const details = !this.state.details;
@@ -61,10 +73,17 @@ class Stats extends Component {
       <div className='content'>Total Clicks: {this.state.totalClicks}</div>
       <div className='content customerStats' onClick={this.toggle}>{ this.state.details ? 
         <div>
-          { this.state.data.map((item, index) => 
+          {/* { this.state.data.map((item, index) => 
             <div key = {index}>{ item.firstName  + ' ' + item.lastName } : Clicked the Link? { item.requestSent.clicked ? 'Yes' : 'No' }</div>
             ) 
-          }
+          } */}
+          {this.state.data.map((item, index) => {
+            return (
+              <div key={index}>
+                {item.url}:{item.clicks}
+              </div>
+            );
+          })}
         </div>
         : 'Click Here for More Details' } </div>
     </div> 
