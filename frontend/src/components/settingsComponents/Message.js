@@ -108,7 +108,7 @@ class Message extends Component{
                     <option value='https://www.tripadvisor.com/'>TripAdvisor</option>
                 </select> */}
 
-                <select>
+                <select className='dropdownList' id ='selectReviewSite' name='reviewSite' onChange={this.handleInputChange}>
                     <option value ='' selected disabled>Select A Review Site</option>
                     {this.state.platForms.map(platForm => {
                         return (
