@@ -13,12 +13,14 @@
   "dependencies": {
     "bcrypt": "^2.0.1",
     "bcrypt-nodejs": "0.0.3",
+    "bitly": "^5.0.12",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "knex": "^0.14.6",
+    "node-pre-gyp": "^0.10.0",
     "sqlite3": "^4.0.0",
     "twilio": "^3.16.0"
   }

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 
 const ROOT_URL = 'http://localhost:5000/';
 
+
 let companyId;
 let defaultMessage;
 let company;
@@ -19,7 +20,21 @@ class Message extends Component{
             message: '',
             billingVisible: false,
             updateUsernameAndPasswordVisible: false,
+            platForms: [],
         };
+    }
+
+    componentDidMount() {
+        const companyID = 1;
+        axios.get(ROOT_URL + 'platForms/' + companyID + '/shortURLs')
+            .then(result => {
+                console.log(result);
+                this.setState({ platForms: result.data });
+                console.log(this.state.platForms);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     componentWillMount() {
@@ -86,11 +101,22 @@ class Message extends Component{
                 <div><input className='form--item' type='text' name='businessName' value={this.state.businessName} onChange={this.handleInputChange} /></div>
 
                 {/* creates a dropdown menu of possible review sites to choose from */}
-                <select className='dropdownList' id ='selectReviewSite' name='reviewSite' onChange={this.handleInputChange}>
+                {/* <select className='dropdownList' id ='selectReviewSite' name='reviewSite' onChange={this.handleInputChange}>
                     <option value ='null' selected disabled>Select A Review Site</option>
                     <option value='https://www.yelp.com/'>Yelp</option>
                     <option value='https://www.google.com/business/'>Google Places</option>
                     <option value='https://www.tripadvisor.com/'>TripAdvisor</option>
+                </select> */}
+
+                <select className='dropdownList' id ='selectReviewSite' name='reviewSite' onChange={this.handleInputChange}>
+                    <option value ='' selected disabled>Select A Review Site</option>
+                    {this.state.platForms.map(platForm => {
+                        return (
+                            <option key={platForm.global_hash} value={platForm.url}>
+                                {platForm.long_url}
+                            </option>
+                        );
+                    })}
                 </select>
 
                 {/* allows user to edit or completely re-write the pre-programmed message text */}
