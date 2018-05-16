@@ -7,9 +7,9 @@ class SignOut extends Component {
   
   componentDidMount() {
     axios.post(ROOT_URL + 'signout')
-        .then((response) => {
-          this.props.onChange();
+        .then((result) => {
           delete localStorage.token;
+          this.props.onChange();
           console.log('Sign out successfully!');
         })
         .catch((error) => {

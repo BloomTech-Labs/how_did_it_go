@@ -56,6 +56,43 @@ companiesRouter.get('name/:name', (req, res) => {
         });
 });
 
+companiesRouter.get('/:id/platforms', (req, res) => {
+    const { id } = req.params;
+
+    companies
+        .getCompanyPlatforms(id)
+        .then(data => {
+            const detail = {
+                name: null,
+                address: null,
+                contactFirstName: null,
+                contactLastName: null,
+                contactEmail: null,
+                defaultMessage: null,
+                paymentIsCurrent: null,
+                userID: null,
+                platForms: []
+            }
+
+            data.forEach(datum => {
+                detail.name = datum.name;
+                detail.address = datum.address;
+                detail.contactFirstName = datum.contactFirstName;
+                detail.contactLastName = datum.contactLastName;
+                detail.contactEmail = datum.contactEmail;
+                detail.defaultMessage = datum.defaultMessage;
+                detail.paymentIsCurrent = datum.paymentIsCurrent;
+                detail.userID = datum.userID;
+                detail.platForms.push({ id: datum.id, url: datum.url, resource: datum.resource });
+            });
+
+            res.status(200).json(detail);
+        })
+        .catch(error => {
+            res.status(500).json({message: "Error here", error});
+        });
+});
+
 companiesRouter.put('id/:id', (req, res) => {
     const { id } = req.params;
     const company = req.body;

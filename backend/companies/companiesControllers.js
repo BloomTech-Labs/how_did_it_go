@@ -7,15 +7,22 @@ module.exports = {
     },
     getCompanyById: (companyId) => {
         return db('companies')
-            .where('_id', companyId);
+            .where('id', companyId);
     },
     getCompanyByUserId: (userId) => {
         return db('companies')
-            .where('userID', userId);
+            .where('userID', userId)
+            .first();
     },
     getCompanyByName: (name) => {
         return db('companies')
             .where('name', name);
+    },
+    getCompanyPlatforms: (id) => {
+        return db('companies as c')
+            .leftOuterJoin('platForms as p', 'c.id', 'p.companyID')
+            .select('*')
+            .where('c.id', id);
     },
     insertCompany: (company) => {
         return db('companies')

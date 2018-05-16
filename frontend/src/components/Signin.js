@@ -1,4 +1,6 @@
-import React, { Component } from 'react';import axios from 'axios';
+import React, { Component } from 'react';
+import axios from 'axios';
+
 
 import ROOT_URL from '../utils/config.js';
 
@@ -9,6 +11,7 @@ class SignIn extends Component {
     this.state = {
       username: '',
       password: '',
+      error: null,
     };
   }
 
@@ -25,23 +28,29 @@ class SignIn extends Component {
       alert('Please enter username and password');
       return;
     }
- 
-    axios.post(ROOT_URL + 'signin', {username: this.state.username, password: this.state.password })
-      .then((response) => {
-        this.props.onChange();
-        const username = response.data.username;
-        localStorage.token = username;
-        console.log('Sign In successfully!');
+    
+    const data = {
+      username: this.state.username, 
+      password: this.state.password
+    };
+    
+    axios.post(ROOT_URL + 'signin', data)
+      .then((result) => {
+        console.log(result);
+        if (result.data.username) {
+          const username = result.data.username;
+          localStorage.token = username;
+          this.props.onChange();
+          console.log('Sign In successfully!');
+        } else {
+          this.setState({ error: "Error happens when try to sign you in! Please check email and password!"});
+          return;
+       }  
       })
       .catch((error) => {
         alert('Failed to sign you in!');
         console.log(error);
       });
- 
-    this.setState({
-      username: '',
-      password: '',
-    });
   }
 
   render() {
@@ -53,6 +62,7 @@ class SignIn extends Component {
           <div><input type="password" className='form--item' name='password' value={this.state.password} onChange={this.handleInputChange} placeholder="Password" required/></div> 
           <button className='button' onClick={this.handleSignIn}>Sign In</button> 
         </form>
+        {this.state.error}
       </div>
     ) 
   }

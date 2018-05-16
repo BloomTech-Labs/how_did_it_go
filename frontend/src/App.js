@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { Component } from 'react';
 import {Route} from 'react-router-dom';
 
@@ -20,13 +21,15 @@ import SignOut from './components/Signout';
 
 import logo from './images/HIGTextLogoQMTransparent.png';
 
+// globally config axios to let auth pass cookies down
+axios.defaults.withCredentials = true;
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      authenticated: false,
+      authenticated: localStorage.token,
       currentUser: null,
     };
   }
