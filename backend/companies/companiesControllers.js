@@ -31,13 +31,13 @@ module.exports = {
     },
     updateCompanyById: (id, company) => {
         return db('companies')
-            .where('_id', id)
+            .where('id', id)
             .update(company)
             .then(id => { id: id });
     },
     remove: (id) => {
         return db('companies')
-            .where('_id', id)
+            .where('id', id)
             .del();
     }
 };
