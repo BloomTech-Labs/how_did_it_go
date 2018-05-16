@@ -13,6 +13,7 @@
   "dependencies": {
     "bcrypt": "^2.0.1",
     "bcrypt-nodejs": "0.0.3",
+    "bitly": "^5.0.12",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",

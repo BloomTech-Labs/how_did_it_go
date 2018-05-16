@@ -4,7 +4,7 @@ module.exports = {
   get: function(id) {
     let query = db('platForms');
     if (id) {
-      query.where('id', id).first();
+      return query.where('id', id).first();
     }
     return query;
   },

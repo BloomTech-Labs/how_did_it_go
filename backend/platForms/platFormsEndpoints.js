@@ -1,4 +1,10 @@
+require('dotenv').config();
+
 const express = require('express');
+const BitlyClient = require('bitly');
+
+const bitly = BitlyClient(process.env.BITLY_ACCESS_TOKEN);
+
 const platForms = require('./platFormsControllers');
 const platFormsRouter = express.Router();
 
@@ -24,6 +30,28 @@ platFormsRouter.get('', (req, res) => {
         res.status(400).json(error);
     });
 });
+
+// Using bitly to get shortURL for long-URL
+platFormsRouter.get('/:id/shortURL', (req, res) => {
+    const { id } = req.params;
+
+    platForms
+      .get(id)
+      .then(platForm => {
+        const shortURL = '';
+        bitly.shorten(platForm.url)
+            .then((result) => {
+                console.log(result);
+                res.status(200).json(result.data.url);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+      })
+      .catch(error => {
+        res.status(400).json(error);
+      });
+  });
 
 platFormsRouter.put('/:id', (req, res) => {
   const id = req.params.id;
