@@ -44,10 +44,10 @@ server.use(
 
 //validateUser middleware will work on all routes, but exempt '/signin' and 'signup'
 
-server.use((req, res, next) => {
-    if (req.originalUrl === '/signin' || req.originalUrl === '/signup') return next();
-    return middleware.validateUser(req, res, next);
-});
+// server.use((req, res, next) => {
+//     if (req.originalUrl === '/signin' || req.originalUrl === '/signup') return next();
+//     return middleware.validateUser(req, res, next);
+// });
 
 
 // imported Endpoints for Companies, Customers and Twilio API
