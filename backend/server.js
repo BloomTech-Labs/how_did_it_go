@@ -27,22 +27,27 @@ server.use(express.static(path.join(__dirname, '../frontend/build')));
 
 
 server.use(bodyParser.json());
-server.use(cors());
+
+// set credentials: true: let auth pass cookie down
+server.use(cors({origin: 'http://localhost:3000',
+    credentials: true
+}));
 server.use(
     session({
     secret: process.env.SESSION_TOKEN,
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
+    // cookie: { secure: false },
     }),
 );
 
 
 //validateUser middleware will work on all routes, but exempt '/signin' and 'signup'
 
-// server.use((req, res, next) => {
-//     if (req.originalUrl === '/signin' || req.originalUrl === '/signup') return next();
-//     return middleware.validateUser(req, res, next);
-// });
+server.use((req, res, next) => {
+    if (req.originalUrl === '/signin' || req.originalUrl === '/signup') return next();
+    return middleware.validateUser(req, res, next);
+});
 
 
 // imported Endpoints for Companies, Customers and Twilio API
