@@ -28,9 +28,7 @@ class Message extends Component{
         const companyID = 1;
         axios.get(ROOT_URL + 'platForms/' + companyID + '/shortURLs')
             .then(result => {
-                console.log(result);
                 this.setState({ platForms: result.data });
-                console.log(this.state.platForms);
             })
             .catch(error => {
                 console.log(error);
