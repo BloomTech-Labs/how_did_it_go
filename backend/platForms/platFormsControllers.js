@@ -9,6 +9,11 @@ module.exports = {
     return query;
   },
 
+  getByCompanyID: function(companyID) {
+    return db('platForms')
+      .where('companyID', companyID);
+  },
+
   insert: function(platForm) {
     return db('platForms')
       .insert(platForm)

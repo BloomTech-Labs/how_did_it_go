@@ -31,22 +31,27 @@ platFormsRouter.get('', (req, res) => {
     });
 });
 
-// Using bitly to get shortURL for long-URL
-platFormsRouter.get('/:id/shortURL', (req, res) => {
+// Using bitly to get shortURLs for long-URLs per companyID
+platFormsRouter.get('/:id/shortURLs', (req, res) => {
     const { id } = req.params;
 
     platForms
-      .get(id)
-      .then(platForm => {
-        const shortURL = '';
-        bitly.shorten(platForm.url)
-            .then((result) => {
-                console.log(result);
-                res.status(200).json(result.data.url);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+      .getByCompanyID(id)
+      .then(platForms => {
+        const promises = platForms.map(platForm => {
+            return bitly.shorten(platForm.url)
+                .then((result) => {
+                    return result.data; 
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }); 
+
+        Promise.all(promises)
+            .then(results => {
+                res.status(200).json(results);
+            });  
       })
       .catch(error => {
         res.status(400).json(error);
