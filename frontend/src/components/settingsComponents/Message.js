@@ -8,10 +8,12 @@ let defaultMessage;
 let company;
 
 class Message extends Component{
-    constructor () {
-        super();
+    constructor (props) {
+        super(props);
 
         this.state = {
+            user: this.props.user,
+            userid: '',
             managerFirstName: '',
             managerLastName: '',
             businessName: '',
@@ -22,23 +24,40 @@ class Message extends Component{
         };
     }
 
-    componentWillMount() {
-        companyId = '5aec8c2e3ff7d51c1039b0bb'; // testing purposes
-        axios.get(ROOT_URL + 'companies/id/' + companyId)
+    componentDidMount() {
+        axios.get(ROOT_URL + 'users/' + this.state.user)
             .then(response => {
-            //console.log(response.data.defaultMessage);
-            company = response.data;
-            this.setState({
-                message: company.defaultMessage,
-                managerFirstName: company.contactFirstName,
-                managerLastName: company.contactLastName,
-                businessName: company.name,
-                reviewSite: company.reviewSite,
-            });
+                console.log('user data: ', response.data);
+                this.setState({ userid: response.data.id });
+                axios.get(ROOT_URL + 'companies/userid/' + this.state.userid)
+                    .then(response => {
+                        console.log('company affiliated: ', response.data);
+                    })
+                    .catch(error => {
+                        console.log('error finding company: ', error);
+                    })
             })
             .catch(error => {
-            console.log('error here');
+                console.log(error);
             });
+
+
+        // companyId = '5aec8c2e3ff7d51c1039b0bb'; // testing purposes
+        // axios.get(ROOT_URL + 'companies/id/' + companyId)
+        //     .then(response => {
+        //     //console.log(response.data.defaultMessage);
+        //     company = response.data;
+        //     this.setState({
+        //         message: company.defaultMessage,
+        //         managerFirstName: company.contactFirstName,
+        //         managerLastName: company.contactLastName,
+        //         businessName: company.name,
+        //         reviewSite: company.reviewSite,
+        //     });
+        //     })
+        //     .catch(error => {
+        //     console.log('error here');
+        //     });
     }
 
     handleInputChange = (e) => {
@@ -70,6 +89,7 @@ class Message extends Component{
     }
 
     render() {
+        console.log(this.state.user);
         return(
             <div>
                 <div className='title'>Create Your Personalized Message</div>

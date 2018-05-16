@@ -13,7 +13,7 @@ class Settings extends Component {
       currentUser: this.props.user,
       currentItem: 0,
       items: [
-        <Message />,
+        <Message user={this.props.user}/>,
         <UsernameAndPassword />,
         <Billing />,
         <Payment />,

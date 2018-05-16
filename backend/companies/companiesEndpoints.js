@@ -34,6 +34,17 @@ companiesRouter.get('id/:id', (req, res) => {
         });
 });
 
+companiesRouter.get('userid/:userid', (req, res) => {
+    const { userid } = req.params;
+    companies.getCompanyByUserId(userid)
+        .then(company => {
+            res.status(200).json(company);
+        })
+        .catch(error => {
+            res.status(400).json(error);
+        });
+});
+
 companiesRouter.get('name/:name', (req, res) => {
     const { name } = req.params;
     companies.getCompanyByName(name)

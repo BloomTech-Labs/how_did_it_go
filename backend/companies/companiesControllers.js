@@ -9,6 +9,10 @@ module.exports = {
         return db('companies')
             .where('_id', companyId);
     },
+    getCompanyByUserId: (userId) => {
+        return db('companies')
+            .where('userID', userId);
+    },
     getCompanyByName: (name) => {
         return db('companies')
             .where('name', name);
