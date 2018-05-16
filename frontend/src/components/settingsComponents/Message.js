@@ -37,25 +37,25 @@ class Message extends Component{
     }
 
     getCompanyData = () => {
-        axios.get(ROOT_URL + 'companies/id/1')
+        axios.get(ROOT_URL + 'companies/userid/' + this.state.userid)
         .then(response => {
             companyFound = true;
             console.log('company affiliated: ', response.data);
-            // company = response.data;
-            // this.setState({
-            //     message: company.defaultMessage,
-            //     managerFirstName: company.contactFirstName,
-            //     managerLastName: company.contactLastName,
-            //     businessName: company.name,
-            // });
+            company = response.data;
+            this.setState({
+                message: company.defaultMessage,
+                managerFirstName: company.contactFirstName,
+                managerLastName: company.contactLastName,
+                businessName: company.name,
+            });
         })
         .catch(error => {
             console.log('error finding company: ', error);
             this.setState({
                 message: DEFAULT_MESSAGE,
-                managerFirstName: 'Manager First Name',
-                managerLastName: 'Manager Last Name',
-                businessName: 'Company Name',                          
+                managerFirstName: 'Enter Manager First Name',
+                managerLastName: 'Enter Manager Last Name',
+                businessName: 'Enter Company Name',                          
             });
         })
     }
@@ -109,7 +109,7 @@ class Message extends Component{
 
                 <div className='header'>Here is Our Basic Greeting. Feel Free To Change It However You'd Like!</div>
                 <div className='sampleMessage' id='sampleMessage'>
-                    Hello. This is {this.state.managerFirstName} {this.state.managerLastName} from {this.state.businessName}. {this.state.message}. Thank you!
+                    Hello. This is {this.state.managerFirstName} {this.state.managerLastName} from {this.state.businessName}. {this.state.message}
                 </div>
 
                 <form className='form' id='settingsForm'>

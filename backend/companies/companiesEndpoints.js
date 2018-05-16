@@ -23,7 +23,7 @@ companiesRouter.get('', (req, res) => {
         });
 });
 
-companiesRouter.get('id/:id', (req, res) => {
+companiesRouter.get('/id/:id', (req, res) => {
     const { id } = req.params;
     companies.getCompanyById(id)
         .then(company => {
@@ -34,7 +34,7 @@ companiesRouter.get('id/:id', (req, res) => {
         });
 });
 
-companiesRouter.get('userid/:userid', (req, res) => {
+companiesRouter.get('/userid/:userid', (req, res) => {
     const { userid } = req.params;
     companies.getCompanyByUserId(userid)
         .then(company => {
@@ -45,7 +45,7 @@ companiesRouter.get('userid/:userid', (req, res) => {
         });
 });
 
-companiesRouter.get('name/:name', (req, res) => {
+companiesRouter.get('/name/:name', (req, res) => {
     const { name } = req.params;
     companies.getCompanyByName(name)
         .then(company => {
@@ -93,7 +93,7 @@ companiesRouter.get('/:id/platforms', (req, res) => {
         });
 });
 
-companiesRouter.put('id/:id', (req, res) => {
+companiesRouter.put('/id/:id', (req, res) => {
     const { id } = req.params;
     const company = req.body;
     companies.updateCompanyById(id, company)
@@ -105,7 +105,7 @@ companiesRouter.put('id/:id', (req, res) => {
         });
 });
 
-companiesRouter.delete('id/:id', (req, res) => {
+companiesRouter.delete('/id/:id', (req, res) => {
     const { id } = req.params;
     companies.remove(id)
         .then(response => {
