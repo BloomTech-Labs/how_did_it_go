@@ -56,7 +56,7 @@ platFormsRouter.get('/:id/shortURLs', (req, res) => {
       .catch(error => {
         res.status(400).json(error);
       });
-  });
+});
 
 // Using bitly to get shortURLs for long-URLs per companyID; get clicks stat after get the shortURL
 platFormsRouter.get('/:id/shortURLs/clicks', (req, res) => {
@@ -87,7 +87,37 @@ platFormsRouter.get('/:id/shortURLs/clicks', (req, res) => {
       .catch(error => {
         res.status(400).json(error);
       });
-  });
+});
+
+platFormsRouter.get('/:id/shortURLs/referrers', (req, res) => {
+    const { id } = req.params;
+
+    platForms
+      .getByCompanyID(id)
+      .then(platForms => {
+        const promises = platForms.map(platForm => {
+            return bitly.shorten(platForm.url)
+                .then((result) => {
+                    return bitly.referrers(result.data.url)
+                        .then(result => {
+                            console.log(result);
+                            return result.data;
+                        }) 
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }); 
+
+        Promise.all(promises)
+            .then(results => {
+                res.status(200).json(results);
+            });  
+      })
+      .catch(error => {
+        res.status(400).json(error);
+      });
+});
 
 platFormsRouter.put('/:id', (req, res) => {
   const id = req.params.id;
