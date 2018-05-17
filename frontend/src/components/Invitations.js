@@ -3,7 +3,6 @@ import axios from 'axios';
 import ROOT_URL from '../utils/config.js';
 
 let company = {};
-let reviewOption;
 let messageToSend = {};
 
 class Invitations extends Component {
@@ -12,75 +11,69 @@ class Invitations extends Component {
 
     this.state = {
       user: this.props.user,
-      firstName: '',
-      lastName: '',
-      phoneNumber: '',
-      managerName: '',
+      userid: '',
+      managerFirstName: '',
+      managerLastName: '',
       businessName: '',
       message: '',
-      reviewSite: '',
-      companyId: '',
       platForms: [],
+      reviewSite: '',
     };
   }
 
   componentWillMount() {
     axios.get(ROOT_URL + 'users/' + this.state.user)
         .then(response => {
-          console.log('user: ', response.data);
             this.setState({ userid: response.data.id });
-            this.getCompanyData();
-            
+            this.getCompanyData();           
         })
         .catch(error => {
             console.log(error);
         });
+      
   }
+
 
   getCompanyData = () => {
       axios.get(ROOT_URL + 'companies/userid/' + this.state.userid)
       .then(response => {
-          let company = response.data;
-          console.log('company: ', company.id);
+          console.log('company affiliated: ', response.data);
+          company = response.data;
+          console.log('company id: ', company.id);
           this.setState({
               message: company.defaultMessage,
               managerFirstName: company.contactFirstName,
               managerLastName: company.contactLastName,
               businessName: company.name,
           });
-      })
-      .then(() => {
-        this.getPlatforms();
+          this.getPlatForms();
       })
       .catch(error => {
           console.log('error finding company: ', error);
       })
+      
   }
 
-  getPlatforms = () => {
-    axios
-      .get(ROOT_URL + "companies/" + company.id + "/platforms")
-      .then(result => {
-        const detail = result.data;
-        this.setState({ platForms: detail.platForms });
-        console.log("Retrieved platForms successfully!");
-        console.log('platforms: ', this.state.platForms);
-      })
-      .catch(error => {
-        console.log("Errors while getting company platForms infomation");
-      });
-  }
+  getPlatForms = () => {
+      axios
+        .get(ROOT_URL + "companies/" + company.id + "/platforms")
+        .then(result => {
+          const detail = result.data;
+          this.setState({ platForms: detail.platForms });
+          this.setReviewSite();
+        })
+        .catch(error => {
+          console.log("Errors while getting company platForms infomation");
+        });
+    };
 
   setReviewSite = () => {
-    console.log('reached');
     const length = this.state.platForms.length;
     if (length === 1) {
       this.setState({ reviewSite: this.state.platForms });
     } else if (length > 1) {
       const randomNum = Math.floor(Math.random() * Math.floor(length));
-      console.log('random num: ', randomNum);
       this.setState({ reviewSite: this.state.platForms[randomNum] });
-      console.log('review site: ', this.state.reviewSite);
     } else {
       console.log('platforms empty');
     }
@@ -208,6 +201,7 @@ class Invitations extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     e.persist();
+    this.getPlatforms();
     this.setReviewSite();
     messageToSend = { messageContent: 'Hello, this is ' + this.state.managerName + ' from ' + this.state.businessName + '. ' + this.state.message + this.state.reviewSite + '. Thank you!' };
     let customer = this.createCustomer(e);
