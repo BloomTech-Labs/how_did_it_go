@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-//import ROOT_URL from '.../utils/config.js';
+import ROOT_URL from '../../utils/config.js';
 
-const ROOT_URL = 'http://localhost:5000/';
+//const ROOT_URL = 'http://localhost:5000/';
 const DEFAULT_MESSAGE = 'Thank you for coming in today! I hope you enjoyed your visit and will come see us again soon. In the meantime, could you do me a favor and leave us a review? Here is a link that will make it easy: ';
  
 
@@ -36,6 +36,7 @@ class Message extends Component{
             .catch(error => {
                 console.log(error);
             });
+        
     }
 
 
@@ -63,6 +64,7 @@ class Message extends Component{
                 businessName: 'Enter Company Name',                          
             });
         })
+        
     }
 
     getPlatForms = () => {

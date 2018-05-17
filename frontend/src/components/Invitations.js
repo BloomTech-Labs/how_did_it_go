@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import ROOT_URL from '../utils/config.js';
 
-let companyId;
+let company = {};
 let reviewOption;
 let messageToSend = {};
 
@@ -20,12 +20,14 @@ class Invitations extends Component {
       message: '',
       reviewSite: '',
       companyId: '',
+      platForms: [],
     };
   }
 
   componentWillMount() {
     axios.get(ROOT_URL + 'users/' + this.state.user)
         .then(response => {
+          console.log('user: ', response.data);
             this.setState({ userid: response.data.id });
             this.getCompanyData();
             
@@ -39,19 +41,49 @@ class Invitations extends Component {
       axios.get(ROOT_URL + 'companies/userid/' + this.state.userid)
       .then(response => {
           let company = response.data;
+          console.log('company: ', company.id);
           this.setState({
               message: company.defaultMessage,
               managerFirstName: company.contactFirstName,
               managerLastName: company.contactLastName,
               businessName: company.name,
-              reviewSite: 'http://www.TEST_REVIEW_SITE.com',
-              companyId: company.id,
           });
-          messageToSend = { messageContent: 'Hello, this is ' + this.state.managerName + ' from ' + this.state.businessName + '. ' + this.state.message + this.state.reviewSite + '. Thank you!' };
+      })
+      .then(() => {
+        this.getPlatforms();
       })
       .catch(error => {
           console.log('error finding company: ', error);
       })
+  }
+
+  getPlatforms = () => {
+    axios
+      .get(ROOT_URL + "companies/" + company.id + "/platforms")
+      .then(result => {
+        const detail = result.data;
+        this.setState({ platForms: detail.platForms });
+        console.log("Retrieved platForms successfully!");
+        console.log('platforms: ', this.state.platForms);
+      })
+      .catch(error => {
+        console.log("Errors while getting company platForms infomation");
+      });
+  }
+
+  setReviewSite = () => {
+    console.log('reached');
+    const length = this.state.platForms.length;
+    if (length === 1) {
+      this.setState({ reviewSite: this.state.platForms });
+    } else if (length > 1) {
+      const randomNum = Math.floor(Math.random() * Math.floor(length));
+      console.log('random num: ', randomNum);
+      this.setState({ reviewSite: this.state.platForms[randomNum] });
+      console.log('review site: ', this.state.reviewSite);
+    } else {
+      console.log('platforms empty');
+    }
   }
 
   handleInputChange = (e) => {
@@ -120,7 +152,7 @@ class Invitations extends Component {
   checkIfCustomerExistsForThisCompany = (currentRequests) => {
     let flag = false;
     for (let i = 0; i < currentRequests.length; i++) {
-      if (currentRequests[i].affiliatedCompanyId === companyId)
+      if (currentRequests[i].affiliatedCompanyId === company.id)
       {
         flag = true;
       }
@@ -131,7 +163,7 @@ class Invitations extends Component {
   checkIfCustomerExists = (e, customer) => {
     axios.get(ROOT_URL + 'customers/phone/' + customer.phoneNumber)
       .then(response => {
-        console.log(response.data);
+        console.log('customer data response: ', response.data);
         if (response.data.length > 0) { // existing customer
           if (customer.firstName !== response.data.firstName || customer.lastName !== response.data.lastName) { // someone else is using this phone number already
             alert("Sorry, that phone number is already in use for " + response.data.firstName);
@@ -143,7 +175,7 @@ class Invitations extends Component {
             } else { 
               alert('this is a new customer, save new company data to end of requestSent and PUT to DB');
               let updatedCustomer = this.updateCustomer(e, response.data);
-              this.saveUpdatedCustomer(updatedCustomer, response.data._id);
+              this.saveUpdatedCustomer(updatedCustomer, response.data.id);
             }
           }
         } else { // brand new customer, not in DB
@@ -176,6 +208,8 @@ class Invitations extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     e.persist();
+    this.setReviewSite();
+    messageToSend = { messageContent: 'Hello, this is ' + this.state.managerName + ' from ' + this.state.businessName + '. ' + this.state.message + this.state.reviewSite + '. Thank you!' };
     let customer = this.createCustomer(e);
     this.checkIfCustomerExists(e, customer);
    
