@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ROOT_URL from '../utils/config.js';
 
 import Billing from './settingsComponents/Billing';
 import Message from './settingsComponents/Message';
@@ -16,7 +17,7 @@ class Settings extends Component {
       currentItem: 0,
       items: [
         <PlatForms />,
-        <Message />,
+        <Message user={this.props.user}/>,
         <UsernameAndPassword />,
         <Billing />,
         <Payment />,

@@ -7,10 +7,11 @@ let reviewOption;
 let messageToSend = {};
 
 class Invitations extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
+      user: this.props.user,
       firstName: '',
       lastName: '',
       phoneNumber: '',
@@ -18,28 +19,38 @@ class Invitations extends Component {
       businessName: '',
       message: '',
       reviewSite: '',
+      companyId: '',
     };
   }
 
   componentWillMount() {
-    companyId = '5aec8c2e3ff7d51c1039b0bb'; // testing purposes
-    reviewOption = 'test'; // testing purposes
-
-    axios.get(ROOT_URL + 'companies/id/' + companyId)
-      .then(response => {
-        const data = response.data;
-        this.setState({
-          managerName: data.contactFirstName + ' ' + data.contactLastName,
-          businessName: data.name,
-          message: data.defaultMessage,
-          reviewSite: data.reviewSite, 
+    axios.get(ROOT_URL + 'users/' + this.state.user)
+        .then(response => {
+            this.setState({ userid: response.data.id });
+            this.getCompanyData();
+            
         })
+        .catch(error => {
+            console.log(error);
+        });
+  }
 
-        messageToSend = { messageContent: 'Hello, this is ' + this.state.managerName + ' from ' + this.state.businessName + '. ' + this.state.message + this.state.reviewSite + '. Thank you!' };
-        console.log(messageToSend);
+  getCompanyData = () => {
+      axios.get(ROOT_URL + 'companies/userid/' + this.state.userid)
+      .then(response => {
+          let company = response.data;
+          this.setState({
+              message: company.defaultMessage,
+              managerFirstName: company.contactFirstName,
+              managerLastName: company.contactLastName,
+              businessName: company.name,
+              reviewSite: 'http://www.TEST_REVIEW_SITE.com',
+              companyId: company.id,
+          });
+          messageToSend = { messageContent: 'Hello, this is ' + this.state.managerName + ' from ' + this.state.businessName + '. ' + this.state.message + this.state.reviewSite + '. Thank you!' };
       })
       .catch(error => {
-        console.log('error while getting company db info');
+          console.log('error finding company: ', error);
       })
   }
 
@@ -56,8 +67,8 @@ class Invitations extends Component {
       phoneNumber: e.target.phoneNumber.value,
       requestSent : [
         {
-          affiliatedCompanyId: companyId,
-          reviewPlatformSent: reviewOption,
+          affiliatedCompanyId: this.state.companyId,
+          reviewPlatformSent: this.state.reviewSite,
           clicked: false,
           reviewScore: '0',
         },
@@ -73,8 +84,8 @@ class Invitations extends Component {
       requestSent : [
         ...existingData.requestSent,
         {
-          affiliatedCompanyId: companyId,
-          reviewPlatformSent: reviewOption,
+          affiliatedCompanyId: this.state.companyId,
+          reviewPlatformSent: this.state.reviewSite,
           clicked: false,
           reviewScore: '0',
         },
@@ -120,9 +131,10 @@ class Invitations extends Component {
   checkIfCustomerExists = (e, customer) => {
     axios.get(ROOT_URL + 'customers/phone/' + customer.phoneNumber)
       .then(response => {
-        if (response.data) { // existing customer
+        console.log(response.data);
+        if (response.data.length > 0) { // existing customer
           if (customer.firstName !== response.data.firstName || customer.lastName !== response.data.lastName) { // someone else is using this phone number already
-            alert("Sorry, that phone number is already in use!");
+            alert("Sorry, that phone number is already in use for " + response.data.firstName);
           } else {
             let flag = this.checkIfCustomerExistsForThisCompany(response.data.requestSent);
             if (flag) {
