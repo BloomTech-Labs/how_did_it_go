@@ -17,7 +17,7 @@ module.exports = {
   insert: function(platForm) {
     return db('platForms')
       .insert(platForm)
-      .then(ids => ({ id: ids[0] }));
+      //.then(ids => ({ id: ids[0] }));
   },
 
   update: function(id, platForm) {

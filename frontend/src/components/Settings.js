@@ -16,7 +16,7 @@ class Settings extends Component {
       currentUser: this.props.user,
       currentItem: 0,
       items: [
-        <PlatForms />,
+        <PlatForms user={this.props.user}/>,
         <Message user={this.props.user}/>,
         <UsernameAndPassword />,
         <Billing />,

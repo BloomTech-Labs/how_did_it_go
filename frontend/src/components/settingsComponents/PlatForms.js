@@ -3,25 +3,56 @@ import axios from 'axios';
 
 import ROOT_URL from '../../utils/config.js';
 
-
+let company = {};
+let companyFound = false;
 class PlatForms extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
+      user: this.props.user,
+      userid: '',
       url: '',
       resource: '',
       platForms: [],
     };
   }
 
-  componentDidMount() {
-    const companyID = 1; // hard code 1 here; will receive as props later
-    axios.get(ROOT_URL + 'companies/' + companyID + '/platforms')
+
+  componentWillMount() {
+      axios.get(ROOT_URL + 'users/' + this.state.user)
+          .then(response => {
+              this.setState({ userid: response.data.id });
+              this.getCompanyData();
+              
+          })
+          .catch(error => {
+              console.log(error);
+          });
+  }
+
+
+  getCompanyData = () => {
+      axios.get(ROOT_URL + 'companies/userid/' + this.state.userid)
+      .then(response => {
+          companyFound = true;
+          company = response.data;
+          console.log('company.id: ', company);
+          this.getPlatforms();
+      })
+      .catch(error => {
+          console.log('error finding company: ', error);
+      })
+  }
+
+
+  getPlatforms = () => {
+    axios.get(ROOT_URL + 'companies/' + company.id + '/platforms')
       .then(result => {
         const detail = result.data;
+        console.log('detail: ', detail);
         this.setState({ platForms: detail.platForms });
-        console.log("Retrive platForms successfully!");
+        console.log("Retrieve platForms successfully!");
       })
       .catch(error => {
         console.log("Errors while getting company platForms infomation");
@@ -36,19 +67,11 @@ class PlatForms extends Component {
 
   handleAddChange = (e) => {
     e.preventDefault();
-
-    axios.post(ROOT_URL + 'platForms', {url: this.state.url, resource: this.state.resource, companyID: 1 })
+    const platForm = {url: this.state.url, resource: this.state.resource, companyID: company.id };
+    console.log('platform entered: ', platForm);
+    axios.post(ROOT_URL + 'platForms', platForm)
       .then((response) => {
-        const companyID = '1'; // test will receive as props later
-        axios.get(ROOT_URL + 'companies/' + companyID + '/platforms')
-          .then(result => {
-            const detail = result.data;
-            this.setState({ platForms: detail.platForms });
-            console.log("Successfully retrive platForms after update!");
-          })
-          .catch(error => {
-            console.log("Errors while getting updated company platForms infomation");
-          });
+        this.getPlatforms();
         console.log('Successfully add new platForm!');
       })
       .catch((error) => {
@@ -65,17 +88,8 @@ class PlatForms extends Component {
   deletePlatForm = (id) => {
     axios.delete(ROOT_URL + 'platForms/' + id)
       .then((response) => {
-        const companyID = '1'; // test will receive as props later
-        axios.get(ROOT_URL + 'companies/' + companyID + '/platforms')
-          .then(result => {
-            const detail = result.data;
-            this.setState({ platForms: detail.platForms });
-            console.log("Successfully retrive platForms after update!");
-          })
-          .catch(error => {
-            console.log("Errors while getting updated company platForms infomation");
-          });
-        console.log('Successfully delete platForm!');
+        this.getPlatforms();
+        console.log('Successfully deleted platForm!');
       })
       .catch(error => {
         alert('Failed to delete platForm!');
@@ -88,7 +102,7 @@ class PlatForms extends Component {
     return (
       <div>
           <div className='title'>Review Sites</div>
-          <form>
+          <form onSubmit={this.handleAddChange}>
               <div><input className='form--item' type='text' placeholder='Platform URL' name='url' value={this.state.url} onChange={this.handleInputChange} /></div>
               <div><input className='form--item' type='text' placeholder='Resource' name='resource' value={this.state.resource} onChange={this.handleInputChange} /></div>
               <button className='button'type='button' name='platFormInfo' onClick={this.handleAddChange}>Add</button>

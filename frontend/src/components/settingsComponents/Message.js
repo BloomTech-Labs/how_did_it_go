@@ -21,18 +21,8 @@ class Message extends Component{
             managerLastName: '',
             businessName: '',
             message: '',
+            platForms: [],
         };
-    }
-
-    componentDidMount() {
-        const companyID = 1;
-        axios.get(ROOT_URL + 'platForms/' + companyID + '/shortURLs')
-            .then(result => {
-                this.setState({ platForms: result.data });
-            })
-            .catch(error => {
-                console.log(error);
-            });
     }
 
     componentWillMount() {
@@ -47,6 +37,7 @@ class Message extends Component{
             });
     }
 
+
     getCompanyData = () => {
         axios.get(ROOT_URL + 'companies/userid/' + this.state.userid)
         .then(response => {
@@ -59,6 +50,7 @@ class Message extends Component{
                 managerLastName: company.contactLastName,
                 businessName: company.name,
             });
+            this.getPlatForms();
         })
         .catch(error => {
             console.log('error finding company: ', error);
@@ -69,6 +61,18 @@ class Message extends Component{
                 businessName: 'Enter Company Name',                          
             });
         })
+    }
+
+    getPlatForms = () => {
+        console.log('company id: ', company.id);
+        axios.get(ROOT_URL + 'platForms/' + company.id + '/shortURLs')
+            .then(result => {
+                this.setState({ platForms: result.data });
+                console.log(this.state.platForms);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     handleInputChange = (e) => {
