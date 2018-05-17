@@ -25,7 +25,7 @@ class PlatForms extends Component {
       })
       .catch(error => {
         console.log("Errors while getting company platForms infomation");
-      });
+      });  
   }
 
   handleInputChange = (e) => {

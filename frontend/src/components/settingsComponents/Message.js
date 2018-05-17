@@ -24,6 +24,17 @@ class Message extends Component{
         };
     }
 
+    componentDidMount() {
+        const companyID = 1;
+        axios.get(ROOT_URL + 'platForms/' + companyID + '/shortURLs')
+            .then(result => {
+                this.setState({ platForms: result.data });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
     componentWillMount() {
         axios.get(ROOT_URL + 'users/' + this.state.user)
             .then(response => {
@@ -117,6 +128,25 @@ class Message extends Component{
                 <div><input className='form--item' type='text' name='managerFirstName' value={this.state.managerFirstName} onChange={this.handleInputChange} /></div>
                 <div><input className='form--item' type='text' name='managerLastName' value={this.state.managerLastName} onChange={this.handleInputChange} /></div>
                 <div><input className='form--item' type='text' name='businessName' value={this.state.businessName} onChange={this.handleInputChange} /></div>
+
+                {/* creates a dropdown menu of possible review sites to choose from */}
+                {/* <select className='dropdownList' id ='selectReviewSite' name='reviewSite' onChange={this.handleInputChange}>
+                    <option value ='null' selected disabled>Select A Review Site</option>
+                    <option value='https://www.yelp.com/'>Yelp</option>
+                    <option value='https://www.google.com/business/'>Google Places</option>
+                    <option value='https://www.tripadvisor.com/'>TripAdvisor</option>
+                </select> */}
+
+                <select className='dropdownList' id ='selectReviewSite' name='reviewSite' onChange={this.handleInputChange}>
+                    <option value ='' selected disabled>Select A Review Site</option>
+                    {this.state.platForms.map(platForm => {
+                        return (
+                            <option key={platForm.global_hash} value={platForm.url}>
+                                {platForm.long_url}
+                            </option>
+                        );
+                    })}
+                </select>
 
                 {/* allows user to edit or completely re-write the pre-programmed message text */}
                 <div><textarea className='form--item messageField' name ='message' form ='settingsForm' onChange={this.handleInputChange}
