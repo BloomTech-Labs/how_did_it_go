@@ -55,7 +55,7 @@ class App extends Component {
             <img src={logo} className='logo' alt='logo' />
             <Navigation authenticated={this.state.authenticated} user={this.state.currentUser} />
             <Route path='/' exact     component={Home}  />
-            <Route path='/signup'     component={SignUp} />
+            <Route path='/signup'     render={(props) => <SignUp {...props} />} />
             <Route path='/signin'     render={(props) => <SignIn {...props} onChange={this.onSignInChange} />} />
             <Route path='/signout'    render={() => <SignOut onChange={this.onSignOutChange} />} />
             <Route path='/invitations'render={(props) => <Invitations {...props} user={this.state.currentUser} />} />

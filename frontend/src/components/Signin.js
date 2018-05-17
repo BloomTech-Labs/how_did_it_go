@@ -41,7 +41,6 @@ class SignIn extends Component {
           localStorage.token = username;
           this.props.onChange();
           console.log('Sign In successfully!');
-          console.log('props: ', this.props.history);
           this.props.history.push('/settings');
         } else {
           this.setState({ error: "Error happens when try to sign you in! Please check email and password!"});
