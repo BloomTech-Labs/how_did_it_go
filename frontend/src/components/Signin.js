@@ -36,12 +36,13 @@ class SignIn extends Component {
     
     axios.post(ROOT_URL + 'signin', data)
       .then((result) => {
-        console.log(result);
         if (result.data.username) {
           const username = result.data.username;
           localStorage.token = username;
           this.props.onChange();
           console.log('Sign In successfully!');
+          console.log('props: ', this.props.history);
+          this.props.history.push('/settings');
         } else {
           this.setState({ error: "Error happens when try to sign you in! Please check email and password!"});
           return;

@@ -23,7 +23,7 @@ customersRouter.get('', (req, res) => {
         });
 });
 
-customersRouter.get('id/:id', (req, res) => {
+customersRouter.get('/id/:id', (req, res) => {
     const { id } = req.params;
     customers.getCustomerById(id)
         .then(customer => {
@@ -34,7 +34,7 @@ customersRouter.get('id/:id', (req, res) => {
         });
 });
 
-customersRouter.get('phone/:phone', (req, res) => {
+customersRouter.get('/phone/:phone', (req, res) => {
     const { phone }  = req.params;
     customers.getCustomerByPhoneNumber(phone)
         .then(customer => {
@@ -45,7 +45,7 @@ customersRouter.get('phone/:phone', (req, res) => {
         });
 });
 
-customersRouter.get('companyId/:id', (req, res) => {
+customersRouter.get('/companyId/:id', (req, res) => {
     const { companyId } = req.params;
     customers.getCustomerByCompanyId(companyId)
         .then(customer => {
@@ -56,7 +56,7 @@ customersRouter.get('companyId/:id', (req, res) => {
         });
 });
 
-customersRouter.put('id/:id', (req, res) => {
+customersRouter.put('/id/:id', (req, res) => {
     const { id } = req.params;
     const customer = req.body;
     customers.updateCustomerById(id, customer)
@@ -68,7 +68,7 @@ customersRouter.put('id/:id', (req, res) => {
         });
 });
 
-customersRouter.delete('id/:id', (req, res) => {
+customersRouter.delete('/id/:id', (req, res) => {
     const { id } = req.params;
     customers.remove(id)
         .then(response => {

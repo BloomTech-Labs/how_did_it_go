@@ -1,4 +1,10 @@
+require('dotenv').config();
+
 const express = require('express');
+const BitlyClient = require('bitly');
+
+const bitly = BitlyClient(process.env.BITLY_ACCESS_TOKEN);
+
 const platForms = require('./platFormsControllers');
 const platFormsRouter = express.Router();
 
@@ -24,6 +30,64 @@ platFormsRouter.get('', (req, res) => {
         res.status(400).json(error);
     });
 });
+
+// Using bitly to get shortURLs for long-URLs per companyID
+platFormsRouter.get('/:id/shortURLs', (req, res) => {
+    const { id } = req.params;
+
+    platForms
+      .getByCompanyID(id)
+      .then(platForms => {
+        const promises = platForms.map(platForm => {
+            return bitly.shorten(platForm.url)
+                .then((result) => {
+                    return result.data; 
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }); 
+
+        Promise.all(promises)
+            .then(results => {
+                res.status(200).json(results);
+            });  
+      })
+      .catch(error => {
+        res.status(400).json(error);
+      });
+  });
+
+// Using bitly to get shortURLs for long-URLs per companyID; get clicks stat after get the shortURL
+platFormsRouter.get('/:id/shortURLs/clicks', (req, res) => {
+    const { id } = req.params;
+
+    platForms
+      .getByCompanyID(id)
+      .then(platForms => {
+        const promises = platForms.map(platForm => {
+            return bitly.shorten(platForm.url)
+                .then((result) => {
+                    return bitly.clicks(result.data.url)
+                        .then(result => {
+                            console.log(result);
+                            return result.data.clicks;
+                        }) 
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }); 
+
+        Promise.all(promises)
+            .then(results => {
+                res.status(200).json(results);
+            });  
+      })
+      .catch(error => {
+        res.status(400).json(error);
+      });
+  });
 
 platFormsRouter.put('/:id', (req, res) => {
   const id = req.params.id;
