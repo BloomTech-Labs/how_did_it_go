@@ -4,7 +4,6 @@ import axios from "axios";
 import ROOT_URL from "../../utils/config.js";
 
 let company = {};
-let companyFound = false;
 class PlatForms extends Component {
   constructor(props) {
     super(props);
@@ -34,7 +33,6 @@ class PlatForms extends Component {
     axios
       .get(ROOT_URL + "companies/userid/" + this.state.userid)
       .then(response => {
-        companyFound = true;
         company = response.data;
         this.getPlatforms();
       })

@@ -77,6 +77,7 @@ class Invitations extends Component {
     } else {
       console.log('platforms empty');
     }
+    console.log(this.state.reviewSite);
   }
 
   handleInputChange = (e) => {
@@ -90,32 +91,51 @@ class Invitations extends Component {
       firstName : e.target.firstName.value,
       lastName: e.target.lastName.value,
       phoneNumber: e.target.phoneNumber.value,
-      requestSent : [
-        {
-          affiliatedCompanyId: this.state.companyId,
-          reviewPlatformSent: this.state.reviewSite,
-          clicked: false,
-          reviewScore: '0',
-        },
-      ]
     };
   }
 
-  updateCustomer = (e, existingData) => {
-  return {
-      firstName : e.target.firstName.value,
-      lastName: e.target.lastName.value,
-      phoneNumber: e.target.phoneNumber.value,
-      requestSent : [
-        ...existingData.requestSent,
-        {
-          affiliatedCompanyId: this.state.companyId,
-          reviewPlatformSent: this.state.reviewSite,
-          clicked: false,
-          reviewScore: '0',
-        },
-      ]
+  getCustomer = () => {
+    axios.get(ROOT_URL + 'customers/phone/' + this.state.phoneNumber)
+      .then(response => {
+        const customer = response.data;
+        return customer;
+      })
+      .catch(error => {
+        console.log('error finding customer: ', error);
+      })
+  }
+
+  falseCustomerData = (currentCustomer, dbCustomer) => {
+    if (currentCustomer.firstName !== dbCustomer.firstName || currentCustomer.lastName !== dbCustomer.lastName) {
+      return true;
+    }
+  }
+
+  checkForInvitation = (customer) => {
+    let flag = false;
+    axios.get(ROOT_URL + 'invitations/customerid/' + customer.id)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log('error finding invitations: ', error);
+      });
+    return flag;
+  }
+
+  createInvitation = (customer) => {
+    console.log('customer id: ', customer.id);
+    const invitation = {
+      platFormID: this.state.reviewSite.id,
+      customerID: customer.id,
     };
+    axios.post('invitations', invitation)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log('error creating invitation: ', error);
+      });
   }
   
   saveNewCustomer = (cust) => {
@@ -130,54 +150,22 @@ class Invitations extends Component {
     });
   }
 
-  saveUpdatedCustomer = (cust, id) => {
-    axios.put(ROOT_URL + 'customers/id/' + id, cust)
-    .then(response => {
-      console.log("Updated the customer");
-      this.sendText(cust);
-      this.resetState();
-    })
-    .catch(error => {
-      console.log("Error:", error.message);
-    })
-  }
-
-  checkIfCustomerExistsForThisCompany = (currentRequests) => {
-    let flag = false;
-    for (let i = 0; i < currentRequests.length; i++) {
-      if (currentRequests[i].affiliatedCompanyId === company.id)
-      {
-        flag = true;
+  checkIfCustomerExists = (customer) => {
+    const customerFound = this.getCustomer();
+    if (customerFound) {
+      if (this.falseCustomerData(customer, customerFound)) {
+        alert("Sorry, that phone number is already in use");
+      } else if (!this.checkForInvitation(customerFound)){
+          this.createInvitation(customerFound);
+          this.sendText(customerFound);
+      } else { // customer exists and was recently texted
+        return null;
       }
+    } else { // brand new customer, not in DB
+    this.saveNewCustomer(customer);
+    this.createInvitation(customerFound);
+    this.sendText(customerFound);
     }
-    return flag;
-  }
-
-  checkIfCustomerExists = (e, customer) => {
-    axios.get(ROOT_URL + 'customers/phone/' + customer.phoneNumber)
-      .then(response => {
-        console.log('customer data response: ', response.data);
-        if (response.data.length > 0) { // existing customer
-          if (customer.firstName !== response.data.firstName || customer.lastName !== response.data.lastName) { // someone else is using this phone number already
-            alert("Sorry, that phone number is already in use for " + response.data.firstName);
-          } else {
-            let flag = this.checkIfCustomerExistsForThisCompany(response.data.requestSent);
-            if (flag) {
-              alert('this is a repeat customer, we\'ll just send them a text again');
-              this.sendText(customer);
-            } else { 
-              alert('this is a new customer, save new company data to end of requestSent and PUT to DB');
-              let updatedCustomer = this.updateCustomer(e, response.data);
-              this.saveUpdatedCustomer(updatedCustomer, response.data.id);
-            }
-          }
-        } else { // brand new customer, not in DB
-          this.saveNewCustomer(customer);
-        }
-      })
-      .catch(error => {
-        console.log({ error });
-      });
   }
 
   sendText = (cust) => {
@@ -201,11 +189,9 @@ class Invitations extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     e.persist();
-    this.getPlatforms();
-    this.setReviewSite();
     messageToSend = { messageContent: 'Hello, this is ' + this.state.managerName + ' from ' + this.state.businessName + '. ' + this.state.message + this.state.reviewSite + '. Thank you!' };
     let customer = this.createCustomer(e);
-    this.checkIfCustomerExists(e, customer);
+    this.checkIfCustomerExists(customer);
    
   }
 

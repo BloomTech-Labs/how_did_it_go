@@ -7,7 +7,6 @@ const DEFAULT_MESSAGE = 'Thank you for coming in today! I hope you enjoyed your 
  
 
 let company = {};
-let defaultMessage;
 let companyFound = false;
 
 class Message extends Component{
