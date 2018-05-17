@@ -7,7 +7,12 @@ module.exports = {
     },
     getCompanyById: (companyId) => {
         return db('companies')
-            .where('_id', companyId);
+            .where('id', companyId);
+    },
+    getCompanyByUserId: (userId) => {
+        return db('companies')
+            .where('userID', userId)
+            .first();
     },
     getCompanyByName: (name) => {
         return db('companies')
@@ -26,13 +31,13 @@ module.exports = {
     },
     updateCompanyById: (id, company) => {
         return db('companies')
-            .where('_id', id)
+            .where('id', id)
             .update(company)
             .then(id => { id: id });
     },
     remove: (id) => {
         return db('companies')
-            .where('_id', id)
+            .where('id', id)
             .del();
     }
 };

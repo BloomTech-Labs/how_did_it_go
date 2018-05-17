@@ -94,14 +94,14 @@ class PlatForms extends Component {
               <button className='button'type='button' name='platFormInfo' onClick={this.handleAddChange}>Add</button>
           </form>
           <ul>
-            {this.state.platForms.map((platForm, index) => {
+            {this.state.platForms ? this.state.platForms.map((platForm, index) => {
               return (
                 <li key={index}>
                   {platForm.resource} {platForm.url}
                   <button onClick={() => this.deletePlatForm(platForm.id)}>X</button>
                 </li>
               );
-            })}
+            }): ''}
           </ul>
       </div>
     ) 

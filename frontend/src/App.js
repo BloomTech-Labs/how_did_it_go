@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import {Route} from 'react-router-dom';
+import {BrowserRouter, Route} from 'react-router-dom';
 
 import {StripeProvider} from 'react-stripe-elements';
 
@@ -50,20 +50,22 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <img src={logo} className='logo' alt='logo' />
-        <Navigation authenticated={this.state.authenticated} user={this.state.currentUser} />
-        <Route path='/' exact     component={Home}  />
-        <Route path='/signup'     component={SignUp} />
-        <Route path='/signin'     render={() => <SignIn onChange={this.onSignInChange} />} />
-        <Route path='/signout'    render={() => <SignOut onChange={this.onSignOutChange} />} />
-        <Route path='/invitations'component={Invitations} />
-        <Route path='/stats'      component={Stats} />
-      <StripeProvider apiKey="pk_test_lYWOs3y88CPr5JkrwkMt7Cvr">
-        <Route path='/settings'   render={(props) => <Settings {...props} user={this.state.currentUser} />} />
-      </StripeProvider>
-        <Route path='/team'       component={Team} />
-      </div>
+        <BrowserRouter>
+        <div>
+            <img src={logo} className='logo' alt='logo' />
+            <Navigation authenticated={this.state.authenticated} user={this.state.currentUser} />
+            <Route path='/' exact     component={Home}  />
+            <Route path='/signup'     component={SignUp} />
+            <Route path='/signin'     render={() => <SignIn onChange={this.onSignInChange} />} />
+            <Route path='/signout'    render={() => <SignOut onChange={this.onSignOutChange} />} />
+            <Route path='/invitations'render={(props) => <Invitations {...props} user={this.state.currentUser} />} />
+            <Route path='/stats'      component={Stats} />
+          <StripeProvider apiKey="pk_test_lYWOs3y88CPr5JkrwkMt7Cvr">
+            <Route path='/settings'   render={(props) => <Settings {...props} user={this.state.currentUser} />} />
+          </StripeProvider>
+            <Route path='/team'       component={Team} />
+          </div>
+        </BrowserRouter>
     );
   }
    
