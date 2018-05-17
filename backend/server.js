@@ -35,9 +35,9 @@ const whitelist = ['http://localhost:3000', 'https://lambda-labs-how-did-it-go.h
 const corsOptions = {
     origin: (origin, callback) => {
         if (whitelist.indexOf(origin) !== -1) {
-            corsOptions.origin = origin;
+            callback(null, true);
         } else {
-            callback (new Error('Not allowed by CORS'))
+            callback (new Error('Not allowed by CORS'));
         }
     },
 
@@ -49,7 +49,7 @@ server.use(cors(corsOptions));
 
 // set credentials: true: let auth pass cookie down
 
-// server.use(cors({origin: 'http://localhost:3000',
+// server.use(cors({origin: true,
 //     credentials: true
 // }));
 
