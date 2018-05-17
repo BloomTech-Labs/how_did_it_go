@@ -22,6 +22,7 @@ class Message extends Component{
             businessName: '',
             message: '',
             platForms: [],
+            reviewSite: '',
         };
     }
 
@@ -44,6 +45,7 @@ class Message extends Component{
             companyFound = true;
             console.log('company affiliated: ', response.data);
             company = response.data;
+            console.log('company id: ', company.id);
             this.setState({
                 message: company.defaultMessage,
                 managerFirstName: company.contactFirstName,
@@ -64,16 +66,17 @@ class Message extends Component{
     }
 
     getPlatForms = () => {
-        console.log('company id: ', company.id);
-        axios.get(ROOT_URL + 'platForms/' + company.id + '/shortURLs')
-            .then(result => {
-                this.setState({ platForms: result.data });
-                console.log(this.state.platForms);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }
+        axios
+          .get(ROOT_URL + "companies/" + company.id + "/platforms")
+          .then(result => {
+            const detail = result.data;
+            this.setState({ platForms: detail.platForms });
+            console.log("Retrieve platForms successfully!", this.state.platForms);
+          })
+          .catch(error => {
+            console.log("Errors while getting company platForms infomation");
+          });
+      };
 
     handleInputChange = (e) => {
         this.setState({
@@ -124,7 +127,7 @@ class Message extends Component{
 
                 <div className='header'>Here is Our Basic Greeting. Feel Free To Change It However You'd Like!</div>
                 <div className='sampleMessage' id='sampleMessage'>
-                    Hello. This is {this.state.managerFirstName} {this.state.managerLastName} from {this.state.businessName}. {this.state.message}
+                    Hello. This is {this.state.managerFirstName} {this.state.managerLastName} from {this.state.businessName}. {this.state.message} {this.state.reviewSite}
                 </div>
 
                 <form className='form' id='settingsForm'>
@@ -134,19 +137,12 @@ class Message extends Component{
                 <div><input className='form--item' type='text' name='businessName' value={this.state.businessName} onChange={this.handleInputChange} /></div>
 
                 {/* creates a dropdown menu of possible review sites to choose from */}
-                {/* <select className='dropdownList' id ='selectReviewSite' name='reviewSite' onChange={this.handleInputChange}>
-                    <option value ='null' selected disabled>Select A Review Site</option>
-                    <option value='https://www.yelp.com/'>Yelp</option>
-                    <option value='https://www.google.com/business/'>Google Places</option>
-                    <option value='https://www.tripadvisor.com/'>TripAdvisor</option>
-                </select> */}
-
                 <select className='dropdownList' id ='selectReviewSite' name='reviewSite' onChange={this.handleInputChange}>
-                    <option value ='' selected disabled>Select A Review Site</option>
+                    <option value={null} selected disabled>Select A Review Site</option>
                     {this.state.platForms.map(platForm => {
                         return (
                             <option key={platForm.global_hash} value={platForm.url}>
-                                {platForm.long_url}
+                                {platForm.resource}
                             </option>
                         );
                     })}
