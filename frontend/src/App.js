@@ -56,7 +56,7 @@ class App extends Component {
             <Navigation authenticated={this.state.authenticated} user={this.state.currentUser} />
             <Route path='/' exact     component={Home}  />
             <Route path='/signup'     component={SignUp} />
-            <Route path='/signin'     render={() => <SignIn onChange={this.onSignInChange} />} />
+            <Route path='/signin'     render={(props) => <SignIn {...props} onChange={this.onSignInChange} />} />
             <Route path='/signout'    render={() => <SignOut onChange={this.onSignOutChange} />} />
             <Route path='/invitations'render={(props) => <Invitations {...props} user={this.state.currentUser} />} />
             <Route path='/stats'      component={Stats} />
