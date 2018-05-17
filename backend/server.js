@@ -28,16 +28,37 @@ server.use(express.static(path.join(__dirname, '../frontend/build')));
 
 server.use(bodyParser.json());
 
+
+//config CORS w/ Dynamic Origin
+
+const whitelist = ['http://localhost:3000', 'https://lambda-labs-how-did-it-go.herokuapp.com'];
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (whitelist.indexOf(origin) !== -1) {
+            corsOptions.origin = origin;
+        } else {
+            callback (new Error('Not allowed by CORS'))
+        }
+    },
+
+    credentials: true,
+};
+server.use(cors(corsOptions));
+
+
+
 // set credentials: true: let auth pass cookie down
-server.use(cors({origin: 'http://localhost:3000',
-    credentials: true
-}));
+
+// server.use(cors({origin: 'http://localhost:3000',
+//     credentials: true
+// }));
+
+
 server.use(
     session({
     secret: process.env.SESSION_TOKEN,
     resave: false,
     saveUninitialized: false,
-    // cookie: { secure: false },
     }),
 );
 
