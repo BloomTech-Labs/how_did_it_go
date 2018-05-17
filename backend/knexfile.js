@@ -16,11 +16,7 @@ module.exports = {
 
   production: {
     client: 'mysql',
-    connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
-    },
+    connection: process.env.CLEARDB_DATABASE_URL,
     pool: {
       min: 2,
       max: 10
