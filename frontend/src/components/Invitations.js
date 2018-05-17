@@ -65,7 +65,7 @@ class Invitations extends Component {
     };
   }
 
-  updateCustomer = (e, existingData) => {
+  updateCustomer = (e) => {
   return {
       firstName : e.target.firstName.value,
       lastName: e.target.lastName.value,
