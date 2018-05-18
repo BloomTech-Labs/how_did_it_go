@@ -56,29 +56,66 @@ class Invitations extends Component {
   }
 
   getPlatForms = () => {
+    console.log('company id: ', company.id);
       axios
-        .get(ROOT_URL + "companies/" + company.id + "/platforms")
+        .get(ROOT_URL + "platForms/" + company.id )
         .then(result => {
           const detail = result.data;
-          this.setState({ platForms: detail.platForms });
+          console.log('platforms received: ', detail);
+          this.setState({ platForms: detail });
           this.setReviewSite();
         })
         .catch(error => {
-          console.log("Errors while getting company platForms infomation");
+          console.log("Errors while getting company platForms infomation", error);
         });
     };
 
+
   setReviewSite = () => {
+    console.log('length: ', this.state.platForms);
     const length = this.state.platForms.length;
+    let reviewID = this.state.platForms[0].id;
     if (length === 1) {
       this.setState({ reviewSite: this.state.platForms[0] });
     } else if (length > 1) {
       const randomNum = Math.floor(Math.random() * Math.floor(length));
       this.setState({ reviewSite: this.state.platForms[randomNum] });
+      const reviewID = this.state.platForms[randomNum].id;
     } else {
       console.log('platforms empty');
+      return null;
     }
-    console.log(this.state.reviewSite);
+    this.getPlatFormShortURL(reviewID);
+  }
+
+  getPlatFormShortURL = (reviewID) => {
+    console.log('platform id: ', reviewID);
+      axios
+        .get(ROOT_URL + "platForms/" + reviewID + "/shortURLs")
+        .then(result => {
+          const detail = result.data;
+          console.log('detail: ', detail);
+          let reviewSite = this.state.reviewSite;
+          reviewSite.shortUrl = detail.url;
+          this.setState({ reviewSite });
+          console.log('new reviewSite in state: ', this.state.reviewSite);
+        })
+        .catch(error => {
+          console.log("Errors while getting company platForms infomation", error);
+        });
+    };
+
+  getPlatFormId = () => {
+    console.log(this.state.reviewSite.long_url);
+    const longUrl = this.state.reviewSite.long_url;
+    axios.get(ROOT_URL + 'platForms/' + longUrl)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log('error getting the platform by the long url: ', error);
+      });
+
   }
 
   handleInputChange = (e) => {
@@ -152,6 +189,7 @@ class Invitations extends Component {
       platFormID: this.state.reviewSite.id,
       customerID: customer.id,
     };
+    console.log('invitation to send: ', invitation);
     axios.post(ROOT_URL + 'invitations', invitation)
       .then(response => {
         console.log('invitation made: ', response.data);
@@ -186,7 +224,7 @@ class Invitations extends Component {
   }
 
   sendText = (customer) => {
-    messageToSend = { messageContent: 'Hello, this is ' + this.state.managerFirstName + ' ' + this.state.managerLastName + ' from ' + this.state.businessName + '. ' + this.state.message + ' ' + this.state.reviewSite.url + '. Thank you!' };
+    messageToSend = { messageContent: 'Hello, this is ' + this.state.managerFirstName + ' ' + this.state.managerLastName + ' from ' + this.state.businessName + '. ' + this.state.message + ' ' + this.state.reviewSite.shortUrl + '. Thank you!' };
     axios.post(ROOT_URL + 'sms/' + customer.phoneNumber, messageToSend)
     .then(response => {
       console.log("Sent!");
