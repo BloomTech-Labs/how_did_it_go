@@ -16,6 +16,7 @@ const customersEndpoints = require('./customers/customersEndpoints.js');
 const platFormsEndpoints = require('./platForms/platFormsEndpoints.js');
 const smsEndpoints = require('./sms/smsEndpoints.js');   
 const usersEndpoints = require('./users/usersEndpoints.js');
+const invitationsEndpoints = require('./invitations/invitationsEndpoints.js');
 const users = require('./users/usersControllers');
 
 
@@ -77,6 +78,7 @@ server.use('/companies', companiesEndpoints);
 server.use('/customers', customersEndpoints);
 server.use('/platForms', platFormsEndpoints);
 server.use('/sms', smsEndpoints);
+server.use('/invitations', invitationsEndpoints);
 
 
 

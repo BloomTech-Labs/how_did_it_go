@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import ROOT_URL from '../utils/config.js';
 
 import Billing from './settingsComponents/Billing';
 import Message from './settingsComponents/Message';
 import PlatForms from './settingsComponents/PlatForms';
 import Payment from './settingsComponents/Payment';
 import UsernameAndPassword from './settingsComponents/UsernameAndPassword';
-import ReviewSites from './settingsComponents/PlatForms';
+//import ReviewSites from './settingsComponents/PlatForms';
 
 
 class Settings extends Component {
@@ -16,7 +15,7 @@ class Settings extends Component {
       currentUser: this.props.user,
       currentItem: 0,
       items: [
-        <PlatForms />,
+        <PlatForms user={this.props.user}/>,
         <Message user={this.props.user}/>,
         <UsernameAndPassword />,
         <Billing />,

@@ -35,6 +35,7 @@ class SignUp extends Component {
       axios.post(ROOT_URL + 'signup', {username: this.state.username, password: this.state.password })
         .then((result) => {
           console.log('Sign Up successfully!');
+          this.props.history.push('/signin');
         })
         .catch((error) => {
           alert('Failed to sign you up!');
