@@ -71,7 +71,7 @@ class Invitations extends Component {
   setReviewSite = () => {
     const length = this.state.platForms.length;
     if (length === 1) {
-      this.setState({ reviewSite: this.state.platForms });
+      this.setState({ reviewSite: this.state.platForms[0] });
     } else if (length > 1) {
       const randomNum = Math.floor(Math.random() * Math.floor(length));
       this.setState({ reviewSite: this.state.platForms[randomNum] });
@@ -114,7 +114,10 @@ class Invitations extends Component {
   falseCustomerData = (currentCustomer, dbCustomer) => {
     console.log('customer: ', currentCustomer);
     console.log('dbCustomer: ', dbCustomer);
-    if (!dbCustomer || currentCustomer.firstName !== dbCustomer.firstName || currentCustomer.lastName !== dbCustomer.lastName) {
+    if(!dbCustomer) {
+      return this.saveNewCustomer(currentCustomer);
+    }
+    if (currentCustomer.firstName !== dbCustomer.firstName || currentCustomer.lastName !== dbCustomer.lastName) {
       console.log('true');
       alert('Telephone number is linked to another user');
       return true;
@@ -127,12 +130,11 @@ class Invitations extends Component {
 
   checkForInvitation = (customer) => {
     let flag = false;
-    axios.get(ROOT_URL + 'invitations/customerid/' + customer.id)
+    axios.get(ROOT_URL + 'invitations/companyid/' + company.id + '/customerid/' + customer.id)
       .then(response => {
-        console.log('invitation found: ', response.data);
         if (response.data.length > 0) {
-          console.log('invitation found');
-          flag = true;
+          console.log('invitation found: ', response.data);
+          alert('You have already sent a survey link to this customer!');
         } else {
           console.log('no invitation found');
           this.createInvitation(customer);
@@ -141,11 +143,11 @@ class Invitations extends Component {
       .catch(error => {
         console.log('error finding invitations: ', error);
       });
-    return flag;
   }
 
   createInvitation = (customer) => {
     console.log('customer id: ', customer.id);
+    console.log(this.state.reviewSite);
     const invitation = {
       platFormID: this.state.reviewSite.id,
       customerID: customer.id,
@@ -166,8 +168,7 @@ class Invitations extends Component {
     .then(response => {
       console.log('added customer: ', response.data);
       const addedCustomer = response.data;
-      this.createInvitation(cust);
-      this.sendText(addedCustomer);
+      this.createInvitation(addedCustomer);
     })
     .catch(error => {
       console.log("error:", error);
@@ -189,6 +190,7 @@ class Invitations extends Component {
     axios.post(ROOT_URL + 'sms/' + customer.phoneNumber, messageToSend)
     .then(response => {
       console.log("Sent!");
+      alert('Message Sent!');
       this.resetState();
     })
     .catch(error => {
@@ -208,7 +210,6 @@ class Invitations extends Component {
     e.preventDefault();
     e.persist();
     let customer = this.createCustomer(e);
-    this.getAllCustomers();
     console.log(this.getCustomer(customer));
   }
 

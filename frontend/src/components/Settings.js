@@ -15,8 +15,8 @@ class Settings extends Component {
       currentUser: this.props.user,
       currentItem: 0,
       items: [
-        <PlatForms user={this.props.user}/>,
         <Message user={this.props.user}/>,
+        <PlatForms user={this.props.user}/>,
         <UsernameAndPassword />,
         <Billing />,
         <Payment />,
@@ -36,8 +36,8 @@ class Settings extends Component {
     <div className='component'>
       <div className='sidebar'>
         <div className='title header'>Settings</div>
-        <button type='button' className='button sidebar--button' name='0' onClick={this.toggleItem}>Review Sites</button>
-        <button type='button' className='button sidebar--button' name='1' onClick={this.toggleItem}>Messages</button>
+        <button type='button' className='button sidebar--button' name='0' onClick={this.toggleItem}>Messages</button>
+        <button type='button' className='button sidebar--button' name='1' onClick={this.toggleItem}>Review Sites</button>
         <button type='button' className='button sidebar--button' name='2' onClick={this.toggleItem}>Update Username and Password</button>
         <button type='button' className='button sidebar--button' name='3' onClick={this.toggleItem}>Update Billing Info</button>
         <button type='button' className='button sidebar--button' name='4' onClick={this.toggleItem}>Make a Payment</button>

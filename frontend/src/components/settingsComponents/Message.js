@@ -42,26 +42,30 @@ class Message extends Component{
     getCompanyData = () => {
         axios.get(ROOT_URL + 'companies/userid/' + this.state.userid)
         .then(response => {
-            companyFound = true;
             console.log('company affiliated: ', response.data);
             company = response.data;
             console.log('company id: ', company.id);
-            this.setState({
-                message: company.defaultMessage,
-                managerFirstName: company.contactFirstName,
-                managerLastName: company.contactLastName,
-                businessName: company.name,
-            });
-            this.getPlatForms();
+            if (company.length > 0) {
+                companyFound = true;
+                this.setState({
+                    message: company.defaultMessage,
+                    managerFirstName: company.contactFirstName,
+                    managerLastName: company.contactLastName,
+                    businessName: company.name,
+                });
+                this.getPlatForms();
+            } else {
+                company = {};
+                this.setState({
+                    message: DEFAULT_MESSAGE,
+                    managerFirstName: 'Enter Manager First Name',
+                    managerLastName: 'Enter Manager Last Name',
+                    businessName: 'Enter Company Name',                          
+                });
+            }
         })
         .catch(error => {
             console.log('error finding company: ', error);
-            this.setState({
-                message: DEFAULT_MESSAGE,
-                managerFirstName: 'Enter Manager First Name',
-                managerLastName: 'Enter Manager Last Name',
-                businessName: 'Enter Company Name',                          
-            });
         })
         
     }
@@ -91,7 +95,6 @@ class Message extends Component{
         });
     }
 
-
     handleSubmit = (e) => {
         e.preventDefault();
         company.defaultMessage = this.state.message;
@@ -103,6 +106,7 @@ class Message extends Component{
             axios.put(ROOT_URL + 'companies/id/' + company.id, company)
             .then(response => {
             console.log("updated the company");
+            alert('Settings saved!');
             })
             .catch(error => {
             console.log("error while updating company");
@@ -114,6 +118,7 @@ class Message extends Component{
                 .then(response => {
                     console.log('created new company');
                     companyFound = true;
+                    alert('Settings saved!');
                 })
                 .catch(error => {
                     console.log('error creating new company: ', error);

@@ -32,5 +32,25 @@ invitationsRouter.get('/customerid/:id', (req, res) => {
             res.status(400).json(error);
         });
 });
+invitationsRouter.get('/companyid/:id', (req, res) => {
+    const { id } = req.params;
+    invitations.getInvitationByCompanyId(id)
+        .then(invites => {
+            res.status(200).json(invites);
+        })
+        .catch(error => {
+            res.status(400).json(error);
+        });
+});
+invitationsRouter.get('/companyid/:companyid/customerid/:customerid', (req, res) => {
+    const { companyid, customerid } = req.params;
+    invitations.getInvitationsByCompanyIdAndCustomerId(companyid, customerid)
+        .then(invites => {
+            res.status(200).json(invites);
+        })
+        .catch(error => {
+            res.status(400).json(error);
+        });
+});
 
 module.exports = invitationsRouter;

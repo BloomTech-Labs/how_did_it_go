@@ -12,8 +12,16 @@ module.exports = {
         return db('invitations')
             .where('customerID', id);
     },
-    getInvitationsByCompanyId: (companyId) => {
-        // need to write this code, include invitation table access
+    getInvitationByCompanyId: (id) => {
+        return db('invitations')
+            .innerJoin('platForms', 'invitations.platFormID', 'platForms.id')
+            .where('platForms.companyID', id);
+    },
+    getInvitationsByCompanyIdAndCustomerId: (companyid, customerid) => {
+        return db('invitations')
+            .join('platForms', 'invitations.platFormID', 'platForms.id')
+            .where('platForms.companyID', companyid)
+            .andWhere('invitations.customerID', customerid);
     },
     insert: (invitation) => {
         return db('invitations')
