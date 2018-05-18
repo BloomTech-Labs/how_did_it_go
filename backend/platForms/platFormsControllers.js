@@ -14,6 +14,11 @@ module.exports = {
       .where('companyID', companyID);
   },
 
+  getByLongUrl: function(longurl) {
+    return db('platForms')
+      .where('long_url', longurl);
+  },
+
   insert: function(platForm) {
     return db('platForms')
       .insert(platForm)

@@ -15,6 +15,7 @@ module.exports = {
     },
     getCustomerByCompanyId: (companyId) => {
         // need to write this code, include invitation table access
+
     },
     insert: (customer) => {
         return db('customers')

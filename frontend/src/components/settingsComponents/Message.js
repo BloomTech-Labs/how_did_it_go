@@ -143,7 +143,7 @@ class Message extends Component{
                 <div><input className='form--item' type='text' name='businessName' value={this.state.businessName} onChange={this.handleInputChange} /></div>
 
                 {/* creates a dropdown menu of possible review sites to choose from */}
-                <select className='dropdownList' id ='selectReviewSite' name='reviewSite' onChange={this.handleInputChange}>
+                {/* <select className='dropdownList' id ='selectReviewSite' name='reviewSite' onChange={this.handleInputChange}>
                     <option value={null} selected disabled>Select A Review Site</option>
                     {this.state.platForms.map(platForm => {
                         return (
@@ -152,7 +152,7 @@ class Message extends Component{
                             </option>
                         );
                     })}
-                </select>
+                </select> */}
 
                 {/* allows user to edit or completely re-write the pre-programmed message text */}
                 <div><textarea className='form--item messageField' name ='message' form ='settingsForm' onChange={this.handleInputChange}

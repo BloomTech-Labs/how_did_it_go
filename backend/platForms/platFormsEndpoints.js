@@ -31,31 +31,35 @@ platFormsRouter.get('', (req, res) => {
     });
 });
 
+platFormsRouter.get('/:companyid', (req, res) => {
+    const { companyid } = req.params;
+    platForms
+      .getByCompanyID(companyid)
+      .then(platForms => {
+          res.status(200).json(platForms);
+      })
+      .catch(error => {
+          res.status(400).json(error);
+      });
+  });
+
 // Using bitly to get shortURLs for long-URLs per companyID
 platFormsRouter.get('/:id/shortURLs', (req, res) => {
     const { id } = req.params;
-
     platForms
-      .getByCompanyID(id)
-      .then(platForms => {
-        const promises = platForms.map(platForm => {
+      .get(id)
+      .then(platForm => {
             return bitly.shorten(platForm.url)
-                .then((result) => {
-                    return result.data; 
+                .then(response => {
+                    res.status(200).json(response.data);
                 })
                 .catch(error => {
-                    console.error(error);
+                    res.status(400).json(error);
                 });
-        }); 
-
-        Promise.all(promises)
-            .then(results => {
-                res.status(200).json(results);
-            });  
-      })
-      .catch(error => {
-        res.status(400).json(error);
-      });
+        })
+        .catch(error => {
+            res.status(400).json(error);
+        });
 });
 
 // Using bitly to get shortURLs for long-URLs per companyID; get clicks stat after get the shortURL
