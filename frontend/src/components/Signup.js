@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-//import ROOT_URL from '../utils/config.js';
+import ROOT_URL from '../utils/config.js';
 
 class SignUp extends Component {
   constructor() {
@@ -32,7 +32,7 @@ class SignUp extends Component {
     if (this.state.password !== this.state.confirmPW) {
       alert('Password and confirmed Password do not match!!! Please enter one more time.');
     } else {
-      axios.post(/*ROOT_URL + */'/signup', {username: this.state.username, password: this.state.password })
+      axios.post(ROOT_URL + 'signup', {username: this.state.username, password: this.state.password })
         .then((result) => {
           console.log('Sign Up successfully!');
         })

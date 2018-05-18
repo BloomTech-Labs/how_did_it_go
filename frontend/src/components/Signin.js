@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 
-//import ROOT_URL from '../utils/config.js';
+import ROOT_URL from '../utils/config.js';
 
 class SignIn extends Component {
   constructor() {
@@ -34,7 +34,7 @@ class SignIn extends Component {
       password: this.state.password
     };
     
-    axios.post(/*ROOT_URL + */'/signin', data)
+    axios.post(ROOT_URL + 'signin', data)
       .then((result) => {
         if (result.data.username) {
           const username = result.data.username;
