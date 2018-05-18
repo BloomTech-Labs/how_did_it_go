@@ -4,7 +4,7 @@ const invitationsRouter = express.Router();
 
 invitationsRouter.post('', (req, res) => {
     const invitation = req.body;
-    invitations.post(invitation)
+    invitations.insert(invitation)
         .then(id => {
             res.status(200).json(id);
         })

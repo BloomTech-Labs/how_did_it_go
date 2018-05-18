@@ -10,12 +10,13 @@ module.exports = {
     },
     getCustomerByPhoneNumber: (phoneNumber) => {
         return db('customers')
-            .where('phoneNumber', phoneNumber);
+            .where('phoneNumber', phoneNumber)
+            .first();
     },
     getCustomerByCompanyId: (companyId) => {
         // need to write this code, include invitation table access
     },
-    insertCustomer: (customer) => {
+    insert: (customer) => {
         return db('customers')
             .insert(customer)
             .then(id => { id: id });

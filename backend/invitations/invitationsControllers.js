@@ -15,7 +15,7 @@ module.exports = {
     getInvitationsByCompanyId: (companyId) => {
         // need to write this code, include invitation table access
     },
-    insertInvitation: (invitation) => {
+    insert: (invitation) => {
         return db('invitations')
             .insert(invitation)
             .then(id => { id: id });
