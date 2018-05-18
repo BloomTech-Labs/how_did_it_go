@@ -4,7 +4,7 @@ const customersRouter = express.Router();
 
 customersRouter.post('', (req, res) => {
     const customer = req.body;
-    customers.post(customer)
+    customers.insert(customer)
         .then(id => {
             res.status(200).json(id);
         })
