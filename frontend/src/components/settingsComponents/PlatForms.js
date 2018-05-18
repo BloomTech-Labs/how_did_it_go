@@ -18,36 +18,38 @@ class PlatForms extends Component {
   }
 
   componentWillMount() {
-    axios
-      .get(ROOT_URL + "users/" + this.state.user)
-      .then(response => {
-        this.setState({ userid: response.data.id });
-        this.getCompanyData();
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
+    axios.get(ROOT_URL + 'users/' + this.state.user)
+        .then(response => {
+            this.setState({ userid: response.data.id });
+            console.log('user: ', this.state.userid);
+            this.getCompanyData();   
+        })
+        .catch(error => {
+            console.log(error);
+        });   
+}
 
-  getCompanyData = () => {
-    axios
-      .get(ROOT_URL + "companies/userid/" + this.state.userid)
-      .then(response => {
+getCompanyData = () => {
+    axios.get(ROOT_URL + 'companies/userid/' + this.state.userid)
+    .then(response => {
+        console.log('company affiliated: ', response.data);
         company = response.data;
-        this.getPlatforms();
-      })
-      .catch(error => {
-        console.log("error finding company: ", error);
-      });
-  };
+        console.log('company id: ', company.id);
+        this.getPlatForms();
+    })
+    .catch(error => {
+        console.log('error finding company: ', error);
+    })
+    
+}
 
-  getPlatforms = () => {
+getPlatForms = () => {
     axios
       .get(ROOT_URL + "companies/" + company.id + "/platforms")
       .then(result => {
         const detail = result.data;
         this.setState({ platForms: detail.platForms });
-        console.log("Retrieve platForms successfully!");
+        console.log("Retrieve platForms successfully!", this.state.platForms);
       })
       .catch(error => {
         console.log("Errors while getting company platForms infomation");
@@ -67,21 +69,21 @@ class PlatForms extends Component {
       resource: this.state.resource,
       companyID: company.id
     };
+    console.log('platform to be added: ', platForm);
     axios
       .post(ROOT_URL + "platForms", platForm)
       .then(response => {
-        this.getPlatforms();
+        this.getPlatForms();
         console.log("Successfully add new platForm!");
+        this.setState({
+          url: "",
+          resource: ""
+        });
       })
       .catch(error => {
         alert("Failed to add new platForm!");
         console.log(error);
       });
-
-    this.setState({
-      url: "",
-      resource: ""
-    });
   };
 
   deletePlatForm = id => {

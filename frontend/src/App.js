@@ -59,7 +59,7 @@ class App extends Component {
             <Route path='/signin'     render={(props) => <SignIn {...props} onChange={this.onSignInChange} />} />
             <Route path='/signout'    render={() => <SignOut onChange={this.onSignOutChange} />} />
             <Route path='/invitations'render={(props) => <Invitations {...props} user={this.state.currentUser} />} />
-            <Route path='/stats'      component={Stats} />
+            <Route path='/stats'      render={(props) => <Stats {...props} />} />
           <StripeProvider apiKey="pk_test_lYWOs3y88CPr5JkrwkMt7Cvr">
             <Route path='/settings'   render={(props) => <Settings {...props} user={this.state.currentUser} />} />
           </StripeProvider>

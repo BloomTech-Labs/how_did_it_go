@@ -12,7 +12,8 @@ class Invitations extends Component {
     this.state = {
       user: this.props.user,
       userid: '',
-      managerFirstName: '',
+      customerID: '',
+      managerfirstName: '',
       managerLastName: '',
       businessName: '',
       message: '',
@@ -70,7 +71,7 @@ class Invitations extends Component {
   setReviewSite = () => {
     const length = this.state.platForms.length;
     if (length === 1) {
-      this.setState({ reviewSite: this.state.platForms });
+      this.setState({ reviewSite: this.state.platForms[0] });
     } else if (length > 1) {
       const randomNum = Math.floor(Math.random() * Math.floor(length));
       this.setState({ reviewSite: this.state.platForms[randomNum] });
@@ -94,44 +95,67 @@ class Invitations extends Component {
     };
   }
 
-  getCustomer = () => {
-    axios.get(ROOT_URL + 'customers/phone/' + this.state.phoneNumber)
+  getCustomer = (customer) => {
+    axios.get(ROOT_URL + 'customers/phone/' + customer.phoneNumber)
       .then(response => {
-        const customer = response.data;
-        return customer;
+        const customerFound = response.data;
+        console.log(customerFound);
+        return this.falseCustomerData(customer, customerFound);
+      })
+      .then(() => {      
+        console.log('next item');
       })
       .catch(error => {
         console.log('error finding customer: ', error);
       })
   }
 
+
   falseCustomerData = (currentCustomer, dbCustomer) => {
+    console.log('customer: ', currentCustomer);
+    console.log('dbCustomer: ', dbCustomer);
+    if(!dbCustomer) {
+      return this.saveNewCustomer(currentCustomer);
+    }
     if (currentCustomer.firstName !== dbCustomer.firstName || currentCustomer.lastName !== dbCustomer.lastName) {
+      console.log('true');
+      alert('Telephone number is linked to another user');
       return true;
+    } else {
+      console.log('false');
+      this.checkForInvitation(dbCustomer);
+      return false;
     }
   }
 
   checkForInvitation = (customer) => {
     let flag = false;
-    axios.get(ROOT_URL + 'invitations/customerid/' + customer.id)
+    axios.get(ROOT_URL + 'invitations/companyid/' + company.id + '/customerid/' + customer.id)
       .then(response => {
-        console.log(response.data);
+        if (response.data.length > 0) {
+          console.log('invitation found: ', response.data);
+          alert('You have already sent a survey link to this customer!');
+        } else {
+          console.log('no invitation found');
+          this.createInvitation(customer);
+        }
       })
       .catch(error => {
         console.log('error finding invitations: ', error);
       });
-    return flag;
   }
 
   createInvitation = (customer) => {
     console.log('customer id: ', customer.id);
+    console.log(this.state.reviewSite);
     const invitation = {
       platFormID: this.state.reviewSite.id,
       customerID: customer.id,
     };
-    axios.post('invitations', invitation)
+    axios.post(ROOT_URL + 'invitations', invitation)
       .then(response => {
-        console.log(response.data);
+        console.log('invitation made: ', response.data);
+        this.sendText(customer);
       })
       .catch(error => {
         console.log('error creating invitation: ', error);
@@ -142,36 +166,32 @@ class Invitations extends Component {
     console.log(cust);
     axios.post(ROOT_URL + 'customers', cust)
     .then(response => {
-      this.sendText(cust);
-      this.resetState();
+      console.log('added customer: ', response.data);
+      const addedCustomer = response.data;
+      this.createInvitation(addedCustomer);
     })
     .catch(error => {
       console.log("error:", error);
     });
   }
 
-  checkIfCustomerExists = (customer) => {
-    const customerFound = this.getCustomer();
-    if (customerFound) {
-      if (this.falseCustomerData(customer, customerFound)) {
-        alert("Sorry, that phone number is already in use");
-      } else if (!this.checkForInvitation(customerFound)){
-          this.createInvitation(customerFound);
-          this.sendText(customerFound);
-      } else { // customer exists and was recently texted
-        return null;
-      }
-    } else { // brand new customer, not in DB
-    this.saveNewCustomer(customer);
-    this.createInvitation(customerFound);
-    this.sendText(customerFound);
-    }
+  getAllCustomers = () => {
+    axios.get(ROOT_URL + 'customers')
+      .then(response => {
+        console.log('all customers: ', response.data);
+      })
+      .catch(error => {
+        console.log('error finding all customers: ', error);
+      })
   }
 
-  sendText = (cust) => {
-    axios.post(ROOT_URL + 'sms/' + cust.phoneNumber, messageToSend)
+  sendText = (customer) => {
+    messageToSend = { messageContent: 'Hello, this is ' + this.state.managerFirstName + ' ' + this.state.managerLastName + ' from ' + this.state.businessName + '. ' + this.state.message + ' ' + this.state.reviewSite.url + '. Thank you!' };
+    axios.post(ROOT_URL + 'sms/' + customer.phoneNumber, messageToSend)
     .then(response => {
       console.log("Sent!");
+      alert('Message Sent!');
+      this.resetState();
     })
     .catch(error => {
       console.log("error:", error);
@@ -189,10 +209,8 @@ class Invitations extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     e.persist();
-    messageToSend = { messageContent: 'Hello, this is ' + this.state.managerName + ' from ' + this.state.businessName + '. ' + this.state.message + this.state.reviewSite + '. Thank you!' };
     let customer = this.createCustomer(e);
-    this.checkIfCustomerExists(customer);
-   
+    console.log(this.getCustomer(customer));
   }
 
   render() {
