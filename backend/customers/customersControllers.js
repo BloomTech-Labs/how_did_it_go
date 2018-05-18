@@ -6,7 +6,7 @@ module.exports = {
     },
     getCustomerById: (id) => {
         return db('customers')
-            .where('_id', id);
+            .where('id', id);
     },
     getCustomerByPhoneNumber: (phoneNumber) => {
         return db('customers')
@@ -27,7 +27,7 @@ module.exports = {
     },
     delete: (id) => {
         return db('customers')
-            .where('_id', id)
+            .where('id', id)
             .del();
     },
 };
