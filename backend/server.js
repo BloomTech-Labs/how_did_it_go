@@ -32,27 +32,27 @@ server.use(bodyParser.json());
 
 //config CORS w/ Dynamic Origin
 
-const whitelist = ['http://localhost:3000', 'https://lambda-labs-how-did-it-go.herokuapp.com'];
-const corsOptions = {
-    origin: (origin, callback) => {
-        if (whitelist.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback (new Error('Not allowed by CORS'));
-        }
-    },
+// const whitelist = ['http://localhost:3000', 'https://lambda-labs-how-did-it-go.herokuapp.com'];
+// const corsOptions = {
+//     origin: (origin, callback) => {
+//         if (whitelist.indexOf(origin) !== -1) {
+//             callback(null, true);
+//         } else {
+//             callback (new Error('Not allowed by CORS'));
+//         }
+//     },
 
-    credentials: true,
-};
-server.use(cors(corsOptions));
+//     credentials: true,
+// };
+// server.use(cors(corsOptions));
 
 
 
 // set credentials: true: let auth pass cookie down
 
-// server.use(cors({origin: true,
-//     credentials: true
-// }));
+server.use(cors({origin: true,
+    credentials: true
+}));
 
 
 server.use(
