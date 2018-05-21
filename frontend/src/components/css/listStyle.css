@@ -26,8 +26,6 @@ ul li:hover {
 
 .list_items {
   display: flex;
-  /* flex-direction: row;
-  justify-content: space-around; */
 }
 
 .list_item {

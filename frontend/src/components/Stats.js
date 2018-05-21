@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 
 import ROOT_URL from '../utils/config.js';
+import './css/listStyle.css';
 
 
 let company = {};
@@ -14,6 +15,7 @@ class Stats extends Component {
       companyId: '',
       companyName: '',
       data: [],
+      platForms: [],
       invitationsSent: 0,
       totalClicks: 0,
       details: false
@@ -35,12 +37,26 @@ class Stats extends Component {
     axios.get(ROOT_URL + 'companies/userid/' + this.state.userid)
     .then(response => {
         company = response.data;
+        this.getPlatForms();
         this.getTotalClicks();
     })
     .catch(error => {
         console.log('error finding company: ', error);
     })   
-}
+  }
+
+  getPlatForms = () => {
+    axios
+      .get(ROOT_URL + "companies/" + company.id + "/platforms")
+      .then(result => {
+        const detail = result.data;
+        this.setState({ platForms: detail.platForms });
+        console.log("Retrieve platForms successfully!");
+      })
+      .catch(error => {
+        console.log("Errors while getting company platForms infomation");
+      });
+  };
   
   getTotalClicks = () => {
     // axios get total clicks number
@@ -49,9 +65,9 @@ class Stats extends Component {
         const clicksList = response.data;
         let count = 0;
         const updatedData = [];
-        clicksList.forEach(item => {
+        clicksList.forEach((item, index) => {
           count += item[0].global_clicks;
-          updatedData.push({ url: item[0].short_url, clicks: item[0].global_clicks });
+          updatedData.push({ url: this.state.platForms[index].url, clicks: item[0].global_clicks });
         });
         this.setState({ totalClicks: count, data: updatedData });
         this.getInvitationsByCompany();
@@ -83,19 +99,20 @@ class Stats extends Component {
       <div className='content'>Invitations Sent: {this.state.invitationsSent}</div>
       <div className='content'>Total Clicks: {this.state.totalClicks}</div>
       <div className='content customerStats' onClick={this.toggle}>{ this.state.details ? 
-        <div>
+        <ul>
           {/* { this.state.data.map((item, index) => 
             <div key = {index}>{ item.firstName  + ' ' + item.lastName } : Clicked the Link? { item.requestSent.clicked ? 'Yes' : 'No' }</div>
             ) 
           } */}
           {this.state.data.map((item, index) => {
             return (
-              <div key={index}>
-                {item.url}:{item.clicks}
-              </div>
+              <li className="list_items" key={index}>
+                <span className="list_item">{item.url} :</span>
+                <span className="list_item">{item.clicks}</span>  
+              </li>
             );
           })}
-        </div>
+        </ul>
         : 'Click Here for More Details' } </div>
     </div> 
     );

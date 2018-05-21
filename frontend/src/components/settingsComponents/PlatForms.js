@@ -80,7 +80,6 @@ class PlatForms extends Component {
           .catch(error => {
             console.log("Errors while getting company platForms infomation");
           });
-        // this.getPlatForms();
         console.log("Successfully add new platForm!");
         
         this.setState({
