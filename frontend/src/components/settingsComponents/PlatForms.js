@@ -70,8 +70,19 @@ class PlatForms extends Component {
     axios
       .post(ROOT_URL + "platForms", platForm)
       .then(response => {
-        this.getPlatForms();
+        axios
+          .get(ROOT_URL + "companies/" + company.id + "/platforms")
+          .then(result => {
+            const detail = result.data;
+            this.setState({ platForms: detail.platForms });
+            console.log("Retrieve platForms successfully!");
+          })
+          .catch(error => {
+            console.log("Errors while getting company platForms infomation");
+          });
+        // this.getPlatForms();
         console.log("Successfully add new platForm!");
+        
         this.setState({
           url: "",
           resource: ""

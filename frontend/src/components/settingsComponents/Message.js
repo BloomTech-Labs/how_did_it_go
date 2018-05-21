@@ -55,9 +55,9 @@ class Message extends Component{
                 company = {};
                 this.setState({
                     message: DEFAULT_MESSAGE,
-                    managerFirstName: 'Enter Manager First Name',
-                    managerLastName: 'Enter Manager Last Name',
-                    businessName: 'Enter Company Name',                          
+                    managerFirstName: '',
+                    managerLastName: '',
+                    businessName: '',                          
                 });
             }
         })
@@ -135,9 +135,9 @@ class Message extends Component{
 
                 <form className='form' id='settingsForm'>
                 {/* allows user to enter or update db data about company */}
-                <div><input className='form--item' type='text' name='managerFirstName' value={this.state.managerFirstName} onChange={this.handleInputChange} /></div>
-                <div><input className='form--item' type='text' name='managerLastName' value={this.state.managerLastName} onChange={this.handleInputChange} /></div>
-                <div><input className='form--item' type='text' name='businessName' value={this.state.businessName} onChange={this.handleInputChange} /></div>
+                <div><input className='form--item' type='text' name='managerFirstName' value={this.state.managerFirstName} onChange={this.handleInputChange} placeholder="Enter Manager First Name" /></div>
+                <div><input className='form--item' type='text' name='managerLastName' value={this.state.managerLastName} onChange={this.handleInputChange} placeholder="Enter Manager Last Name" /></div>
+                <div><input className='form--item' type='text' name='businessName' value={this.state.businessName} onChange={this.handleInputChange} placeholder="Enter Company Name" /></div>
 
                 {/* creates a dropdown menu of possible review sites to choose from */}
                 {/* <select className='dropdownList' id ='selectReviewSite' name='reviewSite' onChange={this.handleInputChange}>
