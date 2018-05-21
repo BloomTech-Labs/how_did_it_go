@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 
 import ROOT_URL from '../utils/config.js';
-// let companyName = "Second Company"; // testing purposes
+
 
 let company = {};
 class Stats extends Component {
@@ -34,9 +34,7 @@ class Stats extends Component {
   getCompanyData = () => {
     axios.get(ROOT_URL + 'companies/userid/' + this.state.userid)
     .then(response => {
-        console.log('company affiliated: ', response.data);
         company = response.data;
-        console.log('company id: ', company.id);
         this.getTotalClicks();
     })
     .catch(error => {
@@ -56,7 +54,6 @@ class Stats extends Component {
           updatedData.push({ url: item[0].short_url, clicks: item[0].global_clicks });
         });
         this.setState({ totalClicks: count, data: updatedData });
-        console.log(this.state.data);
         this.getInvitationsByCompany();
       })
       .catch(error => {
@@ -67,7 +64,6 @@ class Stats extends Component {
   getInvitationsByCompany = () => {
     axios.get(ROOT_URL + 'invitations/companyid/' + company.id)
       .then(response => {
-        console.log('invitations by company: ', response.data);
         this.setState({ invitationsSent: response.data.length });
       })
       .catch(error => {

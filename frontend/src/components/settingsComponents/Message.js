@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import ROOT_URL from '../../utils/config.js';
 
-//const ROOT_URL = 'http://localhost:5000/';
+
 const DEFAULT_MESSAGE = 'Thank you for coming in today! I hope you enjoyed your visit and will come see us again soon. In the meantime, could you do me a favor and leave us a review? Here is a link that will make it easy: ';
  
 
@@ -29,8 +29,7 @@ class Message extends Component{
         axios.get(ROOT_URL + 'users/' + this.state.user)
             .then(response => {
                 this.setState({ userid: response.data.id });
-                this.getCompanyData();
-                
+                this.getCompanyData();    
             })
             .catch(error => {
                 console.log(error);
@@ -42,9 +41,7 @@ class Message extends Component{
     getCompanyData = () => {
         axios.get(ROOT_URL + 'companies/userid/' + this.state.userid)
         .then(response => {
-            console.log('company affiliated: ', response.data);
             company = response.data;
-            console.log('company id: ', company.id);
             if (company.length > 0) {
                 companyFound = true;
                 this.setState({
@@ -76,7 +73,7 @@ class Message extends Component{
           .then(result => {
             const detail = result.data;
             this.setState({ platForms: detail.platForms });
-            console.log("Retrieve platForms successfully!", this.state.platForms);
+            console.log("Retrieve platForms successfully!");
           })
           .catch(error => {
             console.log("Errors while getting company platForms infomation");
