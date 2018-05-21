@@ -51,7 +51,6 @@ class Stats extends Component {
       .then(result => {
         const detail = result.data;
         this.setState({ platForms: detail.platForms });
-        console.log(this.state.platForms);
         console.log("Retrieve platForms successfully!");
       })
       .catch(error => {
@@ -66,7 +65,6 @@ class Stats extends Component {
         const clicksList = response.data;
         let count = 0;
         const updatedData = [];
-        console.log(clicksList);
         clicksList.forEach((item, index) => {
           count += item[0].global_clicks;
           updatedData.push({ url: this.state.platForms[index].url, clicks: item[0].global_clicks });
