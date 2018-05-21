@@ -5,7 +5,6 @@ import Message from './settingsComponents/Message';
 import PlatForms from './settingsComponents/PlatForms';
 import Payment from './settingsComponents/Payment';
 import UsernameAndPassword from './settingsComponents/UsernameAndPassword';
-//import ReviewSites from './settingsComponents/PlatForms';
 
 
 class Settings extends Component {
@@ -31,7 +30,6 @@ class Settings extends Component {
   }
 
   render() {
-    console.log('current user is: ', this.props.user); //just for testing, but this works!!
     return (
     <div className='component'>
       <div className='sidebar'>

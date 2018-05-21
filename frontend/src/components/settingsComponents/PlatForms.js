@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import ROOT_URL from "../../utils/config.js";
+import '../css/listStyle.css';
 
 let company = {};
 class PlatForms extends Component {
@@ -21,35 +22,31 @@ class PlatForms extends Component {
     axios.get(ROOT_URL + 'users/' + this.state.user)
         .then(response => {
             this.setState({ userid: response.data.id });
-            console.log('user: ', this.state.userid);
             this.getCompanyData();   
         })
         .catch(error => {
             console.log(error);
         });   
-}
+  }
 
-getCompanyData = () => {
-    axios.get(ROOT_URL + 'companies/userid/' + this.state.userid)
-    .then(response => {
-        console.log('company affiliated: ', response.data);
-        company = response.data;
-        console.log('company id: ', company.id);
-        this.getPlatForms();
-    })
-    .catch(error => {
-        console.log('error finding company: ', error);
-    })
-    
-}
+  getCompanyData = () => {
+      axios.get(ROOT_URL + 'companies/userid/' + this.state.userid)
+      .then(response => {
+          company = response.data;
+          this.getPlatForms();
+      })
+      .catch(error => {
+          console.log('error finding company: ', error);
+      })    
+  }
 
-getPlatForms = () => {
+  getPlatForms = () => {
     axios
       .get(ROOT_URL + "companies/" + company.id + "/platforms")
       .then(result => {
         const detail = result.data;
         this.setState({ platForms: detail.platForms });
-        console.log("Retrieve platForms successfully!", this.state.platForms);
+        console.log("Retrieve platForms successfully!");
       })
       .catch(error => {
         console.log("Errors while getting company platForms infomation");
@@ -69,12 +66,23 @@ getPlatForms = () => {
       resource: this.state.resource,
       companyID: company.id
     };
-    console.log('platform to be added: ', platForm);
+    
     axios
       .post(ROOT_URL + "platForms", platForm)
       .then(response => {
-        this.getPlatForms();
+        axios
+          .get(ROOT_URL + "companies/" + company.id + "/platforms")
+          .then(result => {
+            const detail = result.data;
+            this.setState({ platForms: detail.platForms });
+            console.log("Retrieve platForms successfully!");
+          })
+          .catch(error => {
+            console.log("Errors while getting company platForms infomation");
+          });
+        // this.getPlatForms();
         console.log("Successfully add new platForm!");
+        
         this.setState({
           url: "",
           resource: ""
@@ -90,7 +98,16 @@ getPlatForms = () => {
     axios
       .delete(ROOT_URL + "platForms/" + id)
       .then(response => {
-        this.getPlatforms();
+        axios
+          .get(ROOT_URL + "companies/" + company.id + "/platforms")
+          .then(result => {
+            const detail = result.data;
+            this.setState({ platForms: detail.platForms });
+            console.log("Retrieve platForms successfully!");
+          })
+          .catch(error => {
+            console.log("Errors while getting company platForms infomation");
+          });
         console.log("Successfully deleted platForm!");
       })
       .catch(error => {
@@ -137,11 +154,10 @@ getPlatForms = () => {
           {this.state.platForms
             ? this.state.platForms.map((platForm, index) => {
                 return (
-                  <li key={index}>
-                    {platForm.resource} {platForm.url}
-                    <button onClick={() => this.deletePlatForm(platForm.id)}>
-                      X
-                    </button>
+                  <li className="list_items" key={index}>
+                    <span className="list_item">{platForm.resource}</span>
+                    <span className="list_item">{platForm.url}</span>
+                    <button className="deleteBtn" onClick={() => this.deletePlatForm(platForm.id)}>X</button>
                   </li>
                 );
               })

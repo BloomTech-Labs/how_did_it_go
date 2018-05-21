@@ -1,0 +1,40 @@
+ul {
+  box-sizing: border-box;
+  height: 10em;
+  padding: .25em 0;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+ul li {
+  list-style: none;
+  cursor: pointer;
+  position: relative;
+  margin: .25em 0;
+  background: #eee;
+  font-size: .75em;
+  transition: 0.2s;  
+}
+
+ul li:nth-child(odd) {
+  background: #f9f9f9;
+}
+
+ul li:hover {
+  background: #ddd;
+}
+
+.list_items {
+  display: flex;
+  /* flex-direction: row;
+  justify-content: space-around; */
+}
+
+.list_item {
+  flex: 1;
+  text-align: left;
+}
+
+.deleteBtn {
+  margin-right: auto;
+}
